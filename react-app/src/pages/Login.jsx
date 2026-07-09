@@ -144,13 +144,45 @@ function Login() {
         <section className="flex-grow p-6 md:p-8 flex flex-col justify-between bg-white">
           
           <div>
-            {/* Error Message */}
-            {errorMsg && (
-              <div className="mb-4 p-3 bg-red-50 border-l-4 border-red-500 rounded-r-lg text-red-700 text-[11px] font-semibold flex items-start gap-2">
-                <span className="material-symbols-outlined text-sm shrink-0 text-red-500">error</span>
-                <span>{errorMsg}</span>
+            {/* Demo Banner */}
+            {supabase.isMock && localStorage.getItem('use_mock_auth') === 'true' && (
+              <div className="mb-4 p-3 bg-blue-50 border-l-4 border-blue-500 rounded-r-lg text-blue-800 text-[11px] font-semibold flex justify-between items-center">
+                <span>Running in Offline Demo Mode.</span>
+                <button 
+                  type="button" 
+                  onClick={() => {
+                    localStorage.removeItem('use_mock_auth')
+                    window.location.reload()
+                  }}
+                  className="text-primary hover:underline font-bold focus:outline-none uppercase text-[10px] cursor-pointer"
+                >
+                  Switch to Real
+                </button>
               </div>
             )}
+
+            {/* Error Message */}
+            {errorMsg && (
+              <div className="mb-4 p-3 bg-red-50 border-l-4 border-red-500 rounded-r-lg text-red-700 text-[11px] font-semibold flex flex-col gap-2">
+                <div className="flex items-start gap-2">
+                  <span className="material-symbols-outlined text-sm shrink-0 text-red-500">error</span>
+                  <span>{errorMsg}</span>
+                </div>
+                {!supabase.isMock && (
+                  <button 
+                    type="button"
+                    onClick={() => {
+                      localStorage.setItem('use_mock_auth', 'true')
+                      window.location.reload()
+                    }}
+                    className="mt-1 bg-red-600 hover:bg-red-700 text-white font-bold px-2 py-1 rounded text-[10px] uppercase tracking-wider self-start cursor-pointer border-none"
+                  >
+                    Switch to Offline Demo Mode (No Rate Limits)
+                  </button>
+                )}
+              </div>
+            )}
+
 
             {/* Success Message */}
             {successMsg && (

@@ -99,8 +99,14 @@ class MockAuth {
 let supabase
 let isMock = false
 
-if (!supabaseAnonKey) {
-  console.warn("Supabase VITE_SUPABASE_ANON_KEY is missing. Falling back to local storage mock auth.")
+const forceMock = localStorage.getItem('use_mock_auth') === 'true'
+
+if (!supabaseAnonKey || forceMock) {
+  if (forceMock) {
+    console.log("Mock Mode forced by user.")
+  } else {
+    console.warn("Supabase VITE_SUPABASE_ANON_KEY is missing. Falling back to local storage mock auth.")
+  }
   isMock = true
   const mockInstance = new MockAuth()
   supabase = {
