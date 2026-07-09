@@ -1,0 +1,655 @@
+<!DOCTYPE html><html lang="en" style=""><head><meta charset="utf-8"><meta content="width=device-width, initial-scale=1.0" name="viewport"><link href="https://fonts.googleapis.com" rel="preconnect"><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400&amp;family=JetBrains+Mono:wght@500&amp;family=Manrope:wght@600;700;800&amp;display=swap" rel="stylesheet"><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=block" rel="stylesheet"><script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script><script id="tailwind-config">try{
+  tailwind.config = {
+    darkMode: "class",
+    theme: {
+      extend: {
+        "colors": {
+                "secondary-fixed": "#c0e8ff",
+                "on-tertiary": "#ffffff",
+                "on-primary-fixed-variant": "#004c6e",
+                "surface-dim": "#d2d9f4",
+                "secondary-container": "#7ed4fd",
+                "on-error-container": "#93000a",
+                "tertiary-fixed-dim": "#bfc8ce",
+                "primary-fixed": "#c9e6ff",
+                "surface-container-lowest": "#ffffff",
+                "surface-bright": "#faf8ff",
+                "outline-variant": "#bec8d2",
+                "on-background": "#131b2e",
+                "on-primary-fixed": "#001e2f",
+                "surface-variant": "#dae2fd",
+                "surface-container-highest": "#dae2fd",
+                "on-primary-container": "#003751",
+                "background": "#faf8ff",
+                "tertiary-fixed": "#dbe4ea",
+                "error": "#ba1a1a",
+                "inverse-surface": "#283044",
+                "surface-container-high": "#e2e7ff",
+                "surface-container": "#eaedff",
+                "surface-container-low": "#f2f3ff",
+                "on-primary": "#ffffff",
+                "on-error": "#ffffff",
+                "on-tertiary-container": "#2c3539",
+                "secondary-fixed-dim": "#7bd1fa",
+                "primary-fixed-dim": "#89ceff",
+                "on-secondary-fixed-variant": "#004d66",
+                "on-secondary-fixed": "#001e2b",
+                "outline": "#6e7881",
+                "inverse-primary": "#89ceff",
+                "surface-tint": "#006591",
+                "on-tertiary-fixed": "#141d21",
+                "tertiary-container": "#949da3",
+                "primary": "#006591",
+                "tertiary": "#576065",
+                "inverse-on-surface": "#eef0ff",
+                "on-tertiary-fixed-variant": "#3f484d",
+                "on-secondary": "#ffffff",
+                "secondary": "#006686",
+                "primary-container": "#0ea5e9",
+                "on-surface": "#131b2e",
+                "on-secondary-container": "#005b78",
+                "surface": "#faf8ff",
+                "on-surface-variant": "#3e4850",
+                "error-container": "#ffdad6"
+        },
+        "borderRadius": {
+                "DEFAULT": "0.25rem",
+                "lg": "0.5rem",
+                "xl": "0.75rem",
+                "full": "9999px"
+        },
+        "spacing": {
+                "base": "4px",
+                "sm": "16px",
+                "xs": "8px",
+                "md": "24px",
+                "xl": "80px",
+                "lg": "48px",
+                "margin": "32px",
+                "gutter": "24px",
+                "margin-mobile": "20px",
+                "margin-desktop": "64px",
+                "container-max": "1280px",
+                "stack-sm": "8px",
+                "stack-md": "24px",
+                "stack-lg": "48px"
+        },
+        "fontFamily": {
+                "headline-md": [
+                        "Manrope"
+                ],
+                "headline-lg-mobile": [
+                        "Manrope"
+                ],
+                "label-sm": [
+                        "JetBrains Mono"
+                ],
+                "body-md": [
+                        "Inter"
+                ],
+                "body-lg": [
+                        "Inter"
+                ],
+                "headline-lg": [
+                        "Manrope"
+                ],
+                "display-lg": [
+                        "Manrope"
+                ],
+                "display-lg-mobile": [
+                        "Manrope"
+                ],
+                "label-caps": [
+                        "JetBrains Mono"
+                ],
+                "button": [
+                        "Manrope"
+                ]
+        },
+        "fontSize": {
+                "headline-md": [
+                        "24px",
+                        {
+                                "lineHeight": "32px",
+                                "fontWeight": "600"
+                        }
+                ],
+                "headline-lg-mobile": [
+                        "28px",
+                        {
+                                "lineHeight": "36px",
+                                "fontWeight": "700"
+                        }
+                ],
+                "label-sm": [
+                        "12px",
+                        {
+                                "lineHeight": "16px",
+                                "letterSpacing": "0.05em",
+                                "fontWeight": "500"
+                        }
+                ],
+                "body-md": [
+                        "16px",
+                        {
+                                "lineHeight": "24px",
+                                "fontWeight": "400"
+                        }
+                ],
+                "body-lg": [
+                        "18px",
+                        {
+                                "lineHeight": "28px",
+                                "fontWeight": "400"
+                        }
+                ],
+                "headline-lg": [
+                        "32px",
+                        {
+                                "lineHeight": "40px",
+                                "letterSpacing": "-0.01em",
+                                "fontWeight": "700"
+                        }
+                ],
+                "display-lg": [
+                        "48px",
+                        {
+                                "lineHeight": "56px",
+                                "letterSpacing": "-0.02em",
+                                "fontWeight": "800"
+                        }
+                ],
+                "display-lg-mobile": ["48px", { "lineHeight": "1.1", "letterSpacing": "-0.04em", "fontWeight": "800" }],
+                "label-caps": ["12px", { "lineHeight": "1.0", "letterSpacing": "0.1em", "fontWeight": "500" }],
+                "button": ["14px", { "lineHeight": "1.0", "letterSpacing": "0.02em", "fontWeight": "700" }]
+        }
+},
+    },
+  }
+}catch(_e){}</script></head><body class="bg-surface-container-lowest text-on-surface font-body-md antialiased selection:bg-primary-container selection:text-on-primary-container">
+<!-- Top Navigation Bar -->
+<nav class="fixed top-0 left-0 w-full z-50 flex justify-between items-center px-margin-mobile md:px-margin-desktop py-4 max-w-container-max mx-auto bg-surface/80 backdrop-blur-xl border-b border-outline-variant">
+<!-- Brand -->
+<a class="flex items-center gap-2" href="#">
+<img alt="TripoMist Logo" class="h-12 rounded-full aspect-square object-cover w-12" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAf4iPOLD4TW-emcX7qi8W7qPZhFbm5OzAQitvDsMARyOfBuAo9ztt29roRULWmZnSZXWDU9C66-5CEUsII9ClNmyCllVfZSQsk_Zh8SNMinjoMc_fWjzIKKChJB0UTFRB6QTigHPgLb0E2DZsOlp_JhvJp0lXnbSsTzGVqfLBMNk-0_rDP3tmtkhWYAQN9_F1nRcn8PpFGemDTJHOLelhxsCRyeTqUu0-JvD0GzZAkXaVLereGaQFPqUxJgRLojmOnEGYfiVmgV8Js0WY">
+<span class="font-headline-md text-headline-md text-on-surface">TripoMist</span></a>
+<!-- Desktop Nav Links -->
+<div class="hidden md:flex items-center gap-8">
+<a class="text-primary font-bold border-b-2 border-primary pb-1 hover:text-primary transition-colors duration-200" href="#">Group Trips</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors duration-200" href="#">Weekend Trips</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors duration-200" href="#">Upcoming Trips</a>
+
+</div>
+<!-- Actions -->
+<div class="hidden md:flex items-center gap-6">
+<a class="text-on-surface font-body-md text-body-md hover:text-primary transition-colors flex items-center gap-2" href="tel:+919990802608">
+<span class="material-symbols-outlined text-[18px]">call</span>
+                +91 9990802608
+            </a>
+</div>
+<!-- Mobile Menu Toggle (Decorative) -->
+<button class="md:hidden text-on-surface">
+<span class="material-symbols-outlined">menu</span>
+</button>
+</nav>
+<!-- Main Content Canvas -->
+<main class="w-full">
+<!-- Hero Section -->
+<section class="relative w-full min-h-[921px] flex flex-col justify-end pt-32 pb-margin-mobile md:pb-margin-desktop px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto">
+<!-- Background Image -->
+<div class="absolute inset-0 w-full h-full -z-10"><img src="https://lh3.googleusercontent.com/aida-public/AB6AXuDr1bFj-VK1OCK8cofjz3XpkMGaadAnPYNmy27ywy54zuRYxrUQWhc_bunY6J-RqHK7AH63X6zrdMCNsPptKpAjoAH0gN_AyLziUOhSONpQWYo2iL4J0lexaBryu5Jkgz98qymqdjEkPK6YVc27KlmYURB5u-wFuH0ea815zPNGCAyoL54FxRvBec2KvReMlQ3I5k-JNY1lb-l6qzxNx0EqJq6TgwOr025Fb-LqlnNhup3j9tRlfLE2Ijr-lxsxOAeNIw3yoHQS_XrEWNA" alt="A diverse and happy group of young travelers cheering on a mountain ridge" class="w-full h-full object-cover">
+<div class="absolute inset-0 gradient-overlay"></div></div>
+<!-- Content -->
+<div class="relative z-10 max-w-3xl mb-stack-lg">
+<div class="inline-flex items-center gap-2 mb-6 text-on-tertiary">
+
+
+</div>
+<h1 class="font-display-lg-mobile md:font-display-lg text-display-lg-mobile md:text-display-lg text-white mb-6">Find Yourself&nbsp; <br><span class="text-primary-container">With TripoMist</span></h1>
+<p class="font-body-lg text-body-lg text-white/80 max-w-2xl mb-8">Your Safe Travel Our Responsibility<font color="#0ea5e9">.</font></p>
+<div class="flex flex-col sm:flex-row gap-4">
+<a class="inline-flex items-center justify-center bg-primary text-on-primary font-button text-button px-8 py-4 rounded hover:bg-primary/90 transition-colors" href="#">
+                        Explore Group Trips
+                        <span class="material-symbols-outlined ml-2 text-[18px]">arrow_forward</span>
+</a>
+<a class="inline-flex items-center justify-center border border-white/50 text-white font-button text-button px-8 py-4 rounded hover:border-white hover:text-white transition-colors bg-black/30 backdrop-blur-sm" href="#">
+                        See Upcoming Departures
+                    </a>
+<button class="inline-flex items-center justify-center border border-white/50 text-white w-14 h-14 rounded hover:border-white hover:text-white transition-colors bg-black/30 backdrop-blur-sm" aria-label="Search trips">
+    <span class="material-symbols-outlined">search</span>
+</button></div>
+</div>
+<!-- Stats Bar -->
+</section>
+<!-- Destination Filters -->
+<section class="py-12 px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto bg-surface-container-lowest">
+<div class="flex items-center justify-between mb-8">
+<h2 class="font-headline-md text-headline-md text-on-surface">Explore Destinations</h2>
+<div class="flex gap-4 overflow-x-auto hide-scrollbar py-2">
+<button class="whitespace-nowrap px-4 py-2 rounded-full border-2 border-primary text-primary font-button text-button flex items-center gap-2 bg-primary/5">
+<span class="material-symbols-outlined" style="font-size: 18px;">public</span> All
+                    </button>
+<button class="whitespace-nowrap px-4 py-2 rounded-full border border-outline-variant text-on-surface hover:border-primary hover:text-primary hover:bg-primary/5 transition-colors font-button text-button flex items-center gap-2 bg-surface"><span class="material-symbols-outlined" style="font-size: 18px;">landscape</span> Mountains</button>
+<button class="whitespace-nowrap px-4 py-2 rounded-full border border-outline-variant text-on-surface hover:border-primary hover:text-primary hover:bg-primary/5 transition-colors font-button text-button flex items-center gap-2 bg-surface"><span class="material-symbols-outlined" style="font-size: 18px;">beach_access</span> Beaches</button>
+</div>
+</div>
+<div class="flex gap-8 overflow-x-auto hide-scrollbar py-4 px-2 -mx-2">
+<!-- Destination Items -->
+<div class="flex flex-col items-center gap-3 cursor-pointer group min-w-[100px]">
+<div class="w-24 h-24 rounded-full overflow-hidden border-2 border-transparent group-hover:border-primary transition-all duration-300 shadow-sm group-hover:shadow-md group-hover:-translate-y-1">
+<img class="w-full h-full object-cover" data-alt="A sunny scenic view of a Spanish coastal town with vibrant buildings and a clear blue sky, evoking a warm, inviting travel destination." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBg6Yy2y1B5_zWhldPgOEjCjf_mFK-MB5PkN0aygVffQIP-tCSPDr5lepNbZ9SiqN36VBop5DEfKD9iuXPhOykaVrbRxg_CNqaR5Ga-8N21myCpBf0_mblz5ozmxPPeZzvZUFzICH8Nf0ej71uXRPpT3jiDlXwrLrSM3Dg3e9k-PLX9JQhVuY8ywoVk1hgOYZ_aIgNVhPhPCEeORhAJzGmZgs3iIYpWea9JW4EvAQOnyFq181A4snTAsYTLEPTAl8LuIv_cXqeNqlFB">
+</div>
+<span class="font-button text-button text-on-surface group-hover:text-primary text-center max-w-[100px] leading-tight transition-colors">Spain With Ibiza</span>
+</div>
+<div class="flex flex-col items-center gap-3 cursor-pointer group min-w-[100px]">
+<div class="w-24 h-24 rounded-full overflow-hidden border-2 border-transparent group-hover:border-primary transition-all duration-300 shadow-sm group-hover:shadow-md group-hover:-translate-y-1">
+<img class="w-full h-full object-cover" data-alt="A serene view of Mt. Fuji in Japan framed by delicate cherry blossoms during a bright, clear day. Calm and precise aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuD8DxhOnB12NwDl9aSCd17cmp-hBViBvqvS-mQG__5JFfNGB1OWdWCrkklFOtMxqSmHS878pacq5l8_uX0qmWEuU5DxxOFyfI4gnNFJdFay7qwNfnwfqEJfORb6ea9_WCcGjGuSySGUQBM1akWuJULFuw4DbYMnX2UJruyzBMH3_n4LTH63bSqelO0NhSYXfaYT3pq5IW5vFRFaQ4q8UR5zW2Qzh6eTQwwdXnqrpAz-N6frYOVxJoxA19vOvRquurOoXB7OZVoebAWM">
+</div>
+<span class="font-button text-button text-on-surface group-hover:text-primary text-center transition-colors">Japan</span>
+</div>
+<div class="flex flex-col items-center gap-3 cursor-pointer group min-w-[100px]">
+<div class="w-24 h-24 rounded-full overflow-hidden border-2 border-transparent group-hover:border-primary transition-all duration-300 shadow-sm group-hover:shadow-md group-hover:-translate-y-1">
+<img class="w-full h-full object-cover" data-alt="The Golden Bridge in Vietnam held up by giant stone hands, set against lush green mountains and a bright blue sky. Clean, expansive view." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBHQqdIRbvN9sWBUtDeTOLN4RI3y2AbjTMoiNX3ucdssWRlILrLBRoyM2nfFOeYZYb2-_BACX1poFT6Bmg8wVkf21C_NdzoCTz_ylxhI3HnmSBbjh_2r-QOinsuIe8gRdkO4_2T0h1GOAadQUkBYjFg77L2XL-Macwm-oYcc2cf-uW3zM1VkHqbkV3ZNaXfah6an2uXwuWBFBNGbC56xp0nz7O5cGtoPjfNdQVh2LwRP_LeVFzI2HnwXTEAH3JaWSBawED0T04k8Rl5">
+</div>
+<span class="font-button text-button text-on-surface group-hover:text-primary text-center transition-colors">Vietnam</span>
+</div>
+<div class="flex flex-col items-center gap-3 cursor-pointer group min-w-[100px]">
+<div class="w-24 h-24 rounded-full overflow-hidden border-2 border-transparent group-hover:border-primary transition-all duration-300 shadow-sm group-hover:shadow-md group-hover:-translate-y-1">
+<img class="w-full h-full object-cover" data-alt="A stunning aerial view of a cliffside beach in Bali, with crystal clear turquoise water crashing against dramatic rocky shores under bright sunlight." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCtn1wDKcsh5073nbZOT8l9ZwwZZoS-mrpjG6COUn9gGKWLb_8FYL7a8PEyX_BEEkBVhEbO3A7nNW0UQp7TAulteeO7xsbvhHWrpvg-i5gIUS_wqKLRfrTH6I24lThbfLxxVeZOFQJRTpDEX-iOqh6ulM2MVvUDD9_DYyDI63BDvhRQcjTtpXRvZJk1F8wDQe-FlsfH7YVAR6TVCFvhqLz3lgErFLgI911voNWPN-9bPWjepNk2rYYTbsSpLuP6KsaoxKHfJQteCFLD">
+</div>
+<span class="font-button text-button text-on-surface group-hover:text-primary text-center transition-colors">Bali</span>
+</div>
+<div class="flex flex-col items-center gap-3 cursor-pointer group min-w-[100px]">
+<div class="w-24 h-24 rounded-full overflow-hidden border-2 border-transparent group-hover:border-primary transition-all duration-300 shadow-sm group-hover:shadow-md group-hover:-translate-y-1">
+<img class="w-full h-full object-cover" data-alt="A vibrant, culturally rich scene in Thailand, perhaps a brightly colored temple or a bustling clean market scene under a clear sky." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCXf1ZG0UycvUoz1FHAhSaVsAaTkfc1dWUy4KrjVPJmOHpuCxMQtvvH8vnMyP4D74eXykeMX-Tq924pRbQ9KZo4X3EysKCbdGhMgufPFljfU3FCgV-Za3MpKBGxegKGMyrXk_P0CRl1NDTcesnTqGSPbKWhsoc4FvX72xAHECyLrAF-v8q0SwKGwNNMjz-DYwTCPXEaMubazz5zgS_aqtglb1HKHJqqSucXpjm_EgrFObN_pzTEzOJ-ALgeyVjIVKWsIWJ89era_0Yb">
+</div>
+<span class="font-button text-button text-on-surface group-hover:text-primary text-center transition-colors">Thailand</span>
+</div>
+<div class="flex flex-col items-center gap-3 cursor-pointer group min-w-[100px]">
+<div class="w-24 h-24 rounded-full overflow-hidden border-2 border-transparent group-hover:border-primary transition-all duration-300 shadow-sm group-hover:shadow-md group-hover:-translate-y-1">
+<img class="w-full h-full object-cover" data-alt="A wide, stark landscape of Ladakh, India, featuring barren, majestic mountains under a pristine, deep blue high-altitude sky." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBZ_LVCgCoAYnwHPqtkSQujITiiomC5hwDNNBsmhdHh64fvHdPU9fTW9dH4r2ZMd3IZy7_ELIuQ5ktlG-Fy8TdpksKLInWdntfnoOfIIeMtsH1ZlcLsM_o5x-TFeFv_jGhdblCWYBTQch77PU0roJvzWOJNquEWga461jVuRtl6wHLIy5pz7LDHtD6cGn13l00Pbe1kE7ZP3B2Ibg6FzsyDY5CGZJSwKPFSz_NVjZGmsw-ZDNFoacJbYne_bkFr1KNLK1hQqQd2ZJ3P">
+</div>
+<span class="font-button text-button text-on-surface group-hover:text-primary text-center transition-colors">Ladakh</span>
+</div>
+<div class="flex flex-col items-center gap-3 cursor-pointer group min-w-[100px]">
+<div class="w-24 h-24 rounded-full overflow-hidden border-2 border-transparent group-hover:border-primary transition-all duration-300 shadow-sm group-hover:shadow-md group-hover:-translate-y-1">
+<img class="w-full h-full object-cover" data-alt="A straight, empty road leading through a striking, dry mountain valley in Spiti, captured in bright, clear daylight conveying isolation and adventure." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDTVDi07scWfsFblrLlOF-M9lu-HBlLoRDiFhOY99I-xJ8vciAIMc4UWni-VaPjhz66-GETj7gd_fHksswzPboUyDwG1PK0xK8Sob6IH0ONIcytECw-YZjVpt2MCEB5U9uVNq13npqE1DEbJ9UNLPeQIp50xXz0iFVTy_XEx8qhmd7iKpyJ8VllOV8TFiFIezpeoxg2BIlQii2v60DuTHXrdh_Pcm3FPdSSXD_s_4jG-YFTYpnCQTHKIXIj8SpiRgCiPUPkJnNyJZ5t">
+</div>
+<span class="font-button text-button text-on-surface group-hover:text-primary text-center max-w-[100px] leading-tight transition-colors">Spiti Valley</span>
+</div>
+<div class="flex flex-col items-center gap-3 cursor-pointer group min-w-[100px]">
+<div class="w-24 h-24 rounded-full overflow-hidden border-2 border-transparent group-hover:border-primary transition-all duration-300 shadow-sm group-hover:shadow-md group-hover:-translate-y-1">
+<img class="w-full h-full object-cover" data-alt="Pristine white sand beaches and impossibly clear blue waters of the Andaman Islands, dotted with lush green islands in a bright, sunny seascape." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAEgmyWOIgZZbElsZln0-quTF0Zl1sILwwQ0jCPpa9x4O6dexC9kI3F5q6J36Sdjx675kTkFj1OhTAmdo1dRRTjI7BL82J61hzB98Ir7m8lklUTKBDQOL7GBNY4O1TYJtbQlPRlQ6HpPXHJTv-pq9GZAZ_83waE9IRgwZoZbaxPRHFZiXmNjpSU-DTYBJJNY7ayhcdClyF0WZmvH0gC6Pu3goYX3H7GJx6u24jX-q7nJ3LtZ38SEz_SXg_vXpKwA2472XqCzQIRXYA_">
+</div>
+<span class="font-button text-button text-on-surface group-hover:text-primary text-center transition-colors">Andaman</span>
+</div>
+</div>
+</section>
+<section class="py-24 px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto border-t border-outline-variant bg-surface-container-lowest">
+<div class="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
+<div>
+<div class="inline-flex items-center gap-2 mb-4 text-primary">
+<span class="material-symbols-outlined text-[16px]">explore</span>
+<span class="font-label-caps text-label-caps tracking-widest uppercase">Explore</span>
+</div>
+<h2 class="font-headline-lg-mobile md:font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-surface">
+                        Destinations made for<br>
+<span class="text-primary">your camera roll.</span>
+</h2>
+</div>
+<!-- Filters -->
+<div class="flex flex-wrap gap-2">
+<button class="px-4 py-2 rounded-full bg-primary text-on-primary font-button text-button hover:bg-primary/90 transition-colors">All</button>
+<button class="px-4 py-2 rounded-full border border-outline-variant text-on-surface hover:border-primary hover:text-primary hover:bg-primary/5 font-button text-button transition-colors bg-surface">Mountains</button>
+<button class="px-4 py-2 rounded-full border border-outline-variant text-on-surface hover:border-primary hover:text-primary hover:bg-primary/5 font-button text-button transition-colors bg-surface">Beaches</button>
+<button class="px-4 py-2 rounded-full border border-outline-variant text-on-surface hover:border-primary hover:text-primary hover:bg-primary/5 font-button text-button transition-colors bg-surface">Weekend</button>
+</div>
+</div>
+<!-- Grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+<!-- Card 1 -->
+<a class="group relative rounded-xl overflow-hidden bg-surface-container border border-outline-variant hover:border-primary transition-colors block aspect-[4/5] flex flex-col justify-between p-6 shadow-sm hover:shadow-md" href="#">
+<div class="absolute inset-0 z-0">
+<div class="absolute inset-0 bg-cover bg-center w-full h-full group-hover:scale-105 transition-transform duration-700" data-alt="A breathtaking, wide landscape shot of the rugged, barren mountains of Ladakh under a clear, deep blue sky. The stark, high-altitude desert terrain is highlighted by sharp sunlight creating strong shadows, perfectly aligning with a high-contrast dark mode premium travel aesthetic." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAj_2vbbw_s3xz1DiSwdLIPB91UjIk6PDZxdsBnYm814_77Jzqvfd2kWMUeOvj3AEjF3S4r4H15YwByYU97r8Fu7ILdgtSJ7U5xniKZmkdCoaFd_qnmf7-3V7Arh2PPk6Q87ghzBZjDLQe2VR7QRLwWpmocIiBZeT0Jfr7z12eP6njmtr_SiXnTl4Xo5Kodp5oHyjSeZ-7Z8cS6quHT4VhEBpHASzD0tOUoSMVb_xNsQhzdUiwWoLW4I37lVfc5kAK_dtkYWb5NmnPq')"></div>
+<div class="absolute inset-0 bg-gradient-to-t from-black via-black/30 to-transparent"></div>
+</div>
+<div class="relative z-10 flex justify-between items-start">
+<span class="bg-white/90 backdrop-blur border border-outline-variant text-on-surface font-label-caps text-[10px] px-2 py-1 rounded flex items-center gap-1 uppercase">
+<span class="material-symbols-outlined text-[12px]">location_on</span> Mountains
+                        </span>
+</div>
+<div class="relative z-10">
+<h3 class="font-headline-md text-headline-md text-white mb-1 shadow-sm">Ladakh</h3>
+<p class="font-body-md text-body-md text-white/90 mb-4">Land of high passes</p>
+<div class="flex items-end justify-between border-t border-white/20 pt-4">
+<div>
+<div class="font-label-caps text-[10px] text-white/80 uppercase mb-1">Starts From</div>
+<div class="font-headline-md text-headline-md text-primary-container">₹21,999</div>
+</div>
+<div class="w-8 h-8 rounded-full border border-white/50 flex items-center justify-center text-white group-hover:bg-primary group-hover:text-on-primary group-hover:border-primary transition-all">
+<span class="material-symbols-outlined text-[18px]">arrow_outward</span>
+</div>
+</div>
+</div>
+</a>
+<!-- Card 2 -->
+<a class="group relative rounded-xl overflow-hidden bg-surface-container border border-outline-variant hover:border-primary transition-colors block aspect-[4/5] flex flex-col justify-between p-6 shadow-sm hover:shadow-md" href="#">
+<div class="absolute inset-0 z-0">
+<div class="absolute inset-0 bg-cover bg-center w-full h-full group-hover:scale-105 transition-transform duration-700" data-alt="A striking view of Key Monastery perched on a rugged hilltop in Spiti Valley, surrounded by vast, desolate snow-dusted mountains. The scene is shot with high contrast and deep shadows, emphasizing the isolation and epic scale of the Himalayas in a premium, dark aesthetic." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDiD2GO7fIb1ciUdWe0odOedfkhJIm1ur64B1iKghZ8eMdF66RoOvQDTrZz1L1nfURfVdMroAzsjyFtv85EjcF8NXBkccIFhdalQolBp9Yar92MT8MtrG9wQGjuK5B7wctNIUhR54TEU7PYNv323Svs0dPfNfV6sfFdjHZinMcri0e9lDmEaHhHTP1F5YA25LoETYvVR1Dnn-8UNP4ShswwHgnmwn3Pw1YqRx1ECDm16ijYYriT-jcGpT9--pyJ_OQkKTc7lwXlnByS')"></div>
+<div class="absolute inset-0 bg-gradient-to-t from-black via-black/30 to-transparent"></div>
+</div>
+<div class="relative z-10 flex justify-between items-start">
+<span class="bg-white/90 backdrop-blur border border-outline-variant text-on-surface font-label-caps text-[10px] px-2 py-1 rounded flex items-center gap-1 uppercase">
+<span class="material-symbols-outlined text-[12px]">location_on</span> Mountains
+                        </span>
+</div>
+<div class="relative z-10">
+<h3 class="font-headline-md text-headline-md text-white mb-1 shadow-sm">Spiti Valley</h3>
+<p class="font-body-md text-body-md text-white/90 mb-4">Middle land between India &amp; Tibet</p>
+<div class="flex items-end justify-between border-t border-white/20 pt-4">
+<div>
+<div class="font-label-caps text-[10px] text-white/80 uppercase mb-1">Starts From</div>
+<div class="font-headline-md text-headline-md text-primary-container">₹16,999</div>
+</div>
+<div class="w-8 h-8 rounded-full border border-white/50 flex items-center justify-center text-white group-hover:bg-primary group-hover:text-on-primary group-hover:border-primary transition-all">
+<span class="material-symbols-outlined text-[18px]">arrow_outward</span>
+</div>
+</div>
+</div>
+</a>
+<!-- Card 3 -->
+<a class="group relative rounded-xl overflow-hidden bg-surface-container border border-outline-variant hover:border-primary transition-colors block aspect-[4/5] flex flex-col justify-between p-6 shadow-sm hover:shadow-md" href="#">
+<div class="absolute inset-0 z-0">
+<div class="absolute inset-0 bg-cover bg-center w-full h-full group-hover:scale-105 transition-transform duration-700" data-alt="A serene, cinematic view of a misty river valley in Kashmir during winter, bordered by dark pine trees and snow-capped peaks. The scene features deep blacks, low-key lighting, and a solitary, mysterious mood that perfectly fits a high-end, dark mode travel brand visual style." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCoZ_1M6Zk0HMDhTpKzxMQgQnTBWH9nJlDxVZ3z680TUyTZDm2k0r8nZLugA9SsMmSxZwBQNlP0RqL0o_pN3y8oodeLuZrAMK_BT5g3TtjjmMuq2qryknNF_eDajNtaJ0lhkNCoTDd0wvhRvqO6r6FQKYgQY2G1jrrxLxKfk3vfLTyv4stEcsTeJNnx4i_IeZlGcu5QAISZR2l1bfUnCU3NRglStiKpz8VEJh6Ac0yEugDurHd9RpWrIHVqOg_8q7TXhns1RLgQNPd3')"></div>
+<div class="absolute inset-0 bg-gradient-to-t from-black via-black/30 to-transparent"></div>
+</div>
+<div class="relative z-10 flex justify-between items-start">
+<span class="bg-white/90 backdrop-blur border border-outline-variant text-on-surface font-label-caps text-[10px] px-2 py-1 rounded flex items-center gap-1 uppercase">
+<span class="material-symbols-outlined text-[12px]">location_on</span> Mountains
+                        </span>
+</div>
+<div class="relative z-10">
+<h3 class="font-headline-md text-headline-md text-white mb-1 shadow-sm">Kashmir</h3>
+<p class="font-body-md text-body-md text-white/90 mb-4">Heaven on earth</p>
+<div class="flex items-end justify-between border-t border-white/20 pt-4">
+<div>
+<div class="font-label-caps text-[10px] text-white/80 uppercase mb-1">Starts From</div>
+<div class="font-headline-md text-headline-md text-primary-container">₹17,999</div>
+</div>
+<div class="w-8 h-8 rounded-full border border-white/50 flex items-center justify-center text-white group-hover:bg-primary group-hover:text-on-primary group-hover:border-primary transition-all">
+<span class="material-symbols-outlined text-[18px]">arrow_outward</span>
+</div>
+</div>
+</div>
+</a>
+</div>
+</section>
+<!-- Featured Group Trips Section -->
+<section class="py-24 px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto border-t border-outline-variant bg-surface-container-lowest">
+<div class="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
+<div>
+<div class="inline-flex items-center gap-2 mb-4 text-primary">
+<span class="material-symbols-outlined text-[16px]">local_fire_department</span>
+<span class="font-label-caps text-label-caps tracking-widest uppercase">Hot Selling</span>
+</div>
+<h2 class="font-headline-lg-mobile md:font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-surface">
+                        Featured Group <span class="text-primary">Trips</span>
+</h2>
+</div>
+<a class="inline-flex items-center text-primary font-button text-button hover:text-primary-container transition-colors" href="#">
+    View All Trips <span class="material-symbols-outlined ml-2 text-[18px]">arrow_forward</span>
+</a>
+</div>
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+<!-- Trip 1 -->
+<div class="bg-surface rounded-xl overflow-hidden border border-outline-variant hover:border-primary transition-colors group flex flex-col h-full shadow-sm hover:shadow-md">
+<div class="relative h-64 overflow-hidden">
+<div class="absolute inset-0 bg-cover bg-center w-full h-full group-hover:scale-105 transition-transform duration-700" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAj_2vbbw_s3xz1DiSwdLIPB91UjIk6PDZxdsBnYm814_77Jzqvfd2kWMUeOvj3AEjF3S4r4H15YwByYU97r8Fu7ILdgtSJ7U5xniKZmkdCoaFd_qnmf7-3V7Arh2PPk6Q87ghzBZjDLQe2VR7QRLwWpmocIiBZeT0Jfr7z12eP6njmtr_SiXnTl4Xo5Kodp5oHyjSeZ-7Z8cS6quHT4VhEBpHASzD0tOUoSMVb_xNsQhzdUiwWoLW4I37lVfc5kAK_dtkYWb5NmnPq')"></div>
+<div class="absolute top-4 right-4 bg-primary text-on-primary font-label-caps text-[10px] px-2 py-1 rounded uppercase font-bold">Best Seller</div>
+</div>
+<div class="p-6 flex flex-col flex-grow">
+<div class="flex items-center gap-4 text-on-surface-variant font-label-caps text-[12px] mb-3 uppercase">
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-[16px]">schedule</span> 6N/7D</span>
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-[16px]">group</span> Group</span>
+</div>
+<h3 class="font-headline-md text-[20px] text-on-surface mb-2">The Ultimate Ladakh Expedition</h3>
+<p class="font-body-md text-[14px] text-on-surface-variant mb-6 flex-grow">Experience the raw beauty of Leh, Nubra Valley, and Pangong Tso with a close-knit group of adventurers.</p>
+<div class="flex items-center justify-between border-t border-outline-variant pt-4">
+<div>
+<span class="text-[12px] text-on-surface-variant line-through block">₹28,999</span>
+<span class="font-headline-md text-[20px] text-primary">₹24,999</span>
+</div>
+<button class="border border-outline-variant text-on-surface hover:border-primary hover:text-primary hover:bg-primary/5 px-4 py-2 rounded font-button text-button transition-colors">View Details</button>
+</div>
+</div>
+</div>
+<!-- Trip 2 -->
+<div class="bg-surface rounded-xl overflow-hidden border border-outline-variant hover:border-primary transition-colors group flex flex-col h-full shadow-sm hover:shadow-md">
+<div class="relative h-64 overflow-hidden">
+<div class="absolute inset-0 bg-cover bg-center w-full h-full group-hover:scale-105 transition-transform duration-700" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDiD2GO7fIb1ciUdWe0odOedfkhJIm1ur64B1iKghZ8eMdF66RoOvQDTrZz1L1nfURfVdMroAzsjyFtv85EjcF8NXBkccIFhdalQolBp9Yar92MT8MtrG9wQGjuK5B7wctNIUhR54TEU7PYNv323Svs0dPfNfV6sfFdjHZinMcri0e9lDmEaHhHTP1F5YA25LoETYvVR1Dnn-8UNP4ShswwHgnmwn3Pw1YqRx1ECDm16ijYYriT-jcGpT9--pyJ_OQkKTc7lwXlnByS')"></div>
+</div>
+<div class="p-6 flex flex-col flex-grow">
+<div class="flex items-center gap-4 text-on-surface-variant font-label-caps text-[12px] mb-3 uppercase">
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-[16px]">schedule</span> 5N/6D</span>
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-[16px]">group</span> Group</span>
+</div>
+<h3 class="font-headline-md text-[20px] text-on-surface mb-2">Winter Spiti Circuit</h3>
+<p class="font-body-md text-[14px] text-on-surface-variant mb-6 flex-grow">Brave the frozen landscapes of the middle land. A curated winter adventure for the bold.</p>
+<div class="flex items-center justify-between border-t border-outline-variant pt-4">
+<div>
+<span class="text-[12px] text-on-surface-variant block uppercase">Starts at</span>
+<span class="font-headline-md text-[20px] text-primary">₹18,999</span>
+</div>
+<button class="border border-outline-variant text-on-surface hover:border-primary hover:text-primary hover:bg-primary/5 px-4 py-2 rounded font-button text-button transition-colors">View Details</button>
+</div>
+</div>
+</div>
+<!-- Trip 3 -->
+<div class="bg-surface rounded-xl overflow-hidden border border-outline-variant hover:border-primary transition-colors group flex flex-col h-full shadow-sm hover:shadow-md">
+<div class="relative h-64 overflow-hidden">
+<div class="absolute inset-0 bg-cover bg-center w-full h-full group-hover:scale-105 transition-transform duration-700" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCoZ_1M6Zk0HMDhTpKzxMQgQnTBWH9nJlDxVZ3z680TUyTZDm2k0r8nZLugA9SsMmSxZwBQNlP0RqL0o_pN3y8oodeLuZrAMK_BT5g3TtjjmMuq2qryknNF_eDajNtaJ0lhkNCoTDd0wvhRvqO6r6FQKYgQY2G1jrrxLxKfk3vfLTyv4stEcsTeJNnx4i_IeZlGcu5QAISZR2l1bfUnCU3NRglStiKpz8VEJh6Ac0yEugDurHd9RpWrIHVqOg_8q7TXhns1RLgQNPd3')"></div>
+</div>
+<div class="p-6 flex flex-col flex-grow">
+<div class="flex items-center gap-4 text-on-surface-variant font-label-caps text-[12px] mb-3 uppercase">
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-[16px]">schedule</span> 4N/5D</span>
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-[16px]">group</span> Group</span>
+</div>
+<h3 class="font-headline-md text-[20px] text-on-surface mb-2">Kashmir Valley Retreat</h3>
+<p class="font-body-md text-[14px] text-on-surface-variant mb-6 flex-grow">Explore Srinagar, Gulmarg, and Pahalgam. A perfect mix of leisure and breathtaking vistas.</p>
+<div class="flex items-center justify-between border-t border-outline-variant pt-4">
+<div>
+<span class="text-[12px] text-on-surface-variant block uppercase">Starts at</span>
+<span class="font-headline-md text-[20px] text-primary">₹19,999</span>
+</div>
+<button class="border border-outline-variant text-on-surface hover:border-primary hover:text-primary hover:bg-primary/5 px-4 py-2 rounded font-button text-button transition-colors">View Details</button>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- The TripoMist Experience -->
+<section class="py-24 px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto bg-surface-container-low">
+<div class="text-center max-w-2xl mx-auto mb-16">
+<h2 class="font-headline-lg-mobile md:font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-surface mb-4">
+            The <span class="text-primary">TripoMist</span> Experience
+        </h2>
+<p class="font-body-md text-on-surface-variant">We don't just organize trips; we curate experiences. Here's why 50,000+ travellers choose us.</p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+<div class="p-6 bg-surface rounded-xl border border-outline-variant shadow-sm hover:shadow-md transition-shadow">
+<div class="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center text-primary mb-4">
+<span class="material-symbols-outlined">hotel</span>
+</div>
+<h3 class="font-headline-md text-[18px] text-on-surface mb-2">Handpicked Stays</h3>
+<p class="font-body-md text-[14px] text-on-surface-variant">We personally verify every hotel, homestay, and camp to ensure premium comfort and safety.</p>
+</div>
+<div class="p-6 bg-surface rounded-xl border border-outline-variant shadow-sm hover:shadow-md transition-shadow">
+<div class="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center text-primary mb-4">
+<span class="material-symbols-outlined">verified_user</span>
+</div>
+<h3 class="font-headline-md text-[18px] text-on-surface mb-2">Certified Guides</h3>
+<p class="font-body-md text-[14px] text-on-surface-variant">Travel with experienced trip captains who know the mountains like the back of their hand.</p>
+</div>
+<div class="p-6 bg-surface rounded-xl border border-outline-variant shadow-sm hover:shadow-md transition-shadow">
+<div class="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center text-primary mb-4">
+<span class="material-symbols-outlined">diversity_3</span>
+</div>
+<h3 class="font-headline-md text-[18px] text-on-surface mb-2">Small Groups</h3>
+<p class="font-body-md text-[14px] text-on-surface-variant">Intimate group sizes (12-15 pax) ensure personal attention and stronger bonds among travellers.</p>
+</div>
+<div class="p-6 bg-surface rounded-xl border border-outline-variant shadow-sm hover:shadow-md transition-shadow">
+<div class="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center text-primary mb-4">
+<span class="material-symbols-outlined">location_city</span>
+</div>
+<h3 class="font-headline-md text-[18px] text-on-surface mb-2">Delhi Community</h3>
+<p class="font-body-md text-[14px] text-on-surface-variant">Start your journey from Delhi with like-minded locals. Pre-trip meetups to break the ice!</p>
+</div>
+</div>
+</section>
+<!-- What Our Tribe Says -->
+
+<!-- Soon you can planning abroad with us -->
+<section class="py-24 px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto border-t border-outline-variant bg-surface-container-lowest">
+<div class="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
+<div>
+<div class="inline-flex items-center gap-2 mb-4 text-primary">
+<span class="material-symbols-outlined text-[16px]">flight_takeoff</span>
+<span class="font-label-caps text-label-caps tracking-widest uppercase">International</span>
+</div>
+<h2 class="font-headline-lg-mobile md:font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-surface">Soon you can plan <span class="text-primary">abroad trips with us</span></h2>
+</div>
+
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+<!-- Trip 1 -->
+<div class="bg-surface rounded-xl overflow-hidden border border-outline-variant hover:border-primary transition-colors group flex flex-col h-full shadow-sm hover:shadow-md">
+<div class="relative h-64 overflow-hidden">
+<div class="absolute inset-0 bg-cover bg-center w-full h-full group-hover:scale-105 transition-transform duration-700" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCtn1wDKcsh5073nbZOT8l9ZwwZZoS-mrpjG6COUn9gGKWLb_8FYL7a8PEyX_BEEkBVhEbO3A7nNW0UQp7TAulteeO7xsbvhHWrpvg-i5gIUS_wqKLRfrTH6I24lThbfLxxVeZOFQJRTpDEX-iOqh6ulM2MVvUDD9_DYyDI63BDvhRQcjTtpXRvZJk1F8wDQe-FlsfH7YVAR6TVCFvhqLz3lgErFLgI911voNWPN-9bPWjepNk2rYYTbsSpLuP6KsaoxKHfJQteCFLD')"></div>
+</div>
+<div class="p-6 flex flex-col flex-grow">
+<div class="flex items-center gap-4 text-on-surface-variant font-label-caps text-[12px] mb-3 uppercase">
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-[16px]">schedule</span> 6N/7D</span>
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-[16px]">group</span> Group</span>
+</div>
+<h3 class="font-headline-md text-[20px] text-on-surface mb-2">Bali Escape</h3>
+<p class="font-body-md text-[14px] text-on-surface-variant mb-6 flex-grow">Experience the magic of Bali, from pristine beaches to lush rice terraces and ancient temples.</p>
+<div class="flex items-center justify-between border-t border-outline-variant pt-4">
+<div>
+<span class="text-[12px] text-on-surface-variant block uppercase">Starts at</span>
+<span class="font-headline-md text-[20px] text-primary">₹51,999</span>
+</div>
+<button class="border border-outline-variant text-on-surface hover:border-primary hover:text-primary hover:bg-primary/5 px-4 py-2 rounded font-button text-button transition-colors">View Details</button>
+</div>
+</div>
+</div>
+<!-- Trip 2 -->
+<div class="bg-surface rounded-xl overflow-hidden border border-outline-variant hover:border-primary transition-colors group flex flex-col h-full shadow-sm hover:shadow-md">
+<div class="relative h-64 overflow-hidden">
+<div class="absolute inset-0 bg-cover bg-center w-full h-full group-hover:scale-105 transition-transform duration-700" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBHQqdIRbvN9sWBUtDeTOLN4RI3y2AbjTMoiNX3ucdssWRlILrLBRoyM2nfFOeYZYb2-_BACX1poFT6Bmg8wVkf21C_NdzoCTz_ylxhI3HnmSBbjh_2r-QOinsuIe8gRdkO4_2T0h1GOAadQUkBYjFg77L2XL-Macwm-oYcc2cf-uW3zM1VkHqbkV3ZNaXfah6an2uXwuWBFBNGbC56xp0nz7O5cGtoPjfNdQVh2LwRP_LeVFzI2HnwXTEAH3JaWSBawED0T04k8Rl5')"></div>
+</div>
+<div class="p-6 flex flex-col flex-grow">
+<div class="flex items-center gap-4 text-on-surface-variant font-label-caps text-[12px] mb-3 uppercase">
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-[16px]">schedule</span> 5N/6D</span>
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-[16px]">group</span> Group</span>
+</div>
+<h3 class="font-headline-md text-[20px] text-on-surface mb-2">Vietnam Adventure</h3>
+<p class="font-body-md text-[14px] text-on-surface-variant mb-6 flex-grow">Discover the breathtaking landscapes, rich history, and vibrant culture of Vietnam.</p>
+<div class="flex items-center justify-between border-t border-outline-variant pt-4">
+<div>
+<span class="text-[12px] text-on-surface-variant block uppercase">Starts at</span>
+<span class="font-headline-md text-[20px] text-primary">₹56,999</span>
+</div>
+<button class="border border-outline-variant text-on-surface hover:border-primary hover:text-primary hover:bg-primary/5 px-4 py-2 rounded font-button text-button transition-colors">View Details</button>
+</div>
+</div>
+</div>
+<!-- Trip 3 -->
+<div class="bg-surface rounded-xl overflow-hidden border border-outline-variant hover:border-primary transition-colors group flex flex-col h-full shadow-sm hover:shadow-md">
+<div class="relative h-64 overflow-hidden">
+<div class="absolute inset-0 bg-cover bg-center w-full h-full group-hover:scale-105 transition-transform duration-700" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBg6Yy2y1B5_zWhldPgOEjCjf_mFK-MB5PkN0aygVffQIP-tCSPDr5lepNbZ9SiqN36VBop5DEfKD9iuXPhOykaVrbRxg_CNqaR5Ga-8N21myCpBf0_mblz5ozmxPPeZzvZUFzICH8Nf0ej71uXRPpT3jiDlXwrLrSM3Dg3e9k-PLX9JQhVuY8ywoVk1hgOYZ_aIgNVhPhPCEeORhAJzGmZgs3iIYpWea9JW4EvAQOnyFq181A4snTAsYTLEPTAl8LuIv_cXqeNqlFB')"></div>
+</div>
+<div class="p-6 flex flex-col flex-grow">
+<div class="flex items-center gap-4 text-on-surface-variant font-label-caps text-[12px] mb-3 uppercase">
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-[16px]">schedule</span> 4N/5D</span>
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-[16px]">group</span> Group</span>
+</div>
+<h3 class="font-headline-md text-[20px] text-on-surface mb-2">Singapore Highlights</h3>
+<p class="font-body-md text-[14px] text-on-surface-variant mb-6 flex-grow">Explore the futuristic city-state of Singapore, offering a perfect blend of nature and modern marvels.</p>
+<div class="flex items-center justify-between border-t border-outline-variant pt-4">
+<div>
+<span class="text-[12px] text-on-surface-variant block uppercase">Starts at</span>
+<span class="font-headline-md text-[20px] text-primary">₹55,999</span>
+</div>
+<button class="border border-outline-variant text-on-surface hover:border-primary hover:text-primary hover:bg-primary/5 px-4 py-2 rounded font-button text-button transition-colors">View Details</button>
+</div>
+</div>
+</div>
+</div>
+</section>
+<div class="px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto mb-24 bg-surface-container-lowest"><div class="relative z-10 flex flex-wrap justify-center items-center gap-8 md:gap-16 bg-surface-container-low border border-outline-variant rounded-xl p-8 shadow-sm">
+  <div class="text-center">
+    <div class="font-headline-lg text-headline-lg text-primary mb-1 flex items-center justify-center gap-1">4.9<span class="material-symbols-outlined fill-current text-[24px]">star</span></div>
+    <div class="font-label-caps text-label-caps text-on-surface-variant uppercase tracking-widest">Google Rating</div>
+  </div>
+  <div class="text-center">
+    <div class="font-headline-lg text-headline-lg text-primary mb-1">10K+</div>
+    <div class="font-label-caps text-label-caps text-on-surface-variant uppercase tracking-widest">Happy Travellers</div>
+  </div>
+  <div class="text-center">
+    <div class="font-headline-lg text-headline-lg text-primary mb-1">100+</div>
+    <div class="font-label-caps text-label-caps text-on-surface-variant uppercase tracking-widest">Domestic Trips</div>
+  </div>
+</div></div></main>
+<!-- Floating Action Buttons -->
+<div class="fixed bottom-8 right-8 z-50 flex flex-col gap-4">
+<a class="w-12 h-12 rounded-full bg-surface border border-outline-variant flex items-center justify-center text-primary hover:bg-surface-variant transition-colors shadow-lg" href="tel:+919990802608">
+<span class="material-symbols-outlined">call</span>
+</a>
+<a class="w-14 h-14 rounded-full bg-primary flex items-center justify-center text-on-primary hover:bg-primary/90 transition-colors shadow-lg" href="#">
+<span class="material-symbols-outlined">chat</span>
+</a>
+</div>
+<!-- Footer -->
+<section class="px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto mb-12">
+  <div class="flex flex-col items-start gap-6">
+    <h3 class="font-headline-md text-headline-md text-on-surface">Follow us on</h3>
+    <div class="flex items-center gap-4">
+      <a href="#" class="w-12 h-12 rounded-full bg-on-surface text-surface flex items-center justify-center hover:opacity-80 transition-opacity">
+        <svg class="w-6 h-6 fill-current" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"></path></svg>
+      </a>
+      <a href="#" class="w-12 h-12 rounded-full bg-on-surface text-surface flex items-center justify-center hover:opacity-80 transition-opacity">
+        <svg class="w-6 h-6 fill-current" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 1.17.054 1.805.249 2.227.412.56.216.96.475 1.382.897.422.422.681.822.897 1.382.164.422.359 1.057.412 2.227.059 1.266.071 1.646.071 4.85s-.012 3.584-.07 4.85c-.054 1.17-.249 1.805-.412 2.227-.216.56-.475.96-.897 1.382-.422.422-.822.681-1.382.897-.422.164-1.057.359-2.227.412-1.266.059-1.646.071-4.85.071s-3.584-.012-4.85-.07c-1.17-.054-1.805-.249-2.227-.412-.56-.216-.96-.475-1.382-.897-.422-.422-.681-.822-.897-1.382-.164-.422-.359-1.057-.412-2.227-.059-1.266-.071-1.646-.071-4.85s.012-3.584.07-4.85c.054-1.17.249-1.805.412-2.227.216-.56.475-.96.897-1.382.422-.422.822-.681 1.382-.897.422-.164 1.057-.359 2.227-.412 1.266-.059 1.646-.071 4.85-.071zM12 0C8.741 0 8.333.014 7.053.072 5.775.132 4.905.333 4.14.63c-.789.306-1.459.717-2.126 1.384S.935 3.35.63 4.14C.333 4.905.131 5.775.072 7.053.012 8.333 0 8.741 0 12s.014 3.667.072 4.947c.06 1.277.261 2.148.558 2.913.306.788.717 1.459 1.384 2.126s1.337 1.079 2.126 1.384c.766.296 1.636.499 2.913.558C8.333 23.986 8.741 24 12 24s3.667-.014 4.947-.072c1.277-.06 2.148-.262 2.913-.558.788-.306 1.459-.718 2.126-1.384s1.079-1.337 1.384-2.126c.296-.765.499-1.636.558-2.913.06-1.28.072-1.687.072-4.947s-.015-3.667-.072-4.947c-.06-1.277-.262-2.149-.558-2.913-.306-.789-.718-1.459-1.384-2.126s-1.337-1.079-2.126-1.384c-.765-.296-1.636-.499-2.913-.558C15.667.012 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"></path></svg>
+      </a>
+      <a href="#" class="w-12 h-12 rounded-full bg-on-surface text-surface flex items-center justify-center hover:opacity-80 transition-opacity">
+        <svg class="w-6 h-6 fill-current" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"></path></svg>
+      </a>
+      <a href="#" class="w-12 h-12 rounded-full bg-on-surface text-surface flex items-center justify-center hover:opacity-80 transition-opacity">
+        <svg class="w-6 h-6 fill-current" viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"></path></svg>
+      </a>
+      <a href="#" class="w-12 h-12 rounded-full bg-on-surface text-surface flex items-center justify-center hover:opacity-80 transition-opacity">
+        <svg class="w-6 h-6 fill-current" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"></path></svg>
+      </a>
+    </div>
+  </div>
+</section><footer class="w-full px-margin-mobile md:px-margin-desktop flex flex-col md:flex-row items-center bg-surface-container-lowest border-t border-outline-variant max-w-container-max mx-auto mt-24 pt-8 pb-stack-lg"><div class="flex flex-col items-center md:items-start gap-6 w-full">
+  <div class="text-center md:text-left">
+    <div class="mb-2">
+      <img alt="TripoMist Logo" class="h-10 w-auto mx-auto md:mx-0" src="https://lh3.googleusercontent.com/aida/AP1WRLuE6X9OI8W9mDTxwGuU0XEo9UjEsYiGqbqwNDqptBEYkITfvKBA8PpGOzGmHNyDOjPpzXn-5EbHwpl8lioxD-9ncGSSejUt9AFgj8UA-EAx5lNAyBjmf4vNJ_aOaqB-pUVcH8nPcYIENI2-U52zLknhfFXLS0zKcqj0CRMd3fbIe1DF75J55WfnjmLxIW1oYBo0uYAeCp94yPMVCb6yBmrDf5_CHyc_JOeJKcA8iScoiF_NYbZcloBRPKTZ">
+    </div>
+    <p class="font-body-md text-body-md text-on-surface-variant">© 2024 TripoMist. Your Safe Travel Our Responsibility.</p>
+  </div>
+  <div class="flex flex-wrap justify-center md:justify-start gap-6">
+    <a class="font-label-caps text-label-caps text-on-surface-variant hover:text-primary transition-colors uppercase" href="#">About Us</a>
+    <a class="font-label-caps text-label-caps text-on-surface-variant hover:text-primary transition-colors uppercase" href="#">Terms of Service</a>
+    <a class="font-label-caps text-label-caps text-on-surface-variant hover:text-primary transition-colors uppercase" href="#">Privacy Policy</a>
+    &lt;</div></div></footer>
+
+
+
+
+
+
+
+
+
+</body></html>

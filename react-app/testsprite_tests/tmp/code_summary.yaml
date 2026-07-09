@@ -1,0 +1,94 @@
+  project_name: TripoMist Travel Booking Web App
+project_type: React SPA (Single Page Application)
+framework: React 18 with React Router v6
+styling: Tailwind CSS (utility-first)
+build_tool: Vite
+language: JavaScript (JSX)
+
+tech_stack:
+  frontend:
+    - React 18
+    - React Router v6 (BrowserRouter, Routes, Route, Link, useNavigate)
+    - Tailwind CSS
+    - Material Symbols (Google icons)
+  build:
+    - Vite
+
+pages:
+  - name: Home
+    path: /
+    file: src/pages/Home.jsx
+    features:
+      - Hero section with CTA buttons (Explore Group Trips, See Upcoming Departures)
+      - Destination circles (Spain, Japan, Vietnam, Bali, Thailand, Ladakh, Spiti Valley, Andaman)
+      - Camera roll destination cards (Ladakh, Spiti Valley, Kashmir) with pricing
+      - Featured Group Trips section (Ladakh Expedition, Spiti Circuit, Kashmir Retreat) with Book Now buttons
+      - Stats banner (4.9 Google Rating, 10K+ travellers, 100+ trips)
+      - Floating action buttons (call and WhatsApp)
+
+  - name: GroupTrips
+    path: /group-trips
+    file: src/pages/GroupTrips.jsx
+    features:
+      - Trip listing/browsing
+      - Search and filter functionality
+
+  - name: UpcomingTrips
+    path: /upcoming-trips
+    file: src/pages/UpcomingTrips.jsx
+    features:
+      - Upcoming trip departures list
+
+  - name: WeekendTrips
+    path: /weekend-trips
+    file: src/pages/WeekendTrips.jsx
+    features:
+      - Weekend trip packages
+
+  - name: ItinerarySpiti
+    path: /itinerary/:id
+    file: src/pages/ItinerarySpiti.jsx
+    features:
+      - Trip itinerary detail page
+      - Download itinerary modal
+
+  - name: Checkout
+    path: /checkout
+    file: src/pages/Checkout.jsx
+    features:
+      - Booking checkout form
+      - Trip details from URL query params (trip name, price)
+      - Traveller information form
+      - Payment summary
+
+components:
+  - name: Navbar
+    file: src/components/Navbar.jsx
+    features:
+      - Navigation links (Home, Group Trips, Weekend Trips, Upcoming Trips)
+      - Mobile hamburger menu
+
+  - name: Footer
+    file: src/components/Footer.jsx
+    features:
+      - Footer links and info
+
+  - name: DownloadItineraryModal
+    file: src/components/DownloadItineraryModal.jsx
+    features:
+      - Modal for downloading itinerary
+
+routing:
+  - / -> Home
+  - /group-trips -> GroupTrips
+  - /upcoming-trips -> UpcomingTrips
+  - /weekend-trips -> WeekendTrips
+  - /itinerary/:id -> ItinerarySpiti
+  - /checkout -> Checkout (accepts ?trip= and ?price= query params)
+
+key_user_flows:
+  - Browse home page -> Click destination -> View group trips or itinerary
+  - Browse featured trips -> Click "Book Now" -> Checkout with pre-filled trip info
+  - Navigate via Navbar to any section
+  - Download itinerary from itinerary page
+  - Call/WhatsApp via floating action buttons

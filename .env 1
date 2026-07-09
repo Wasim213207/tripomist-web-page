@@ -1,0 +1,4 @@
+# Razorpay API Credentials (Test Mode)
+# NOTE: The secret key must only be used in server-side environments.
+RAZORPAY_KEY_ID=rzp_test_TBICP09xzQRaAw
+RAZORPAY_KEY_SECRET=n9Pq34RtHsVA0YrWSxIbKIVl

@@ -1,0 +1,623 @@
+[
+  {
+    "id": "TC001",
+    "title": "Open the home page and reach group trips",
+    "description": "This verifies that a traveler can load the home page and use the primary call to action to reach group trips.",
+    "category": "Home Page Experience",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /"
+      },
+      {
+        "type": "action",
+        "description": "Click the link to explore group trips"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify the group trips page is displayed"
+      }
+    ],
+    "priority": "High"
+  },
+  {
+    "id": "TC002",
+    "title": "Complete a trip booking from prefilled checkout",
+    "description": "This verifies a traveler can open checkout with trip details, enter required information, and complete booking successfully.",
+    "category": "Checkout and Booking Completion",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /checkout?trip=Sunset%20Paradise&price=499"
+      },
+      {
+        "type": "action",
+        "description": "Fill in the traveler name field with Alex Carter"
+      },
+      {
+        "type": "action",
+        "description": "Fill in the email field with alex@example.com"
+      },
+      {
+        "type": "action",
+        "description": "Fill in the phone field with 5551234567"
+      },
+      {
+        "type": "action",
+        "description": "Fill in the traveler count field with 2"
+      },
+      {
+        "type": "action",
+        "description": "Submit the booking form"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify a booking confirmation is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify the trip summary is completed"
+      }
+    ],
+    "priority": "High"
+  },
+  {
+    "id": "TC003",
+    "title": "Navigate across primary sections from the desktop navbar",
+    "description": "This verifies that a traveler can use the persistent navigation bar to move between the main site sections.",
+    "category": "Navigation Bar",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /"
+      },
+      {
+        "type": "action",
+        "description": "Click the link to open group trips"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify the group trips page is displayed"
+      },
+      {
+        "type": "action",
+        "description": "Click the link to open weekend trips"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify the weekend trips page is displayed"
+      },
+      {
+        "type": "action",
+        "description": "Click the link to open upcoming trips"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify the upcoming trips page is displayed"
+      }
+    ],
+    "priority": "High"
+  },
+  {
+    "id": "TC004",
+    "title": "Start checkout from a featured trip",
+    "description": "This verifies that a browsing user can discover a featured trip on the home page and begin booking with trip and price details passed forward.",
+    "category": "Home Page Experience",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /"
+      },
+      {
+        "type": "action",
+        "description": "Click a featured trip booking link"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify the checkout page is displayed with trip details prefilled"
+      }
+    ],
+    "priority": "High"
+  },
+  {
+    "id": "TC005",
+    "title": "Search group trips and open a trip itinerary",
+    "description": "This verifies that a user can narrow group trips by search or filter and open a matching itinerary detail page.",
+    "category": "Group Trips Browsing and Search",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /group-trips"
+      },
+      {
+        "type": "action",
+        "description": "Enter a destination search term"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify matching trip results are displayed"
+      },
+      {
+        "type": "action",
+        "description": "Click a matching trip"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify the itinerary detail page is displayed"
+      }
+    ],
+    "priority": "High"
+  },
+  {
+    "id": "TC006",
+    "title": "Load the home page content successfully",
+    "description": "This verifies that the home page renders the expected discovery content for a browsing user.",
+    "category": "Home Page Experience",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify the hero content is displayed"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify featured destination discovery content is displayed"
+      }
+    ],
+    "priority": "High"
+  },
+  {
+    "id": "TC007",
+    "title": "Open an itinerary detail page",
+    "description": "A browsing user can open a trip itinerary page and review the day-by-day plan.",
+    "category": "Itinerary Detail and Download",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to an itinerary detail page with a valid trip id"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify the itinerary day-by-day plan is displayed"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify itinerary details for multiple days are visible"
+      }
+    ],
+    "priority": "High"
+  },
+  {
+    "id": "TC008",
+    "title": "Keep the user on checkout when required traveler details are missing",
+    "description": "This verifies checkout shows validation feedback and does not complete booking when required traveler information is left blank.",
+    "category": "Checkout and Booking Completion",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /checkout?trip=Sunset%20Paradise&price=499"
+      },
+      {
+        "type": "action",
+        "description": "Submit the booking form"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify validation errors are visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify the booking is not completed"
+      }
+    ],
+    "priority": "High"
+  },
+  {
+    "id": "TC009",
+    "title": "Download an itinerary from the detail page",
+    "description": "A booking customer can open the itinerary download modal and complete the download flow from a valid itinerary page.",
+    "category": "Itinerary Detail and Download",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to an itinerary detail page with a valid trip id"
+      },
+      {
+        "type": "action",
+        "description": "Open the itinerary download modal"
+      },
+      {
+        "type": "action",
+        "description": "Confirm the itinerary download action"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify a download confirmation is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify the itinerary remains available after the download action"
+      }
+    ],
+    "priority": "High"
+  },
+  {
+    "id": "TC010",
+    "title": "Use the mobile menu to reach upcoming trips",
+    "description": "This verifies that a mobile user can open the hamburger menu and navigate to upcoming trips.",
+    "category": "Navigation Bar",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /group-trips"
+      },
+      {
+        "type": "action",
+        "description": "Open the mobile navigation menu"
+      },
+      {
+        "type": "action",
+        "description": "Click the link to open upcoming trips"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify the upcoming trips page is displayed"
+      }
+    ],
+    "priority": "High"
+  },
+  {
+    "id": "TC011",
+    "title": "Filter group trips by style and browse the updated results",
+    "description": "This verifies that a user can apply a trip style filter and see the trip list update accordingly.",
+    "category": "Group Trips Browsing and Search",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /group-trips"
+      },
+      {
+        "type": "action",
+        "description": "Select a trip style filter"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify the trip list updates to matching results"
+      }
+    ],
+    "priority": "High"
+  },
+  {
+    "id": "TC012",
+    "title": "Browse weekend trip listings",
+    "description": "A traveler can open the weekend trips page and view available short getaway packages.",
+    "category": "Weekend Trips Listings",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /weekend-trips"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify weekend trip packages are displayed"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify at least one weekend trip option is visible"
+      }
+    ],
+    "priority": "High"
+  },
+  {
+    "id": "TC013",
+    "title": "Use contact actions from the home page",
+    "description": "This verifies that a guest user can access the floating contact actions from the home page and launch a contact method.",
+    "category": "Home Page Experience",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /"
+      },
+      {
+        "type": "action",
+        "description": "Click the call contact action"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify a phone contact action is launched"
+      },
+      {
+        "type": "action",
+        "description": "Navigate to /"
+      },
+      {
+        "type": "action",
+        "description": "Click the WhatsApp contact action"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify a WhatsApp contact action is launched"
+      }
+    ],
+    "priority": "High"
+  },
+  {
+    "id": "TC014",
+    "title": "Browse upcoming trip departures",
+    "description": "A traveler can open the upcoming trips page and review scheduled departures with dates.",
+    "category": "Upcoming Trips Departures",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /upcoming-trips"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify upcoming departures are displayed"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify departure dates are visible"
+      }
+    ],
+    "priority": "High"
+  },
+  {
+    "id": "TC015",
+    "title": "Return home from the brand logo",
+    "description": "This verifies that a browsing user can use the brand logo to navigate back to the home page.",
+    "category": "Navigation Bar",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /group-trips"
+      },
+      {
+        "type": "action",
+        "description": "Click the brand logo"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify the home page is displayed"
+      }
+    ],
+    "priority": "Medium"
+  },
+  {
+    "id": "TC016",
+    "title": "Show an error state for checkout without valid trip details",
+    "description": "This verifies checkout does not build a booking summary when trip or price information is missing from the URL.",
+    "category": "Checkout and Booking Completion",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /checkout"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify an error state is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify the user is prompted to return to a trip page"
+      }
+    ],
+    "priority": "Medium"
+  },
+  {
+    "id": "TC017",
+    "title": "Show an empty state when no group trips match",
+    "description": "This verifies that a user sees a clear empty state when a search or filter returns no group trips.",
+    "category": "Group Trips Browsing and Search",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /group-trips"
+      },
+      {
+        "type": "action",
+        "description": "Enter a search term that matches no trips"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify an empty state message is displayed"
+      }
+    ],
+    "priority": "Medium"
+  },
+  {
+    "id": "TC018",
+    "title": "Handle no upcoming departures",
+    "description": "A traveler can view an empty state when the upcoming trips page has no departures to show.",
+    "category": "Upcoming Trips Departures",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /upcoming-trips"
+      },
+      {
+        "type": "action",
+        "description": "Apply a filter or search that results in no upcoming departures"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify an empty state message is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify no departure entries are displayed"
+      }
+    ],
+    "priority": "Medium"
+  },
+  {
+    "id": "TC019",
+    "title": "Handle empty weekend trip results",
+    "description": "A traveler can search or filter the weekend trips page to a state with no matches and see an empty-state message.",
+    "category": "Weekend Trips Listings",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /weekend-trips"
+      },
+      {
+        "type": "action",
+        "description": "Apply search or filter criteria that exclude all weekend trip options"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify an empty state message is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify no weekend trip cards are displayed"
+      }
+    ],
+    "priority": "Medium"
+  },
+  {
+    "id": "TC020",
+    "title": "Show a home fallback when content cannot render",
+    "description": "This verifies that the home page shows an error or fallback state when required home content is unavailable.",
+    "category": "Home Page Experience",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify a home page fallback or error state is displayed"
+      }
+    ],
+    "priority": "Medium"
+  },
+  {
+    "id": "TC021",
+    "title": "Show itinerary not found for an unknown trip",
+    "description": "A traveler opening an unknown itinerary id can see a not-found or error state instead of itinerary content.",
+    "category": "Itinerary Detail and Download",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to an itinerary detail page with an unknown trip id"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify a not-found or error state is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify itinerary details are not displayed"
+      }
+    ],
+    "priority": "Medium"
+  },
+  {
+    "id": "TC022",
+    "title": "Show a browsing fallback when group trips cannot be displayed",
+    "description": "This verifies that the group trips page shows an error or retry state when the trip list cannot be shown normally.",
+    "category": "Group Trips Browsing and Search",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /group-trips"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify a group trips fallback or error state is displayed"
+      }
+    ],
+    "priority": "Low"
+  },
+  {
+    "id": "TC023",
+    "title": "Retry checkout after a failed booking submission",
+    "description": "This verifies a booking failure is shown clearly and the user can retry the checkout flow from the same page.",
+    "category": "Checkout and Booking Completion",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /checkout?trip=Sunset%20Paradise&price=499"
+      },
+      {
+        "type": "action",
+        "description": "Fill in the traveler name field with Alex Carter"
+      },
+      {
+        "type": "action",
+        "description": "Fill in the email field with alex@example.com"
+      },
+      {
+        "type": "action",
+        "description": "Fill in the phone field with 5551234567"
+      },
+      {
+        "type": "action",
+        "description": "Fill in the traveler count field with 2"
+      },
+      {
+        "type": "action",
+        "description": "Submit the booking form"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify a booking failure message is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify a retry option is available"
+      }
+    ],
+    "priority": "Low"
+  },
+  {
+    "id": "TC024",
+    "title": "Show a navigation fallback when links are not usable",
+    "description": "This verifies that the app shows a navigation error or fallback state when the navbar cannot route correctly.",
+    "category": "Navigation Bar",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify a navigation fallback or error state is displayed"
+      }
+    ],
+    "priority": "Low"
+  },
+  {
+    "id": "TC025",
+    "title": "Show itinerary download error state",
+    "description": "A user can attempt to download an itinerary and see an in-app error state when the download action cannot complete.",
+    "category": "Itinerary Detail and Download",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to an itinerary detail page with a valid trip id"
+      },
+      {
+        "type": "action",
+        "description": "Open the itinerary download modal"
+      },
+      {
+        "type": "action",
+        "description": "Confirm the itinerary download action"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify a download error message is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify the modal remains open or shows recovery controls"
+      }
+    ],
+    "priority": "Low"
+  }
+]

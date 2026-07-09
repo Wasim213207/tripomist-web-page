@@ -1,0 +1,279 @@
+<!DOCTYPE html><html class="light" lang="en" style="width: 1280px; height: 1498px; overflow: hidden; position: relative;"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>TripoMist - Group Trips</title>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&amp;family=Inter:wght@400;500&amp;family=JetBrains+Mono:wght@500&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&amp;family=JetBrains+Mono:wght@100..900&amp;family=Manrope:wght@100..900&amp;display=swap" rel="stylesheet">
+<!-- Theme Configuration -->
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-secondary-fixed-variant": "#004d66",
+                    "surface-container": "#eaedff",
+                    "surface-container-high": "#e2e7ff",
+                    "on-error": "#ffffff",
+                    "primary-fixed-dim": "#89ceff",
+                    "on-primary": "#ffffff",
+                    "surface": "#faf8ff",
+                    "secondary": "#006686",
+                    "on-surface-variant": "#3e4850",
+                    "on-error-container": "#93000a",
+                    "primary-container": "#0ea5e9",
+                    "on-primary-fixed-variant": "#004c6e",
+                    "on-primary-container": "#003751",
+                    "surface-variant": "#dae2fd",
+                    "tertiary-fixed": "#dbe4ea",
+                    "on-secondary-container": "#005b78",
+                    "surface-container-low": "#f2f3ff",
+                    "on-background": "#131b2e",
+                    "inverse-primary": "#89ceff",
+                    "inverse-surface": "#283044",
+                    "inverse-on-surface": "#eef0ff",
+                    "secondary-container": "#7ed4fd",
+                    "on-tertiary": "#ffffff",
+                    "on-secondary-fixed": "#001e2b",
+                    "surface-tint": "#006591",
+                    "surface-bright": "#faf8ff",
+                    "on-tertiary-container": "#2c3539",
+                    "tertiary-fixed-dim": "#bfc8ce",
+                    "on-secondary": "#ffffff",
+                    "background": "#faf8ff",
+                    "primary-fixed": "#c9e6ff",
+                    "on-tertiary-fixed-variant": "#3f484d",
+                    "tertiary-container": "#949da3",
+                    "outline": "#6e7881",
+                    "tertiary": "#576065",
+                    "on-tertiary-fixed": "#141d21",
+                    "surface-dim": "#d2d9f4",
+                    "surface-container-highest": "#dae2fd",
+                    "secondary-fixed-dim": "#7bd1fa",
+                    "on-primary-fixed": "#001e2f",
+                    "error-container": "#ffdad6",
+                    "on-surface": "#131b2e",
+                    "surface-container-lowest": "#ffffff",
+                    "primary": "#006591",
+                    "error": "#ba1a1a",
+                    "secondary-fixed": "#c0e8ff",
+                    "outline-variant": "#bec8d2"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "xl": "80px",
+                    "xs": "8px",
+                    "md": "24px",
+                    "margin": "32px",
+                    "gutter": "24px",
+                    "sm": "16px",
+                    "lg": "48px",
+                    "base": "4px"
+            },
+            "fontFamily": {
+                    "display-lg": ["Manrope"],
+                    "body-lg": ["Inter"],
+                    "headline-lg-mobile": ["Manrope"],
+                    "label-sm": ["JetBrains Mono"],
+                    "headline-md": ["Manrope"],
+                    "body-md": ["Inter"],
+                    "headline-lg": ["Manrope"]
+            },
+            "fontSize": {
+                    "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "800"}],
+                    "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                    "headline-lg-mobile": ["28px", {"lineHeight": "36px", "fontWeight": "700"}],
+                    "label-sm": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                    "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "700"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .glass-effect {
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+        }
+    </style>
+</head>
+<body class="bg-background text-on-surface font-body-md antialiased">
+<!-- TopNavBar (JSON Managed) -->
+<header class="bg-white/80 backdrop-blur-xl dark:bg-inverse-surface/80 docked full-width top-0 sticky z-50 border-b border-outline-variant/30 shadow-sm shadow-primary/5">
+<div class="flex justify-between items-center px-gutter w-full max-w-7xl mx-auto h-16">
+<!-- Brand & Search -->
+<div class="flex items-center gap-md">
+<span class="font-headline-md text-headline-md font-bold text-primary">TripoMist</span>
+<div class="hidden md:flex items-center bg-surface-container-low px-sm py-1.5 rounded-full border border-outline-variant/20">
+<span class="material-symbols-outlined text-outline text-[20px] mr-2">search</span>
+<input class="bg-transparent border-none focus:ring-0 text-sm w-48 text-on-surface placeholder:text-outline-variant" placeholder="Search trips..." type="text">
+</div>
+</div>
+<!-- Navigation Links -->
+<nav class="hidden lg:flex items-center gap-lg">
+<a class="text-on-surface-variant font-medium hover:text-primary transition-colors duration-200 font-body-md text-body-md" href="#">Group Trips</a>
+<a class="text-on-surface-variant font-medium hover:text-primary transition-colors duration-200 font-body-md text-body-md" href="#">Weekend Trips</a>
+<a class="text-primary font-bold border-b-2 border-primary pb-1 font-body-md text-body-md" href="#">Upcoming Trips</a>
+</nav>
+<!-- Trailing Icons -->
+<div class="flex items-center gap-md">
+<button class="text-on-surface-variant hover:text-primary transition-colors duration-200 Active: scale-95 transition-transform">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<button class="text-on-surface-variant hover:text-primary transition-colors duration-200 Active: scale-95 transition-transform">
+<span class="material-symbols-outlined">favorite</span>
+</button>
+<button class="md:hidden text-on-surface-variant">
+<span class="material-symbols-outlined">menu</span>
+</button>
+</div>
+</div>
+</header>
+<main>
+<!-- Hero Section -->
+<section class="relative h-[614px] min-h-[450px] flex items-center justify-center overflow-hidden">
+<div class="absolute inset-0 z-0">
+<div class="w-full h-full bg-cover bg-center" data-alt="A cinematic wide-angle shot of snow-capped Himalayan peaks at dawn, with soft golden morning light hitting the ridges. The atmosphere is crystalline and serene, consistent with a high-end travel brand's airy light-mode aesthetic. Subtle blue and white tones dominate the sky, creating a premium and aspirational mood for adventure seekers." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAoig9UuwC8usJJWO11p5-rBPc2lAoDBEgo5rYncjC-BmJviaXxlD3KbNQEOyBoBey8QJU6e_wCMavGLuvdQfGVEz_gIAOQreu5i7lytC3nE0uOdiSA-EpVqogPc5qFRMwoDc7ErdXnQt1kjyt6u239J1S7PD7aeG-xRHyu6Y0O1hFlntUxh4xDwydAwThMayHfR2veQh_quYAJus3GLjd8gMKwFZpKuWmgr8UvExYvu_5EvTO07wkuFHKwJSAGvzOaLy_6IZnbOEcE')"></div>
+<div class="absolute inset-0 bg-inverse-surface/40 backdrop-brightness-75"></div>
+</div>
+<div class="relative z-10 text-center px-gutter max-w-4xl">
+<h1 class="font-display-lg text-display-lg text-white mb-md">Upcoming Trips</h1>
+<p class="font-body-lg text-body-lg text-white/90 max-w-2xl mx-auto">Discover the perfect short escapes with like-minded travelers. Expertly curated itineraries designed for adventure and connection.</p><div class="flex items-center justify-center gap-sm mt-md">
+<div class="flex items-center gap-sm bg-white/10 backdrop-blur-md p-2 rounded-full border border-white/20">
+<button class="px-md py-2 rounded-full bg-primary text-white font-semibold transition-all shadow-sm">All Trips</button>
+<button class="px-md py-2 rounded-full text-white/90 hover:bg-white/20 transition-all font-medium">1N/2D</button>
+<button class="px-md py-2 rounded-full text-white/90 hover:bg-white/20 transition-all font-medium">2N/3D</button>
+</div>
+</div>
+</div>
+</section>
+<!-- Filter Controls -->
+<section class="py-lg px-gutter max-w-7xl mx-auto flex flex-col items-center">
+
+</section>
+<!-- Destination Cards Grid -->
+<section class="pb-xl px-gutter max-w-7xl mx-auto">
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-md lg:gap-lg">
+<!-- Card 1: Rishikesh -->
+<div class="group bg-surface-container-lowest rounded-[1.5rem] overflow-hidden border border-outline-variant/20 transition-all duration-300 hover:border-primary/30 hover:shadow-lg hover:shadow-primary/5">
+<div class="relative h-64 overflow-hidden">
+<img class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" data-alt="A serene riverbank view of the Ganges in Rishikesh during the blue hour. Soft lanterns are beginning to glow along the water's edge, reflecting onto the calm river. The surrounding lush green hills are veiled in a light morning mist, capturing the spiritual and adventurous essence of a premium mountain retreat." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAdeK5rNXK2i1b9n6OjyVoqm3Bxp8LEe74ptA6ncV2vP0x3Mi3B8HxlbdKEmQm91XCHfRR1kMKAQPDSbdqUrKDW4JM3xypx1fRMk3V2CB8LGMsnDVcKS_UZfnZcEYkmv5SROPXh2Y_cNDIOvWufVrH-JjvgMbmJ5A7_AgOyZUaA-BJA08GG7r2s0bw9GaqDO4QlU2W62kMiK6U1woPfrvgioGY_Glgx-Ig1A4Io0qyEemYXHUM9K9ujeQRoKgUEMoYyknVTGzgYBeRs">
+<div class="absolute top-sm right-sm">
+<span class="bg-white/80 backdrop-blur-md px-sm py-1 rounded-full text-label-sm font-label-sm text-primary">BEST SELLER</span>
+</div>
+</div>
+<div class="p-md flex flex-col h-full">
+<div class="flex justify-between items-start mb-xs">
+<h3 class="font-headline-md text-headline-md text-on-surface">Rishikesh Retreat</h3>
+<div class="flex items-center gap-1 text-primary">
+<span class="material-symbols-outlined text-[18px]">star</span>
+<span class="text-label-sm font-label-sm">4.9</span>
+</div>
+</div>
+<p class="text-on-surface-variant font-body-md text-body-md mb-md flex-grow">Yoga, white water rafting, and spiritual Ganga Aarti under the stars.</p>
+<div class="flex justify-between items-center mt-auto pt-md border-t border-outline-variant/10">
+<div>
+<span class="text-label-sm font-label-sm text-outline block uppercase tracking-wider">Starting from</span>
+<span class="text-headline-md font-bold text-primary">₹5,499</span>
+</div>
+<button class="bg-primary-container hover:bg-primary text-on-primary-container hover:text-white px-md py-2 rounded-xl transition-all font-semibold active:scale-95">Book Now</button>
+</div>
+</div>
+</div>
+<!-- Card 2: Jaipur -->
+<div class="group bg-surface-container-lowest rounded-[1.5rem] overflow-hidden border border-outline-variant/20 transition-all duration-300 hover:border-primary/30 hover:shadow-lg hover:shadow-primary/5" style="transform: translateY(0px);">
+<div class="relative h-64 overflow-hidden">
+<img class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" data-alt="The ornate pink sandstone facade of Hawa Mahal in Jaipur under a clear, pale blue sky. The lighting is high-key and bright, highlighting the intricate architectural details of the historic palace. The image has a clean, professional aesthetic with ample negative space around the building to feel airy and modern." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBRwnZMqN75wiCGdYCe57bjOJqnQL8ixU9e0QsmbQNBMgQzcZ2tX7BX4tDAqoU8FUgUqp1QPoAzbFcQOY9cjylZmNqpl5HPNriyb50-N7uufQaF7nEz0ciYQP-JVZh7E3rmaaaAtn1HmSbpnGnuSdDky0eOIAvJ7SS5YCQ1I-SURRXNSHrCdOdyeLAeYoMGSKuIszmp7kQygPsJ19kxjBKCrAAjCB-nASur3eTy47RWuE18brwHmoxgNO2fM_WsfO8iaSUnvytThry-">
+</div>
+<div class="p-md flex flex-col h-full">
+<div class="flex justify-between items-start mb-xs">
+<h3 class="font-headline-md text-headline-md text-on-surface">Jaipur Heritage</h3>
+<div class="flex items-center gap-1 text-primary">
+<span class="material-symbols-outlined text-[18px]">star</span>
+<span class="text-label-sm font-label-sm">4.7</span>
+</div>
+</div>
+<p class="text-on-surface-variant font-body-md text-body-md mb-md flex-grow">Explore royal palaces, vibrant bazaars, and legendary Rajasthani cuisine.</p>
+<div class="flex justify-between items-center mt-auto pt-md border-t border-outline-variant/10">
+<div>
+<span class="text-label-sm font-label-sm text-outline block uppercase tracking-wider">Starting from</span>
+<span class="text-headline-md font-bold text-primary">₹6,200</span>
+</div>
+<button class="bg-primary-container hover:bg-primary text-on-primary-container hover:text-white px-md py-2 rounded-xl transition-all font-semibold active:scale-95">Book Now</button>
+</div>
+</div>
+</div>
+<!-- Card 3: Kasol -->
+<div class="group bg-surface-container-lowest rounded-[1.5rem] overflow-hidden border border-outline-variant/20 transition-all duration-300 hover:border-primary/30 hover:shadow-lg hover:shadow-primary/5">
+<div class="relative h-64 overflow-hidden">
+<img class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" data-alt="A breathtaking view of a wooden cafe deck overlooking the Parvati River in Kasol. Tall pine trees frame the composition, with majestic snow peaks visible in the far distance. The scene is bathed in cool, atmospheric light, evoking a sense of tranquility and high-altitude freshness perfect for a mountain escape trip." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCoJR3BpNyP1i1mPJq3X3jHeXOGmBJ_nQl0snOauAWZkJyJOg4Qba33jURx3B9X94_hsmX9bQh19tDtOJfrT3q37LwYx1Wk_xHMqdEMpCT-wV0fYyopsVjDHjfEIAByBgaDpOOK4g7rOmJx9hzCkMHvbE5VLyDYJYys6hvDlZDthNmF-hNbppnYt9xZRw2g5SDGcNW0_VtWjgiCuQXPg2kY1pF1L1cJHMQ_NyzQ3t5UBG48pm5tsjfp5ydUvO2rOmPvEZgATszcYDG-">
+</div>
+<div class="p-md flex flex-col h-full">
+<div class="flex justify-between items-start mb-xs">
+<h3 class="font-headline-md text-headline-md text-on-surface">Kasol Escape</h3>
+<div class="flex items-center gap-1 text-primary">
+<span class="material-symbols-outlined text-[18px]">star</span>
+<span class="text-label-sm font-label-sm">4.8</span>
+</div>
+</div>
+<p class="text-on-surface-variant font-body-md text-body-md mb-md flex-grow">Trek to Kheerganga and experience the scenic Parvati Valley landscape.</p>
+<div class="flex justify-between items-center mt-auto pt-md border-t border-outline-variant/10">
+<div>
+<span class="text-label-sm font-label-sm text-outline block uppercase tracking-wider">Starting from</span>
+<span class="text-headline-md font-bold text-primary">₹4,999</span>
+</div>
+<button class="bg-primary-container hover:bg-primary text-on-primary-container hover:text-white px-md py-2 rounded-xl transition-all font-semibold active:scale-95">Book Now</button>
+</div>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- Footer (JSON Managed) -->
+
+<script>
+        // Micro-interaction for cards
+        document.querySelectorAll('.group').forEach(card => {
+            card.addEventListener('mouseenter', () => {
+                card.style.transform = 'translateY(-8px)';
+            });
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = 'translateY(0)';
+            });
+        });
+
+        // Search bar focus effect
+        const searchInput = document.querySelector('input[type="text"]');
+        const searchContainer = searchInput?.parentElement;
+        if(searchInput && searchContainer) {
+            searchInput.addEventListener('focus', () => {
+                searchContainer.classList.add('border-primary', 'ring-2', 'ring-primary/10');
+            });
+            searchInput.addEventListener('blur', () => {
+                searchContainer.classList.remove('border-primary', 'ring-2', 'ring-primary/10');
+            });
+        }
+    </script>
+
+
+
+
+
+
+
+
+<div id="snapdom-sandbox" data-snapdom-sandbox="true" aria-hidden="true" style="position: absolute; left: -9999px; top: -9999px; width: 0px; height: 0px; overflow: hidden;"></div></body></html>

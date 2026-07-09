@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <title>TripoMist - Site Navigator & Test Hub</title>
+  <link href="https://fonts.googleapis.com" rel="preconnect">
+  <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Manrope:wght@600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=block" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+    }
+    h1, h2, h3 {
+      font-family: 'Manrope', sans-serif;
+    }
+    .gradient-bg {
+      background: radial-gradient(circle at 10% 20%, rgba(14, 165, 233, 0.1) 0%, rgba(0, 101, 145, 0.03) 90%);
+    }
+    .glass-card {
+      background: rgba(255, 255, 255, 0.7);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(14, 165, 233, 0.1);
+    }
+    .hover-card {
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .hover-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 20px 40px -15px rgba(0, 101, 145, 0.12);
+      border-color: rgba(14, 165, 233, 0.4);
+    }
+  </style>
+</head>
+<body class="bg-slate-50 text-slate-900 min-h-screen gradient-bg selection:bg-sky-500 selection:text-white pb-16">
+
+  <!-- Header -->
+  <header class="border-b border-sky-100/50 bg-white/70 backdrop-blur-md sticky top-0 z-50">
+    <div class="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <img alt="TripoMist Logo" class="h-10 w-10 rounded-full object-cover shadow-sm" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAf4iPOLD4TW-emcX7qi8W7qPZhFbm5OzAQitvDsMARyOfBuAo9ztt29roRULWmZnSZXWDU9C66-5CEUsII9ClNmyCllVfZSQsk_Zh8SNMinjoMc_fWjzIKKChJB0UTFRB6QTigHPgLb0E2DZsOlp_JhvJp0lXnbSsTzGVqfLBMNk-0_rDP3tmtkhWYAQN9_F1nRcn8PpFGemDTJHOLelhxsCRyeTqUu0-JvD0GzZAkXaVLereGaQFPqUxJgRLojmOnEGYfiVmgV8Js0WY">
+        <div>
+          <span class="font-extrabold text-xl tracking-tight text-slate-800">TripoMist</span>
+          <span class="ml-2 text-xs font-semibold px-2 py-0.5 bg-sky-100 text-sky-800 rounded-full">Test Hub</span>
+        </div>
+      </div>
+      <div class="text-sm text-slate-500 font-medium">
+        Developer Mode
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Container -->
+  <main class="max-w-6xl mx-auto px-6 pt-12">
+    <!-- Hero / Intro -->
+    <div class="text-center max-w-2xl mx-auto mb-12">
+      <h1 class="text-4xl md:text-5xl font-extrabold text-slate-800 tracking-tight leading-tight mb-4">
+        Website Testing & <span class="text-sky-600 bg-gradient-to-r from-sky-600 to-indigo-600 bg-clip-text text-transparent">Navigation Portal</span>
+      </h1>
+      <p class="text-slate-600 text-lg">
+        Yahan se aap TripoMist website ke saare pages ko ek hi jagah se monitor, browse aur phone par test kar sakte hain.
+      </p>
+    </div>
+
+    <!-- Layout Grid: Left Pages, Right QR/Mobile Instructions -->
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+      
+      <!-- Left side: Pages Grid -->
+      <div class="lg:col-span-2 space-y-6">
+        <h2 class="text-xl font-bold text-slate-800 flex items-center gap-2">
+          <span class="material-symbols-outlined text-sky-500">space_dashboard</span>
+          All Website Screens
+        </h2>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <!-- Page: Home -->
+          <a href="./index.html" class="glass-card hover-card rounded-2xl p-6 flex flex-col justify-between group">
+            <div>
+              <div class="h-10 w-10 rounded-xl bg-sky-50 text-sky-600 flex items-center justify-center mb-4 group-hover:bg-sky-500 group-hover:text-white transition-colors duration-300">
+                <span class="material-symbols-outlined">home</span>
+              </div>
+              <h3 class="text-lg font-bold text-slate-800 mb-1 group-hover:text-sky-600 transition-colors">Home Page</h3>
+              <p class="text-sm text-slate-500 leading-relaxed mb-4">
+                Main landing page containing hero section, popular destinations, search filters, and customer testimonials.
+              </p>
+            </div>
+            <div class="text-xs font-semibold text-sky-600 flex items-center gap-1">
+              Open Page <span class="material-symbols-outlined text-sm transition-transform group-hover:translate-x-1">arrow_forward</span>
+            </div>
+          </a>
+
+          <!-- Page: Group Trips -->
+          <a href="./group-trips.html" class="glass-card hover-card rounded-2xl p-6 flex flex-col justify-between group">
+            <div>
+              <div class="h-10 w-10 rounded-xl bg-teal-50 text-teal-600 flex items-center justify-center mb-4 group-hover:bg-teal-500 group-hover:text-white transition-colors duration-300">
+                <span class="material-symbols-outlined">groups</span>
+              </div>
+              <h3 class="text-lg font-bold text-slate-800 mb-1 group-hover:text-teal-600 transition-colors">Group Trips</h3>
+              <p class="text-sm text-slate-500 leading-relaxed mb-4">
+                Dedicated page for group tour listings, featuring details on active package pricing and schedules.
+              </p>
+            </div>
+            <div class="text-xs font-semibold text-teal-600 flex items-center gap-1">
+              Open Page <span class="material-symbols-outlined text-sm transition-transform group-hover:translate-x-1">arrow_forward</span>
+            </div>
+          </a>
+
+          <!-- Page: Weekend Trips -->
+          <a href="./weekend-trips.html" class="glass-card hover-card rounded-2xl p-6 flex flex-col justify-between group">
+            <div>
+              <div class="h-10 w-10 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center mb-4 group-hover:bg-indigo-500 group-hover:text-white transition-colors duration-300">
+                <span class="material-symbols-outlined">calendar_today</span>
+              </div>
+              <h3 class="text-lg font-bold text-slate-800 mb-1 group-hover:text-indigo-600 transition-colors">Weekend Trips</h3>
+              <p class="text-sm text-slate-500 leading-relaxed mb-4">
+                Short weekend holiday package list featuring local escapes, pricing details, and quick itineraries.
+              </p>
+            </div>
+            <div class="text-xs font-semibold text-indigo-600 flex items-center gap-1">
+              Open Page <span class="material-symbols-outlined text-sm transition-transform group-hover:translate-x-1">arrow_forward</span>
+            </div>
+          </a>
+
+          <!-- Page: Upcoming Trips -->
+          <a href="./upcoming-trips.html" class="glass-card hover-card rounded-2xl p-6 flex flex-col justify-between group">
+            <div>
+              <div class="h-10 w-10 rounded-xl bg-purple-50 text-purple-600 flex items-center justify-center mb-4 group-hover:bg-purple-500 group-hover:text-white transition-colors duration-300">
+                <span class="material-symbols-outlined">explore</span>
+              </div>
+              <h3 class="text-lg font-bold text-slate-800 mb-1 group-hover:text-purple-600 transition-colors">Upcoming Trips</h3>
+              <p class="text-sm text-slate-500 leading-relaxed mb-4">
+                Refined search results layout with search filter options, sorting rules, and destination cards.
+              </p>
+            </div>
+            <div class="text-xs font-semibold text-purple-600 flex items-center gap-1">
+              Open Page <span class="material-symbols-outlined text-sm transition-transform group-hover:translate-x-1">arrow_forward</span>
+            </div>
+          </a>
+
+          <!-- Page: Spiti Itinerary -->
+          <a href="./itinerary-spiti.html" class="glass-card hover-card rounded-2xl p-6 flex flex-col justify-between group">
+            <div>
+              <div class="h-10 w-10 rounded-xl bg-orange-50 text-orange-600 flex items-center justify-center mb-4 group-hover:bg-orange-500 group-hover:text-white transition-colors duration-300">
+                <span class="material-symbols-outlined">map</span>
+              </div>
+              <h3 class="text-lg font-bold text-slate-800 mb-1 group-hover:text-orange-600 transition-colors">Spiti Valley Itinerary</h3>
+              <p class="text-sm text-slate-500 leading-relaxed mb-4">
+                Detailed day-wise itinerary screen featuring pricing structure, inclusion list, and quick download popup.
+              </p>
+            </div>
+            <div class="text-xs font-semibold text-orange-600 flex items-center gap-1">
+              Open Page <span class="material-symbols-outlined text-sm transition-transform group-hover:translate-x-1">arrow_forward</span>
+            </div>
+          </a>
+
+          <!-- Page: Checkout -->
+          <a href="./checkout.html" class="glass-card hover-card rounded-2xl p-6 flex flex-col justify-between group">
+            <div>
+              <div class="h-10 w-10 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center mb-4 group-hover:bg-emerald-500 group-hover:text-white transition-colors duration-300">
+                <span class="material-symbols-outlined">shopping_cart</span>
+              </div>
+              <h3 class="text-lg font-bold text-slate-800 mb-1 group-hover:text-emerald-600 transition-colors">Checkout Screen</h3>
+              <p class="text-sm text-slate-500 leading-relaxed mb-4">
+                Secure checkout form designed for user booking registration, price summary breakdown, and payment options.
+              </p>
+            </div>
+            <div class="text-xs font-semibold text-emerald-600 flex items-center gap-1">
+              Open Page <span class="material-symbols-outlined text-sm transition-transform group-hover:translate-x-1">arrow_forward</span>
+            </div>
+          </a>
+        </div>
+      </div>
+
+      <!-- Right side: QR Code & LAN Instructions -->
+      <div class="space-y-6">
+        <h2 class="text-xl font-bold text-slate-800 flex items-center gap-2">
+          <span class="material-symbols-outlined text-sky-500">phonelink_ring</span>
+          Mobile Testing
+        </h2>
+
+        <div class="bg-gradient-to-br from-slate-900 to-slate-800 text-white rounded-3xl p-6 shadow-xl border border-slate-700/50">
+          <h3 class="font-bold text-lg mb-2 text-sky-400 flex items-center gap-2">
+            <span class="material-symbols-outlined text-sm">qr_code_2</span>
+            Scan QR Code
+          </h3>
+          <p class="text-xs text-slate-300 mb-6">
+            Apne phone camera se iss QR code ko scan karein aur website ko seedhe mobile view mein test karein.
+          </p>
+
+          <!-- QR Code Container -->
+          <div class="bg-white p-4 rounded-2xl w-48 h-48 mx-auto flex items-center justify-center mb-6 shadow-inner">
+            <img id="qr-image" src="" alt="Scan to test on phone" class="w-full h-full object-contain hidden">
+            <div id="qr-placeholder" class="text-slate-400 text-xs text-center flex flex-col items-center gap-2">
+              <span class="material-symbols-outlined animate-spin text-2xl text-sky-500">progress_activity</span>
+              Generating QR Code...
+            </div>
+          </div>
+
+          <div class="space-y-4">
+            <div>
+              <span class="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1">LAN Address:</span>
+              <div class="flex items-center justify-between bg-slate-800/80 rounded-xl px-4 py-2.5 border border-slate-700">
+                <code class="text-sm font-mono text-sky-300 select-all break-all mr-2" id="lan-link">Detecting...</code>
+                <button onclick="copyLanLink()" class="text-slate-400 hover:text-white transition-colors" title="Copy Link" id="copy-btn">
+                  <span class="material-symbols-outlined text-lg">content_copy</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- Steps -->
+            <div class="border-t border-slate-800 pt-4">
+              <span class="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">Instructions:</span>
+              <ul class="text-xs text-slate-300 space-y-2.5 list-none pl-0">
+                <li class="flex gap-2">
+                  <span class="h-4 w-4 bg-sky-500/20 text-sky-400 font-bold rounded-full flex items-center justify-center shrink-0">1</span>
+                  <span>Computer aur Mobile phone ko <strong>same Wi-Fi network</strong> se connect karein.</span>
+                </li>
+                <li class="flex gap-2">
+                  <span class="h-4 w-4 bg-sky-500/20 text-sky-400 font-bold rounded-full flex items-center justify-center shrink-0">2</span>
+                  <span>Upar diya gaya QR Code scan karein ya manual URL phone browser mein likhein.</span>
+                </li>
+                <li class="flex gap-2">
+                  <span class="h-4 w-4 bg-sky-500/20 text-sky-400 font-bold rounded-full flex items-center justify-center shrink-0">3</span>
+                  <span>Aap portal screen par pahunch jayenge jahan se koi bhi page click karke check kar sakte hain.</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <script>
+    // Dynamically detect current host and set up LAN Address + QR Code
+    document.addEventListener("DOMContentLoaded", function() {
+      // Fallback in case opened locally as file://
+      let host = window.location.host;
+      let protocol = window.location.protocol;
+      
+      let testUrl = "";
+      if (host) {
+        testUrl = protocol + "//" + host + "/portal.html";
+      } else {
+        // If opened as file, use the detected machine IP
+        testUrl = "http://192.168.1.6:8081/portal.html";
+      }
+
+      // Update link UI
+      const lanLinkElement = document.getElementById("lan-link");
+      lanLinkElement.textContent = testUrl;
+
+      // Generate QR Code URL via free QR server API
+      const qrImage = document.getElementById("qr-image");
+      const qrPlaceholder = document.getElementById("qr-placeholder");
+      
+      const qrApiUrl = "https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=" + encodeURIComponent(testUrl);
+      
+      qrImage.src = qrApiUrl;
+      qrImage.onload = function() {
+        qrPlaceholder.classList.add("hidden");
+        qrImage.classList.remove("hidden");
+      };
+    });
+
+    // Copy to clipboard
+    function copyLanLink() {
+      const linkText = document.getElementById("lan-link").textContent;
+      navigator.clipboard.writeText(linkText).then(function() {
+        const copyBtn = document.getElementById("copy-btn");
+        copyBtn.innerHTML = '<span class="material-symbols-outlined text-lg text-emerald-400">check</span>';
+        setTimeout(function() {
+          copyBtn.innerHTML = '<span class="material-symbols-outlined text-lg">content_copy</span>';
+        }, 2000);
+      });
+    }
+  </script>
+</body>
+</html>

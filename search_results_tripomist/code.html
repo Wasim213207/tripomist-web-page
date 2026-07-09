@@ -1,0 +1,293 @@
+<!DOCTYPE html><html lang="en" style=""><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>TripoMist - Search Results</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com" rel="preconnect">
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@500&amp;family=Manrope:wght@600;700;800&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-secondary": "#ffffff",
+                        "primary-fixed-dim": "#89ceff",
+                        "primary-fixed": "#c9e6ff",
+                        "surface": "#faf8ff",
+                        "tertiary-fixed": "#dbe4ea",
+                        "primary-container": "#0ea5e9",
+                        "outline-variant": "#bec8d2",
+                        "on-tertiary": "#ffffff",
+                        "on-secondary-container": "#005b78",
+                        "inverse-surface": "#283044",
+                        "on-tertiary-fixed": "#141d21",
+                        "on-secondary-fixed": "#001e2b",
+                        "on-error-container": "#93000a",
+                        "inverse-on-surface": "#eef0ff",
+                        "surface-tint": "#006591",
+                        "tertiary": "#576065",
+                        "surface-bright": "#faf8ff",
+                        "on-tertiary-container": "#2c3539",
+                        "secondary-fixed": "#c0e8ff",
+                        "surface-dim": "#d2d9f4",
+                        "on-surface-variant": "#3e4850",
+                        "surface-container": "#eaedff",
+                        "on-tertiary-fixed-variant": "#3f484d",
+                        "surface-container-lowest": "#ffffff",
+                        "secondary-container": "#7ed4fd",
+                        "surface-container-high": "#e2e7ff",
+                        "on-primary-fixed": "#001e2f",
+                        "tertiary-fixed-dim": "#bfc8ce",
+                        "primary": "#006591",
+                        "secondary-fixed-dim": "#7bd1fa",
+                        "inverse-primary": "#89ceff",
+                        "on-surface": "#131b2e",
+                        "on-primary-fixed-variant": "#004c6e",
+                        "on-background": "#131b2e",
+                        "secondary": "#006686",
+                        "on-error": "#ffffff",
+                        "surface-container-low": "#f2f3ff",
+                        "surface-variant": "#dae2fd",
+                        "on-secondary-fixed-variant": "#004d66",
+                        "error-container": "#ffdad6",
+                        "background": "#faf8ff",
+                        "outline": "#6e7881",
+                        "tertiary-container": "#949da3",
+                        "on-primary-container": "#003751",
+                        "on-primary": "#ffffff",
+                        "surface-container-highest": "#dae2fd",
+                        "error": "#ba1a1a"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "gutter": "24px",
+                        "lg": "48px",
+                        "sm": "16px",
+                        "md": "24px",
+                        "xs": "8px",
+                        "xl": "80px",
+                        "margin": "32px",
+                        "base": "4px"
+                    },
+                    "fontFamily": {
+                        "label-sm": ["JetBrains Mono"],
+                        "body-lg": ["Inter"],
+                        "headline-lg-mobile": ["Manrope"],
+                        "display-lg": ["Manrope"],
+                        "headline-md": ["Manrope"],
+                        "body-md": ["Inter"],
+                        "headline-lg": ["Manrope"]
+                    },
+                    "fontSize": {
+                        "label-sm": ["12px", { "lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "500" }],
+                        "body-lg": ["18px", { "lineHeight": "28px", "fontWeight": "400" }],
+                        "headline-lg-mobile": ["28px", { "lineHeight": "36px", "fontWeight": "700" }],
+                        "display-lg": ["48px", { "lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "800" }],
+                        "headline-md": ["24px", { "lineHeight": "32px", "fontWeight": "600" }],
+                        "body-md": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "headline-lg": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "700" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body {
+            background-color: #faf8ff;
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+        }
+    </style>
+</head>
+<body class="text-on-background bg-background font-body-md text-body-md antialiased min-h-screen flex flex-col">
+<!-- TopNavBar -->
+<nav class="bg-surface/80 backdrop-blur-xl dark:bg-inverse-surface/80 w-full sticky top-0 z-50 border-b border-outline-variant/30 dark:border-outline/20 shadow-sm font-body-md text-body-md">
+<div class="flex justify-between items-center px-gutter max-w-7xl mx-auto h-16">
+<div class="flex items-center gap-md">
+<a class="font-headline-md text-headline-md font-bold text-primary dark:text-primary-fixed-dim" href="#">TripoMist</a>
+<div class="hidden md:flex items-center bg-surface-container-low rounded-full px-4 py-2 border border-outline-variant/30">
+<span class="material-symbols-outlined text-outline" style="font-variation-settings: 'FILL' 0;">search</span>
+<input class="bg-transparent border-none focus:ring-0 text-body-md font-body-md text-on-surface ml-2 w-48" placeholder="Search..." type="text">
+</div>
+</div>
+<div class="hidden md:flex items-center gap-md">
+<a class="text-on-surface-variant dark:text-on-tertiary-fixed-variant hover:text-primary dark:hover:text-primary-fixed-dim transition-colors" href="#">Group Trips</a>
+<a class="hover:text-primary dark:hover:text-primary-fixed-dim transition-colors text-on-surface-variant dark:text-on-tertiary-fixed-variant" href="#">Weekend Trips</a>
+<a class="hover:text-primary dark:hover:text-primary-fixed-dim transition-colors text-on-surface-variant" href="{{DATA:SCREEN:SCREEN_49}}">Upcoming Trips</a>
+</div>
+<div class="flex items-center gap-sm">
+<button class="scale-95 active:scale-90 transition-transform p-2 rounded-full hover:bg-surface-container-high text-on-surface-variant">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">notifications</span>
+</button>
+<button class="scale-95 active:scale-90 transition-transform p-2 rounded-full hover:bg-surface-container-high text-on-surface-variant">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">favorite</span>
+</button>
+
+</div>
+</div>
+</nav>
+<!-- Main Content Layout -->
+<main class="flex-grow max-w-7xl mx-auto w-full px-gutter py-lg flex flex-col md:flex-row gap-lg">
+<!-- Sidebar Filters -->
+<aside class="w-full md:w-1/4 flex-shrink-0">
+<div class="glass-card rounded-xl p-md sticky top-24">
+<h2 class="font-headline-md text-headline-md text-on-surface mb-md">Filters</h2>
+<!-- Destination -->
+<div class="mb-md">
+<label class="block font-body-md text-body-md font-medium text-on-surface-variant mb-2">Destination</label>
+<div class="relative">
+<span class="material-symbols-outlined absolute left-3 top-1/2 transform -translate-y-1/2 text-outline" style="font-variation-settings: 'FILL' 0;">location_on</span>
+<input class="w-full pl-10 pr-4 py-2 bg-surface-container-lowest border border-outline-variant rounded-lg focus:ring-primary focus:border-primary text-body-md font-body-md" placeholder="Search destination" type="text">
+</div>
+</div>
+<!-- Travel Style -->
+<div class="mb-md">
+<label class="block font-body-md text-body-md font-medium text-on-surface-variant mb-2">Travel Style</label>
+<div class="flex flex-wrap gap-2">
+<button class="bg-primary-container text-on-primary px-3 py-1 rounded-full font-label-sm text-label-sm transition-colors border border-transparent">Mountains</button>
+<button class="bg-surface-container-highest text-on-surface px-3 py-1 rounded-full font-label-sm text-label-sm hover:bg-surface-variant transition-colors border border-outline-variant/30">Beaches</button>
+<button class="bg-surface-container-highest text-on-surface px-3 py-1 rounded-full font-label-sm text-label-sm hover:bg-surface-variant transition-colors border border-outline-variant/30">Weekend</button>
+<button class="bg-surface-container-highest text-on-surface px-3 py-1 rounded-full font-label-sm text-label-sm hover:bg-surface-variant transition-colors border border-outline-variant/30">Lakes</button>
+</div>
+</div>
+<!-- Duration -->
+<div class="mb-md">
+<label class="block font-body-md text-body-md font-medium text-on-surface-variant mb-2">Duration</label>
+<div class="space-y-2">
+<label class="flex items-center gap-2 cursor-pointer">
+<input checked="" class="text-primary focus:ring-primary" name="duration" type="radio">
+<span class="font-body-md text-body-md text-on-surface">1-3 Days</span>
+</label>
+<label class="flex items-center gap-2 cursor-pointer">
+<input class="text-primary focus:ring-primary" name="duration" type="radio">
+<span class="font-body-md text-body-md text-on-surface">4-6 Days</span>
+</label>
+<label class="flex items-center gap-2 cursor-pointer">
+<input class="text-primary focus:ring-primary" name="duration" type="radio">
+<span class="font-body-md text-body-md text-on-surface">7+ Days</span>
+</label>
+</div>
+</div>
+<!-- Price Range -->
+<div>
+<label class="block font-body-md text-body-md font-medium text-on-surface-variant mb-2">Price Range (₹)</label>
+<input class="w-full accent-primary" max="30000" min="3000" type="range" value="15000">
+<div class="flex justify-between mt-2 font-label-sm text-label-sm text-outline">
+<span class="">₹3,000</span>
+<span class="">₹30,000</span>
+</div>
+</div>
+</div>
+</aside>
+<!-- Search Results Grid -->
+<section class="flex-grow">
+<!-- Header area for results -->
+<div class="mb-lg">
+<h1 class="font-display-lg text-display-lg hidden md:block text-on-surface mb-2">Upcoming Departures</h1>
+<h1 class="font-headline-lg-mobile text-headline-lg-mobile md:hidden text-on-surface mb-2">Upcoming Departures</h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant">Showing results</p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-md">
+<!-- Card 1 -->
+<div class="bg-surface-container-lowest rounded-xl overflow-hidden border border-outline-variant/30 hover:shadow-lg transition-all duration-300 group flex flex-col h-full">
+<div class="relative h-48 w-full overflow-hidden">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="A breathtaking view of the Himalayas at dawn, clear blue sky, snow-capped peaks illuminated by golden hour light, crisp modern bright aesthetic, serene and majestic atmosphere, high quality travel photography." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCE6p_UF0GujYyL7QDuZtoqzEShR-1wG1cgQi_O9hq38FgS581MFo2tgdKmqcWlbrQv9BdUpqpfR3vThFmanWNkaQRl4F0B3TKW2esN658tI0CjH-96Uh4B0SFJGOihOlNRXGuNeTj7DuNQKJh7n4WL1N1nlIj9od50ycbUf85JmEIJnOVNdc--S1p5-ZvcYwdCh35eyB9Y9_0MF0m9e0LoIC9-kWldVdViKnfzZc-H1YQF1JrBHOfUx0TWmgKVKuqtnJQv7mNresai">
+<div class="absolute top-3 left-3 bg-primary text-on-primary px-2 py-1 rounded-md font-label-sm text-label-sm shadow-sm backdrop-blur-md bg-opacity-90">Mountains</div>
+<button class="absolute top-3 right-3 p-1.5 bg-surface-container-lowest/80 backdrop-blur-sm rounded-full text-on-surface hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 0;">favorite</span>
+</button>
+</div>
+<div class="p-md flex-grow flex flex-col">
+<h3 class="font-headline-md text-headline-md text-on-surface mb-1">Ladakh Expedition</h3>
+<div class="flex items-center gap-1 text-on-surface-variant mb-4">
+<span class="material-symbols-outlined text-[16px]" style="font-variation-settings: 'FILL' 0;">schedule</span>
+<span class="font-body-md text-body-md text-sm">6N/7D</span>
+</div>
+<div class="mt-auto flex items-end justify-between">
+<div>
+<span class="block font-label-sm text-label-sm text-outline">Starting from</span>
+<span class="font-headline-md text-headline-md text-primary">₹21,999</span>
+</div>
+<button class="bg-primary text-on-primary px-4 py-2 rounded-lg font-body-md text-body-md font-medium hover:bg-surface-tint transition-colors">Book Now</button>
+</div>
+</div>
+</div>
+<!-- Card 2 -->
+<div class="bg-surface-container-lowest rounded-xl overflow-hidden border border-outline-variant/30 hover:shadow-lg transition-all duration-300 group flex flex-col h-full">
+<div class="relative h-48 w-full overflow-hidden">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="Pristine white sand beach with crystal clear turquoise water in the Andaman Islands, bright sunny day, light mode aesthetic, calm and relaxing vibe, lush green palm trees on the edge." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB0y5u9i_7N2laNOZIxv71RdSK5FT0jAp-uHjMwYERiu8PA0f5ZIXZzTW4mDV5pXzsldIlhzXyCWnP5ZeVmWrNzZA04wZjrXsqBFScmOmKAtCHvpCFb6K2d2clvgPz9CbpDVnYeY-R0F5Gqy6VwxCes6qYo50J7xDRpzrnraZxMnW3TIp8XWLoxy3IC28IqbylRrXiPfjUP5lIgNX_7uh3ALSCif0KIatU2BLPP981PAZcWg9SUt4geKFkNwyapsLwVn2kD17gLKID1">
+<div class="absolute top-3 left-3 bg-secondary-container text-on-secondary-container px-2 py-1 rounded-md font-label-sm text-label-sm shadow-sm backdrop-blur-md bg-opacity-90">Beaches</div>
+<button class="absolute top-3 right-3 p-1.5 bg-surface-container-lowest/80 backdrop-blur-sm rounded-full text-on-surface hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 0;">favorite</span>
+</button>
+</div>
+<div class="p-md flex-grow flex flex-col">
+<h3 class="font-headline-md text-headline-md text-on-surface mb-1">Andaman Escape</h3>
+<div class="flex items-center gap-1 text-on-surface-variant mb-4">
+<span class="material-symbols-outlined text-[16px]" style="font-variation-settings: 'FILL' 0;">schedule</span>
+<span class="font-body-md text-body-md text-sm">4N/5D</span>
+</div>
+<div class="mt-auto flex items-end justify-between">
+<div>
+<span class="block font-label-sm text-label-sm text-outline">Starting from</span>
+<span class="font-headline-md text-headline-md text-primary">₹18,500</span>
+</div>
+<button class="bg-primary text-on-primary px-4 py-2 rounded-lg font-body-md text-body-md font-medium hover:bg-surface-tint transition-colors">Book Now</button>
+</div>
+</div>
+</div>
+<!-- Card 3 -->
+<div class="bg-surface-container-lowest rounded-xl overflow-hidden border border-outline-variant/30 hover:shadow-lg transition-all duration-300 group flex flex-col h-full">
+<div class="relative h-48 w-full overflow-hidden">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="Lush green tea plantations in Munnar, misty morning atmosphere, gentle rolling hills, bright and airy aesthetic, crisp green and white color palette, serene travel destination." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBCCXUB1XgJi4Y3t-H0p0t5UTLh_BxmzWOe6kQ6O9c_bPnXHeOmV57Psr-R7D3VlYAEeSb8-WFp0w8bVahRCvNnzR2fMlppIEo7n0DZjWXwlGY4PaWsr7zS4rmU4g64wR4hqvvoWbTudriJszYf-C0CCmsgcHn_H5FaXFQ99Nj5-WPugNDzqKW8Tyc3KXyhxW4yhLBrEIf1V8Xo3VDkqA1VgXMiL06W0aDWctLY1-4qYXNgXr9KN6giLlLXGStqXDvP6KxWiRvJVC4J">
+<div class="absolute top-3 left-3 bg-primary text-on-primary px-2 py-1 rounded-md font-label-sm text-label-sm shadow-sm backdrop-blur-md bg-opacity-90">Weekend</div>
+<button class="absolute top-3 right-3 p-1.5 bg-surface-container-lowest/80 backdrop-blur-sm rounded-full text-on-surface hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 0;">favorite</span>
+</button>
+</div>
+<div class="p-md flex-grow flex flex-col">
+<h3 class="font-headline-md text-headline-md text-on-surface mb-1">Munnar Retreat</h3>
+<div class="flex items-center gap-1 text-on-surface-variant mb-4">
+<span class="material-symbols-outlined text-[16px]" style="font-variation-settings: 'FILL' 0;">schedule</span>
+<span class="font-body-md text-body-md text-sm">2N/3D</span>
+</div>
+<div class="mt-auto flex items-end justify-between">
+<div>
+<span class="block font-label-sm text-label-sm text-outline">Starting from</span>
+<span class="font-headline-md text-headline-md text-primary">₹8,999</span>
+</div>
+<button class="bg-primary text-on-primary px-4 py-2 rounded-lg font-body-md text-body-md font-medium hover:bg-surface-tint transition-colors">Book Now</button>
+</div>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- Footer -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+</body></html>

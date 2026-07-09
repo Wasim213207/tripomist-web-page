@@ -1,0 +1,347 @@
+<!DOCTYPE html><html lang="en" style=""><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>TripoMist - Spiti Valley Itinerary</title>
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect">
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=JetBrains+Mono:wght@500&amp;family=Manrope:wght@600;700;800&amp;display=swap" rel="stylesheet">
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Tailwind Config based on Brand Anchors -->
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "on-surface-variant": "#3e4850",
+                        "surface-container-highest": "#dae2fd",
+                        "surface": "#faf8ff",
+                        "surface-container-low": "#f2f3ff",
+                        "primary-fixed-dim": "#89ceff",
+                        "on-error": "#ffffff",
+                        "on-tertiary-container": "#2c3539",
+                        "secondary-fixed": "#c0e8ff",
+                        "on-primary": "#ffffff",
+                        "surface-dim": "#d2d9f4",
+                        "surface-container-lowest": "#ffffff",
+                        "on-surface": "#131b2e",
+                        "secondary-container": "#7ed4fd",
+                        "primary-fixed": "#c9e6ff",
+                        "surface-tint": "#006591",
+                        "secondary-fixed-dim": "#7bd1fa",
+                        "secondary": "#006686",
+                        "on-tertiary-fixed-variant": "#3f484d",
+                        "inverse-on-surface": "#eef0ff",
+                        "on-secondary-container": "#005b78",
+                        "inverse-primary": "#89ceff",
+                        "on-primary-fixed": "#001e2f",
+                        "on-secondary": "#ffffff",
+                        "tertiary-fixed-dim": "#bfc8ce",
+                        "surface-container-high": "#e2e7ff",
+                        "surface-container": "#eaedff",
+                        "on-primary-container": "#003751",
+                        "primary-container": "#0ea5e9",
+                        "primary": "#006591",
+                        "outline-variant": "#bec8d2",
+                        "on-error-container": "#93000a",
+                        "tertiary-fixed": "#dbe4ea",
+                        "on-secondary-fixed-variant": "#004d66",
+                        "on-background": "#131b2e",
+                        "on-tertiary-fixed": "#141d21",
+                        "surface-variant": "#dae2fd",
+                        "error": "#ba1a1a",
+                        "surface-bright": "#faf8ff",
+                        "on-tertiary": "#ffffff",
+                        "on-primary-fixed-variant": "#004c6e",
+                        "outline": "#6e7881",
+                        "inverse-surface": "#283044",
+                        "tertiary": "#576065",
+                        "error-container": "#ffdad6",
+                        "background": "#faf8ff",
+                        "tertiary-container": "#949da3",
+                        "on-secondary-fixed": "#001e2b"
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    spacing: {
+                        "md": "24px",
+                        "margin": "32px",
+                        "xs": "8px",
+                        "sm": "16px",
+                        "gutter": "24px",
+                        "xl": "80px",
+                        "lg": "48px",
+                        "base": "4px"
+                    },
+                    fontFamily: {
+                        "headline-lg": ["Manrope"],
+                        "headline-md": ["Manrope"],
+                        "display-lg": ["Manrope"],
+                        "body-lg": ["Inter"],
+                        "label-sm": ["JetBrains Mono"],
+                        "headline-lg-mobile": ["Manrope"],
+                        "body-md": ["Inter"]
+                    },
+                    fontSize: {
+                        "headline-lg": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "700" }],
+                        "headline-md": ["24px", { "lineHeight": "32px", "fontWeight": "600" }],
+                        "display-lg": ["48px", { "lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "800" }],
+                        "body-lg": ["18px", { "lineHeight": "28px", "fontWeight": "400" }],
+                        "label-sm": ["12px", { "lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "500" }],
+                        "headline-lg-mobile": ["28px", { "lineHeight": "36px", "fontWeight": "700" }],
+                        "body-md": ["16px", { "lineHeight": "24px", "fontWeight": "400" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        /* Base Styles & Utilities */
+        body {
+            background-color: theme('colors.surface');
+            color: theme('colors.on-surface');
+            -webkit-font-smoothing: antialiased;
+        }
+        
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        
+        /* Glassmorphism Utilities */
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+        }
+        
+        .glass-card {
+            background-color: #F8FAFC;
+            border: 1px solid #F1F5F9;
+            transition: all 0.3s ease;
+        }
+        .glass-card:hover {
+            box-shadow: 0 10px 25px -5px rgba(14, 165, 233, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .glass-reveal {
+            position: relative;
+            overflow: hidden;
+        }
+        .glass-reveal::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to right, transparent, rgba(255,255,255,0.8), transparent);
+            transform: translateX(-100%);
+            transition: transform 0.6s ease;
+        }
+        .glass-reveal:hover::before {
+            transform: translateX(100%);
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: theme('colors.surface-container-low'); }
+        ::-webkit-scrollbar-thumb { background: theme('colors.outline-variant'); border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: theme('colors.outline'); }
+    </style>
+</head>
+<body class="font-body-md selection:bg-primary-container selection:text-on-primary">
+<!-- TopNavBar (Shared Component) -->
+<nav class="bg-white/80 dark:bg-surface-dim/80 backdrop-blur-md full-width top-0 sticky z-50 border-b border-outline-variant/30 shadow-sm flex justify-between items-center w-full px-margin py-xs max-w-7xl mx-auto">
+<a class="font-headline-md text-headline-md font-bold tracking-tight text-primary flex items-center gap-2 hover:scale-95 duration-150 transition-transform" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">explore</span>
+            TripoMist
+        </a>
+<!-- Desktop Nav Links -->
+<div class="relative flex items-center max-w-xs w-full ml-4">
+    <span class="material-symbols-outlined absolute left-3 text-on-surface-variant">search</span>
+    <input type="text" placeholder="Search..." class="w-full bg-surface-container-low border-none rounded-full py-2 pl-10 pr-4 text-body-md focus:ring-2 focus:ring-primary-container outline-none">
+</div><div class="hidden md:flex items-center gap-sm">
+<a class="text-primary font-semibold border-b-2 border-primary pb-1 px-3" href="#">Group Trips</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors px-3" href="#">Weekend Trips</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors px-3" href="#">Upcoming Trips</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors px-3" href="#">Deals</a>
+</div>
+<div class="flex items-center gap-4">
+
+
+
+<button class="text-on-surface-variant hover:text-primary transition-colors p-1">
+    <span class="material-symbols-outlined">notifications</span>
+</button>
+<button class="text-on-surface-variant hover:text-primary transition-colors p-1">
+    <span class="material-symbols-outlined">favorite</span>
+</button></div>
+</nav>
+<!-- Main Canvas -->
+<main class="w-full">
+<!-- Hero Section -->
+<div class="relative w-full h-[512px] md:h-[614px] lg:h-[716px] bg-surface-container-high overflow-hidden">
+<!-- Background Image -->
+<div class="absolute inset-0 bg-cover bg-center w-full h-full transform scale-105 hover:scale-100 transition-transform duration-1000" data-alt="A breathtaking, wide-angle shot of the Spiti Valley landscape in India. Crystal clear blue skies above stark, rugged beige and brown mountains. A winding turquoise river cuts through the valley floor. High-key lighting, bright, airy, modern travel photography aesthetic, evoking a sense of pristine isolation." style="background-image: url(&quot;https://lh3.googleusercontent.com/aida-public/AB6AXuD90IAq7vZq8BDXHDHO2wbzL_ex8lV1Rx8E662i7VSWQb4zypGKBmsG7uhaIPRdLLWkp6uc-e4vCjXwIvBAEvZj-EuJBS-kdRgGDEeqze2MhpFjLDuKPRqCSrMDKv_WE8A_T6J3Y99iGnSw7QojlYBiMiuo3_8tqx5OFJEUJv3FkuMYfE_d9wucTwrbX9SmRvMD_aZJUGsMx0E2plr1qroJgQiDOmYBdeIFXS5M3EWKPvl8AiWAKMyhFuhg5yCKkjcFEAEmd_OHiyD-31k&quot;);"></div>
+<!-- Atmospheric Gradient Overlay -->
+<div class="absolute inset-0 bg-gradient-to-t from-surface via-surface/40 to-transparent"></div>
+<!-- Hero Content -->
+<div class="absolute bottom-0 left-0 w-full max-w-7xl mx-auto px-margin pb-lg flex flex-col justify-end">
+<div class="inline-flex items-center gap-2 bg-white/60 backdrop-blur-md px-3 py-1 rounded-full w-fit mb-4 border border-white/50 shadow-sm">
+<span class="material-symbols-outlined text-[16px] text-primary">location_on</span>
+<span class="font-label-sm text-primary uppercase tracking-wider">Himachal Pradesh, India</span>
+</div>
+<h1 class="font-display-lg text-display-lg text-on-surface mb-2 drop-shadow-sm">Spiti Valley Expedition</h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant max-w-2xl">Journey through the high-altitude desert of the Himalayas. Experience ancient monasteries, surreal landscapes, and the raw beauty of the middle land.</p>
+</div>
+</div>
+<!-- Content Layout -->
+<div class="max-w-7xl mx-auto px-margin py-lg grid grid-cols-1 lg:grid-cols-12 gap-gutter relative">
+<!-- Left Column: Details & Itinerary -->
+<div class="lg:col-span-8 flex flex-col gap-xl">
+<!-- Stats Bar (Bento-style mini grid) -->
+<div class="grid grid-cols-2 md:grid-cols-4 gap-sm">
+<div class="glass-card p-4 rounded-[1rem] flex flex-col items-center justify-center text-center">
+<span class="material-symbols-outlined text-primary text-3xl mb-2" style="font-variation-settings: 'wght' 300;">calendar_clock</span>
+<span class="font-label-sm text-outline uppercase mb-1">Duration</span>
+<span class="font-body-md font-semibold text-on-surface">6 Days, 5 Nights</span>
+</div>
+<div class="glass-card p-4 rounded-[1rem] flex flex-col items-center justify-center text-center">
+<span class="material-symbols-outlined text-primary text-3xl mb-2" style="font-variation-settings: 'wght' 300;">groups</span>
+<span class="font-label-sm text-outline uppercase mb-1">Group Size</span>
+<span class="font-body-md font-semibold text-on-surface">12-15 Explorers</span>
+</div>
+<div class="glass-card p-4 rounded-[1rem] flex flex-col items-center justify-center text-center">
+<span class="material-symbols-outlined text-primary text-3xl mb-2" style="font-variation-settings: 'wght' 300;">terrain</span>
+<span class="font-label-sm text-outline uppercase mb-1">Difficulty</span>
+<span class="font-body-md font-semibold text-on-surface">Moderate</span>
+</div>
+<div class="glass-card p-4 rounded-[1rem] flex flex-col items-center justify-center text-center">
+<span class="material-symbols-outlined text-primary text-3xl mb-2" style="font-variation-settings: 'wght' 300;">star</span>
+<span class="font-label-sm text-outline uppercase mb-1">Rating</span>
+<span class="font-body-md font-semibold text-on-surface flex items-center gap-1">4.9 <span class="text-sm text-on-surface-variant font-normal">(120+ reviews)</span></span>
+</div>
+</div>
+<!-- Itinerary Section -->
+<section>
+<h2 class="font-headline-lg text-headline-lg text-on-surface mb-6 flex items-center gap-3">
+<span class="material-symbols-outlined text-primary-container">route</span>
+                        The Itinerary
+                    </h2>
+<div class="flex flex-col gap-6">
+<!-- Day 1 -->
+<div class="glass-card rounded-[1.25rem] overflow-hidden group" style="background-color: rgb(248, 250, 252);">
+<button class="w-full px-6 py-5 flex items-center justify-between bg-white text-left focus:outline-none focus:ring-2 focus:ring-primary-container inset-0 accordion-btn">
+<div class="flex items-center gap-4">
+<div class="bg-surface-container-low text-primary font-label-sm px-3 py-1.5 rounded-md uppercase tracking-wide border border-outline-variant/20">Day 1</div>
+<h3 class="font-headline-md text-headline-md text-on-surface">Arrival in Manali &amp; Acclimatization</h3>
+</div>
+<span class="material-symbols-outlined text-outline-variant group-hover:text-primary transition-colors transform duration-300 icon-expand" style="transform: rotate(180deg);">expand_more</span>
+</button>
+<div class="px-6 pb-6 pt-2 accordion-content text-on-surface-variant font-body-md leading-relaxed border-t border-outline-variant/10">
+<p class="">Arrive in the beautiful hill station of Manali. Spend the day acclimatizing to the altitude. We'll have a brief orientation session in the evening, followed by a welcome dinner with the group. Explore the local cafes in Old Manali if you feel up to it.</p>
+</div>
+</div>
+<!-- Day 2 -->
+<div class="glass-card rounded-[1.25rem] overflow-hidden group">
+<button class="w-full px-6 py-5 flex items-center justify-between bg-white text-left focus:outline-none focus:ring-2 focus:ring-primary-container inset-0 accordion-btn">
+<div class="flex items-center gap-4">
+<div class="bg-surface-container-low text-primary font-label-sm px-3 py-1.5 rounded-md uppercase tracking-wide border border-outline-variant/20">Day 2</div>
+<h3 class="font-headline-md text-headline-md text-on-surface">Manali to Kaza via Atal Tunnel</h3>
+</div>
+<span class="material-symbols-outlined text-outline-variant group-hover:text-primary transition-colors transform duration-300 icon-expand">expand_more</span>
+</button>
+<div class="px-6 pb-6 pt-2 hidden accordion-content text-on-surface-variant font-body-md leading-relaxed border-t border-outline-variant/10">
+<p class="">An early start as we cross the engineering marvel, Atal Tunnel. Witness the dramatic change in landscape as we enter the Lahaul Valley and proceed towards Kaza, the sub-divisional headquarters of Spiti. The drive offers stunning views of rugged mountains and the Chandra River.</p>
+</div>
+</div>
+<!-- Day 3 -->
+<div class="glass-card rounded-[1.25rem] overflow-hidden group">
+<button class="w-full px-6 py-5 flex items-center justify-between bg-white text-left focus:outline-none focus:ring-2 focus:ring-primary-container inset-0 accordion-btn">
+<div class="flex items-center gap-4">
+<div class="bg-surface-container-low text-primary font-label-sm px-3 py-1.5 rounded-md uppercase tracking-wide border border-outline-variant/20">Day 3</div>
+<h3 class="font-headline-md text-headline-md text-on-surface">Key Monastery &amp; Kibber Village</h3>
+</div>
+<span class="material-symbols-outlined text-outline-variant group-hover:text-primary transition-colors transform duration-300 icon-expand">expand_more</span>
+</button>
+<div class="px-6 pb-6 pt-2 hidden accordion-content text-on-surface-variant font-body-md leading-relaxed border-t border-outline-variant/10">
+<p class="">Visit the iconic Key Monastery, perched on a hilltop like a fortress. Later, drive to Kibber, one of the highest inhabited villages in the world. Keep an eye out for Himalayan wildlife, including the elusive Snow Leopard during winter months.</p>
+</div>
+</div>
+</div>
+</section>
+</div>
+<!-- Right Column: Sticky Booking Card -->
+<div class="lg:col-span-4 relative">
+<!-- Sticky Container -->
+<div class="sticky top-[100px] bg-white rounded-[1.5rem] border border-outline-variant/30 p-lg shadow-sm glass-reveal">
+<div class="mb-6 pb-6 border-b border-outline-variant/20 mb-8">
+<span class="font-label-sm text-outline uppercase tracking-wider block mb-2">Starting from</span>
+<div class="flex items-end gap-2">
+<span class="font-display-lg text-display-lg text-primary leading-none">₹24,999</span>
+<span class="font-body-md text-on-surface-variant pb-1">/ person</span>
+</div>
+<p class="font-label-sm text-tertiary mt-2 flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">info</span>
+                            Prices inclusive of all taxes
+                        </p>
+</div>
+
+<button class="w-full bg-gradient-to-r from-primary to-primary-container text-on-primary font-headline-md text-headline-md py-4 rounded-xl shadow-[0_8px_16px_-4px_rgba(14,165,233,0.3)] hover:shadow-[0_12px_20px_-4px_rgba(14,165,233,0.4)] hover:-translate-y-0.5 transition-all duration-200">Book Now</button><a href="#" class="flex items-center justify-center gap-2 mt-4 text-primary font-semibold hover:text-secondary transition-colors py-2">
+    <span class="material-symbols-outlined text-[20px]">download</span>
+    <span class="">Download Itinerary</span>
+</a>
+<p class="text-center font-label-sm text-outline mt-4">
+                        Secure checkout • Free cancellation up to 30 days
+                    </p>
+</div>
+</div>
+</div>
+</main>
+<!-- Footer (Shared Component) -->
+
+<!-- Simple Accordion Script -->
+<script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const accordionBtns = document.querySelectorAll('.accordion-btn');
+            
+            accordionBtns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const content = this.nextElementSibling;
+                    const icon = this.querySelector('.icon-expand');
+                    
+                    // Toggle current
+                    content.classList.toggle('hidden');
+                    
+                    // Rotate icon
+                    if(content.classList.contains('hidden')) {
+                        icon.style.transform = 'rotate(0deg)';
+                        this.closest('.glass-card').style.backgroundColor = '#FFFFFF';
+                    } else {
+                        icon.style.transform = 'rotate(180deg)';
+                        this.closest('.glass-card').style.backgroundColor = '#F8FAFC';
+                    }
+                });
+            });
+            
+            // Open first one by default
+            if(accordionBtns.length > 0) {
+                accordionBtns[0].click();
+            }
+        });
+    </script>
+
+
+
+
+
+
+</body></html>
