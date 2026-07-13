@@ -1,6 +1,6 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "cleanUrls": true,
-  "buildCommand": "echo 'No build required for static site'",
-  "outputDirectory": "."
+  "buildCommand": "cd react-app && npm install && npm run build",
+  "outputDirectory": "react-app/dist"
 }
