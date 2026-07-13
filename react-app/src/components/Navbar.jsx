@@ -57,9 +57,9 @@ function Navbar() {
         
         {/* Desktop Nav Links */}
         <div className="hidden md:flex gap-6 items-center">
-          <Link className={`px-3 py-1 font-body-md text-body-md transition-colors ${isActive('/group-trips') ? 'text-primary font-semibold border-b-2 border-primary' : 'text-on-surface-variant hover:text-primary'}`} to="/group-trips">Group Trips</Link>
-          <Link className={`px-3 py-1 font-body-md text-body-md transition-colors ${isActive('/weekend-trips') ? 'text-primary font-semibold border-b-2 border-primary' : 'text-on-surface-variant hover:text-primary'}`} to="/weekend-trips">Weekend Trips</Link>
-          <Link className={`px-3 py-1 font-body-md text-body-md transition-colors ${isActive('/upcoming-trips') ? 'text-primary font-semibold border-b-2 border-primary' : 'text-on-surface-variant hover:text-primary'}`} to="/upcoming-trips">Upcoming Trips</Link>
+          <Link className={`px-3 py-1 font-body-md text-body-md transition-colors ${isActive('/uttarakhand') ? 'text-primary font-semibold border-b-2 border-primary' : 'text-on-surface-variant hover:text-primary'}`} to="/uttarakhand">Uttarakhand</Link>
+          <Link className={`px-3 py-1 font-body-md text-body-md transition-colors ${isActive('/himachal') ? 'text-primary font-semibold border-b-2 border-primary' : 'text-on-surface-variant hover:text-primary'}`} to="/himachal">Himachal Pradesh</Link>
+          <Link className={`px-3 py-1 font-body-md text-body-md transition-colors ${isActive('/about') ? 'text-primary font-semibold border-b-2 border-primary' : 'text-on-surface-variant hover:text-primary'}`} to="/about">About Us</Link>
         </div>
         
         {/* Actions/Icons */}
@@ -130,9 +130,9 @@ function Navbar() {
       {isOpen && (
         <div className="fixed top-[65px] left-0 w-full bg-white border-b border-outline-variant/30 shadow-lg z-40 md:hidden">
           <div className="flex flex-col p-6 gap-4">
-            <Link className={`text-lg pb-1 border-b border-outline-variant/20 ${isActive('/group-trips') ? 'text-primary font-bold' : 'text-on-surface-variant'}`} onClick={() => setIsOpen(false)} to="/group-trips">Group Trips</Link>
-            <Link className={`text-lg pb-1 border-b border-outline-variant/20 ${isActive('/weekend-trips') ? 'text-primary font-bold' : 'text-on-surface-variant'}`} onClick={() => setIsOpen(false)} to="/weekend-trips">Weekend Trips</Link>
-            <Link className={`text-lg pb-1 border-b border-outline-variant/20 ${isActive('/upcoming-trips') ? 'text-primary font-bold' : 'text-on-surface-variant'}`} onClick={() => setIsOpen(false)} to="/upcoming-trips">Upcoming Trips</Link>
+            <Link className={`text-lg pb-1 border-b border-outline-variant/20 ${isActive('/uttarakhand') ? 'text-primary font-bold' : 'text-on-surface-variant'}`} onClick={() => setIsOpen(false)} to="/uttarakhand">Uttarakhand</Link>
+            <Link className={`text-lg pb-1 border-b border-outline-variant/20 ${isActive('/himachal') ? 'text-primary font-bold' : 'text-on-surface-variant'}`} onClick={() => setIsOpen(false)} to="/himachal">Himachal Pradesh</Link>
+            <Link className={`text-lg pb-1 border-b border-outline-variant/20 ${isActive('/about') ? 'text-primary font-bold' : 'text-on-surface-variant'}`} onClick={() => setIsOpen(false)} to="/about">About Us</Link>
             
             {user ? (
               <div className="pt-2 flex flex-col gap-2">

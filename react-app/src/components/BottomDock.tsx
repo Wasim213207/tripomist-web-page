@@ -1,15 +1,15 @@
 import React from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
 import GooeyDock from '@/components/ui/gooey-dock'
-import { Home, Mountain, Sunrise, Info, Search } from 'lucide-react'
+import { Home, Users, Sunrise, CalendarDays, Search } from 'lucide-react'
 import { motion } from 'framer-motion'
 
 const navItems = [
-  { icon: Home,     label: 'Home',        path: '/' },
-  { icon: Mountain, label: 'Uttarakhand', path: '/uttarakhand' },
-  { icon: Sunrise,  label: 'Himachal',    path: '/himachal' },
-  { icon: Info,     label: 'About Us',    path: '/about' },
-  { icon: Search,   label: 'Search',      path: '/search' },
+  { icon: Home,         label: 'Home',          path: '/' },
+  { icon: Users,        label: 'Group Trips',   path: '/group-trips' },
+  { icon: Sunrise,      label: 'Weekend Trips', path: '/weekend-trips' },
+  { icon: CalendarDays, label: 'Upcoming',      path: '/upcoming-trips' },
+  { icon: Search,       label: 'Search',        path: '/search' },
 ]
 
 interface BottomDockProps {
