@@ -1,11 +1,13 @@
 import React, { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
+import { motion, AnimatePresence } from 'framer-motion'
 import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
 
 function Home() {
   const navigate = useNavigate()
   const [searchValue, setSearchValue] = useState('')
+  const [isFabOpen, setIsFabOpen] = useState(false)
 
   return (
     <div className="flex flex-col min-h-screen">
@@ -350,17 +352,58 @@ function Home() {
         </section>
       </main>
 
-      {/* Call Button — smaller to avoid clash with bottom dock */}
-      <div className="fixed bottom-28 right-4 z-40">
-        <a
-          className="w-11 h-11 rounded-full bg-green-500 hover:bg-green-600 flex items-center justify-center text-white transition-colors shadow-lg active:scale-95"
-          href="tel:+919990802608"
-          title="Call Us"
+      {/* Expandable Contact FAB */}
+      <div className="fixed bottom-28 right-4 z-40 flex flex-col items-center gap-3">
+        <AnimatePresence>
+          {isFabOpen && (
+            <motion.div 
+              initial={{ opacity: 0, y: 30, scale: 0.8 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: 30, scale: 0.8 }}
+              transition={{ type: 'spring', stiffness: 300, damping: 25 }}
+              className="flex flex-col gap-3 items-center mb-1"
+            >
+              <a
+                className="w-10 h-10 rounded-full bg-orange-500 hover:bg-orange-600 flex items-center justify-center text-white shadow-md active:scale-95 transition-transform"
+                href="mailto:contact@tripomist.com"
+                title="Email Us"
+              >
+                <span className="material-symbols-outlined text-[20px]">mail</span>
+              </a>
+              <a
+                className="w-10 h-10 rounded-full bg-blue-500 hover:bg-blue-600 flex items-center justify-center text-white shadow-md active:scale-95 transition-transform"
+                href="tel:+919990802608"
+                title="Call Us"
+              >
+                <span className="material-symbols-outlined text-[20px]">call</span>
+              </a>
+              <a
+                className="w-10 h-10 rounded-full bg-emerald-500 hover:bg-emerald-600 flex items-center justify-center text-white shadow-md active:scale-95 transition-transform"
+                href="https://wa.me/919990802608"
+                target="_blank" 
+                rel="noreferrer"
+                title="WhatsApp Us"
+              >
+                <svg className="w-5 h-5 fill-current" viewBox="0 0 24 24">
+                  <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946C.06 5.348 5.397.01 12.008.01c3.202 0 6.213 1.248 8.477 3.518 2.266 2.27 3.51 5.289 3.507 8.497-.005 6.545-5.343 11.884-11.957 11.884-.002 0-.003 0-.005 0-2.099 0-4.148-.549-5.952-1.59L0 24zm6.305-1.654c1.787 1.063 3.731 1.623 5.702 1.624h.004c5.789 0 10.5-4.71 10.503-10.499.002-2.805-1.09-5.442-3.076-7.427C17.462 4.058 14.821 2.96 12.012 2.96 6.225 2.96 1.516 7.67 1.513 13.46c0 1.972.52 3.918 1.507 5.707l-.99 3.618 3.827-.979zm11.167-7.603c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/>
+                </svg>
+              </a>
+            </motion.div>
+          )}
+        </AnimatePresence>
+        
+        <button
+          onClick={() => setIsFabOpen(!isFabOpen)}
+          className={`w-12 h-12 rounded-full flex items-center justify-center text-white transition-all shadow-xl active:scale-95 ${isFabOpen ? 'bg-slate-700 hover:bg-slate-800' : 'bg-orange-500 hover:bg-orange-600'}`}
+          title="Contact Options"
         >
-          <svg className="w-5 h-5 fill-current" viewBox="0 0 24 24">
-            <path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/>
-          </svg>
-        </a>
+          <motion.span 
+            animate={{ rotate: isFabOpen ? 135 : 0 }} 
+            className="material-symbols-outlined text-[24px]"
+          >
+            add
+          </motion.span>
+        </button>
       </div>
 
       <Footer />

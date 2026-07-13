@@ -50,7 +50,11 @@ function App() {
       <Chatbot isOpenExternal={chatOpen} onExternalClose={() => setChatOpen(false)} />
 
       {/* GooeyDock + AI pill */}
-      <BottomDock onOpenChat={() => setChatOpen(true)} />
+      <BottomDock 
+        isChatOpen={chatOpen}
+        onOpenChat={() => setChatOpen(true)} 
+        onCloseChat={() => setChatOpen(false)} 
+      />
     </>
   )
 }

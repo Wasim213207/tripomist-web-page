@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react'
 import { Link, useNavigate, useLocation } from 'react-router-dom'
 import { supabase } from '../utils/supabaseClient'
+import LoginModal from './LoginModal'
 
 function Navbar() {
   const [isOpen, setIsOpen] = useState(false)
   const [searchValue, setSearchValue] = useState('')
   const [user, setUser] = useState(null)
   const [showUserDropdown, setShowUserDropdown] = useState(false)
+  const [isLoginModalOpen, setIsLoginModalOpen] = useState(false)
   
   const navigate = useNavigate()
   const location = useLocation()
@@ -64,11 +66,8 @@ function Navbar() {
         
         {/* Actions/Icons */}
         <div className="flex items-center gap-4">
-          <button onClick={() => alert('No new notifications')} className="text-on-surface-variant hover:text-primary transition-colors p-1" aria-label="Notifications">
-            <span className="material-symbols-outlined">notifications</span>
-          </button>
-          <Link className="text-on-surface-variant hover:text-primary transition-colors p-1" to="/group-trips?favorites=true" aria-label="Favorites">
-            <span className="material-symbols-outlined">favorite</span>
+          <Link className="text-on-surface-variant hover:text-primary transition-colors p-1" to="/cart" aria-label="Cart">
+            <span className="material-symbols-outlined">shopping_cart</span>
           </Link>
           
           {/* User Auth Profile Dropdown */}
@@ -112,12 +111,12 @@ function Navbar() {
               )}
             </div>
           ) : (
-            <Link 
-              to="/login" 
-              className="bg-primary hover:bg-primary/95 text-white font-button text-xs font-semibold px-4 py-2 rounded-lg transition-all shadow-sm flex items-center gap-1.5"
+            <button 
+              onClick={() => setIsLoginModalOpen(true)}
+              className="bg-primary hover:bg-primary/95 text-white font-button text-xs font-semibold px-4 py-2 rounded-lg transition-all shadow-sm flex items-center gap-1.5 border-none cursor-pointer"
             >
               <span className="material-symbols-outlined text-sm">login</span> Login
-            </Link>
+            </button>
           )}
 
           <button className="md:hidden text-on-surface-variant p-1" onClick={() => setIsOpen(!isOpen)} aria-label="Toggle Menu">
@@ -154,17 +153,19 @@ function Navbar() {
                 </button>
               </div>
             ) : (
-              <Link 
-                to="/login" 
-                onClick={() => setIsOpen(false)}
-                className="w-full bg-primary text-white text-center py-2.5 rounded-lg font-bold text-sm mt-2 flex items-center justify-center gap-2"
+              <button 
+                onClick={() => { setIsOpen(false); setIsLoginModalOpen(true); }}
+                className="w-full bg-primary text-white text-center py-2.5 rounded-lg font-bold text-sm mt-2 flex items-center justify-center gap-2 border-none cursor-pointer"
               >
                 <span className="material-symbols-outlined">login</span> Login / Sign Up
-              </Link>
+              </button>
             )}
           </div>
         </div>
       )}
+
+      {/* Render Login Modal */}
+      <LoginModal isOpen={isLoginModalOpen} onClose={() => setIsLoginModalOpen(false)} />
     </nav>
   )
 }
