@@ -29,8 +29,10 @@ export default function BottomDock({ isChatOpen, onOpenChat, onCloseChat }: Bott
     active: location.pathname === nav.path,
   }))
 
+  if (location.pathname === '/login') return null
+
   return (
-    <div className="fixed bottom-0 left-0 right-0 z-50 flex flex-col items-center pb-2 gap-1.5 pointer-events-none">
+    <div className="fixed bottom-0 left-0 right-0 z-50 flex flex-col items-center pb-2 gap-8 pointer-events-none">
 
       {/* "How can I help you today?" or "Close Chat" pill */}
       <motion.button
@@ -57,7 +59,7 @@ export default function BottomDock({ isChatOpen, onOpenChat, onCloseChat }: Bott
         )}
         <span
           className="text-xs font-semibold tracking-wide"
-          style={{ color: isChatOpen ? 'white' : 'rgba(255,255,255,0.95)', textShadow: isChatOpen ? 'none' : '0 1px 4px rgba(0,0,0,0.3)' }}
+          style={{ color: isChatOpen ? 'black' : 'rgba(0,0,0,0.85)', textShadow: 'none' }}
         >
           {isChatOpen ? 'Close Chat' : 'How can I help you today?'}
         </span>

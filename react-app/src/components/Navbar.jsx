@@ -72,54 +72,66 @@ function Navbar() {
             <div className="relative">
               <button 
                 onClick={() => setShowUserDropdown(!showUserDropdown)} 
-                className="flex items-center gap-1.5 focus:outline-none hover:text-primary transition-colors duration-150 p-1"
+                className="flex items-center gap-2 focus:outline-none hover:opacity-80 transition-opacity duration-150 p-1"
               >
-                <span className="material-symbols-outlined text-[24px]">account_circle</span>
-                <span className="hidden md:inline font-body-md text-xs font-semibold max-w-[100px] truncate">
-                  {user.user_metadata?.full_name || user.email.split('@')[0]}
+                {/* Gradient Avatar in Navbar */}
+                <div className="w-8 h-8 rounded-full bg-gradient-to-br from-teal-400 via-blue-500 to-purple-600 flex items-center justify-center text-white text-sm font-bold shadow-sm shrink-0">
+                  {user.user_metadata?.full_name ? user.user_metadata.full_name.charAt(0).toUpperCase() : 'U'}
+                </div>
+                
+                <span className="hidden md:inline font-body-md text-sm font-semibold max-w-[100px] truncate text-gray-700">
+                  {user.user_metadata?.full_name || user.email?.split('@')[0]}
                 </span>
-                <span className="material-symbols-outlined text-xs">arrow_drop_down</span>
+                <span className="material-symbols-outlined text-sm text-gray-500">expand_more</span>
               </button>
               
               {showUserDropdown && (
-                <div className="absolute right-0 mt-2 w-[280px] bg-white rounded-2xl border border-gray-200 shadow-2xl py-2 z-50 animate-fade-in text-gray-800 font-sans">
-                  <div className="px-5 py-4 border-b border-gray-100 flex items-center gap-3">
-                    <div className="w-12 h-12 rounded-full bg-gradient-to-br from-teal-400 to-indigo-500 flex items-center justify-center text-white text-lg font-bold shadow-inner">
+                <div className="absolute right-0 mt-3 w-[260px] bg-white rounded-2xl border border-gray-200 shadow-[0_8px_30px_rgb(0,0,0,0.12)] py-2 z-50 animate-fade-in font-sans">
+                  
+                  {/* Header / User Info */}
+                  <div className="px-4 py-3 flex items-center gap-3">
+                    <div className="w-11 h-11 rounded-full bg-gradient-to-br from-teal-400 via-blue-500 to-purple-600 flex items-center justify-center text-white text-lg font-bold shadow-sm shrink-0">
                       {user.user_metadata?.full_name ? user.user_metadata.full_name.charAt(0).toUpperCase() : 'U'}
                     </div>
-                    <div className="flex flex-col">
-                      <p className="text-base font-bold text-gray-900 m-0 leading-tight">
+                    <div className="flex flex-col overflow-hidden">
+                      <p className="text-[15px] font-bold text-gray-900 m-0 leading-tight truncate">
                         {user.user_metadata?.full_name || "Traveler"}
                       </p>
-                      <p className="text-[13px] text-gray-500 m-0 mt-0.5 truncate max-w-[180px]">
+                      <p className="text-[12px] text-gray-500 m-0 mt-0.5 truncate">
                         {user.email}
                       </p>
                     </div>
                   </div>
                   
-                  <div className="py-2 border-b border-gray-100">
+                  <div className="h-px bg-gray-100 w-full my-1"></div>
+                  
+                  {/* Menu Items */}
+                  <div className="py-1">
                     <Link 
                       to="/profile" 
                       onClick={() => setShowUserDropdown(false)} 
-                      className="w-full text-left px-5 py-2.5 text-[15px] text-gray-700 hover:bg-gray-50 transition-colors flex items-center gap-3 no-underline block"
+                      className="w-full text-left px-4 py-2.5 text-[14px] font-medium text-gray-700 hover:bg-gray-50 transition-colors flex items-center gap-3 no-underline block"
                     >
-                      <span className="material-symbols-outlined text-[20px] font-light">person</span> View Profile
+                      <span className="material-symbols-outlined text-[20px] text-gray-500">person</span> View Profile
                     </Link>
                     <Link 
                       to="/settings" 
                       onClick={() => setShowUserDropdown(false)} 
-                      className="w-full text-left px-5 py-2.5 text-[15px] text-gray-700 hover:bg-gray-50 transition-colors flex items-center gap-3 no-underline block"
+                      className="w-full text-left px-4 py-2.5 text-[14px] font-medium text-gray-700 hover:bg-gray-50 transition-colors flex items-center gap-3 no-underline block"
                     >
-                      <span className="material-symbols-outlined text-[20px] font-light">settings</span> Settings
+                      <span className="material-symbols-outlined text-[20px] text-gray-500">settings</span> Settings
                     </Link>
                   </div>
                   
-                  <div className="px-4 py-2 mt-1">
+                  <div className="h-px bg-gray-100 w-full my-1"></div>
+                  
+                  {/* Sign Out Button */}
+                  <div className="px-4 py-3">
                     <button 
                       onClick={handleLogout} 
-                      className="w-full text-left px-4 py-2.5 text-[15px] text-gray-700 hover:text-red-600 hover:bg-red-50 rounded-xl transition-all flex items-center gap-3 border-none cursor-pointer bg-transparent"
+                      className="w-full text-center py-2.5 text-[14px] font-semibold text-gray-700 bg-white border border-gray-300 hover:border-gray-400 hover:bg-gray-50 rounded-xl transition-all cursor-pointer"
                     >
-                      <span className="material-symbols-outlined text-[20px] font-light">logout</span> Sign Out
+                      Sign Out
                     </button>
                   </div>
                 </div>

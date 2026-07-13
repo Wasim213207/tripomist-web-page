@@ -101,7 +101,7 @@ export default function GooeyDock({ items, className }: GooeyDockProps) {
                         "relative rounded-full backdrop-blur-xl h-9 w-9",
                         isActive
                           ? "bg-primary/20 text-primary"
-                          : "bg-white/10 text-white hover:bg-white/20",
+                          : "bg-black/5 text-gray-800 hover:bg-black/10 hover:text-black",
                       )}
                       onClick={item.onClick}
                       aria-label={item.label}
