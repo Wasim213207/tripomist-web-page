@@ -12,7 +12,6 @@ import ShippingPolicy from './pages/ShippingPolicy'
 import TermsConditions from './pages/TermsConditions'
 import ContactUs from './pages/ContactUs'
 import Login from './pages/Login'
-import SignUp from './pages/SignUp'
 import Settings from './pages/Settings'
 import Profile from './pages/Profile'
 import Search from './pages/Search'
@@ -48,7 +47,6 @@ function App() {
         <Route path="/itinerary/:id" element={<ItinerarySpiti />} />
         <Route path="/checkout" element={<Checkout />} />
         <Route path="/login" element={<Login />} />
-        <Route path="/signup" element={<SignUp />} />
         <Route path="/settings" element={<Settings />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/search" element={<Search />} />
