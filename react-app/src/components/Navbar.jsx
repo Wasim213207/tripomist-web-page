@@ -1,14 +1,11 @@
-import React, { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import { Link, useNavigate, useLocation } from 'react-router-dom'
 import { supabase } from '../utils/supabaseClient'
-import LoginModal from './LoginModal'
 
 function Navbar() {
   const [isOpen, setIsOpen] = useState(false)
-  const [searchValue, setSearchValue] = useState('')
   const [user, setUser] = useState(null)
   const [showUserDropdown, setShowUserDropdown] = useState(false)
-  const [isLoginModalOpen, setIsLoginModalOpen] = useState(false)
   
   const navigate = useNavigate()
   const location = useLocation()
@@ -85,38 +82,56 @@ function Navbar() {
               </button>
               
               {showUserDropdown && (
-                <div className="absolute right-0 mt-2 w-48 bg-white dark:bg-surface-container-high rounded-xl border border-outline-variant/30 shadow-xl py-2 z-50 animate-fade-in">
-                  <div className="px-4 py-2 border-b border-outline-variant/20">
-                    <p class="text-xs font-bold text-on-surface truncate">
-                      {user.user_metadata?.full_name || "Traveler"}
-                    </p>
-                    <p class="text-[10px] text-on-surface-variant truncate">
-                      {user.email}
-                    </p>
+                <div className="absolute right-0 mt-2 w-[280px] bg-[#1a1a1a] rounded-2xl border border-gray-800 shadow-2xl py-2 z-50 animate-fade-in text-white font-sans">
+                  <div className="px-5 py-4 border-b border-gray-800 flex items-center gap-3">
+                    <div className="w-12 h-12 rounded-full bg-gradient-to-br from-teal-400 to-indigo-500 flex items-center justify-center text-white text-lg font-bold shadow-inner">
+                      {user.user_metadata?.full_name ? user.user_metadata.full_name.charAt(0).toUpperCase() : 'U'}
+                    </div>
+                    <div className="flex flex-col">
+                      <p className="text-base font-bold text-white m-0 leading-tight">
+                        {user.user_metadata?.full_name || "Traveler"}
+                      </p>
+                      <p className="text-[13px] text-gray-400 m-0 mt-0.5 truncate max-w-[180px]">
+                        {user.email}
+                      </p>
+                    </div>
                   </div>
-                  <Link 
-                    to="/profile" 
-                    onClick={() => setShowUserDropdown(false)} 
-                    className="w-full text-left px-4 py-2 text-sm text-on-surface hover:bg-surface-container-low transition-colors flex items-center gap-2 no-underline block"
-                  >
-                    <span className="material-symbols-outlined text-sm">person</span> Profile Dashboard
-                  </Link>
-                  <button 
-                    onClick={handleLogout} 
-                    className="w-full text-left px-4 py-2 text-sm text-red-500 hover:bg-surface-container-low transition-colors flex items-center gap-2 border-none bg-transparent"
-                  >
-                    <span className="material-symbols-outlined text-sm">logout</span> Logout
-                  </button>
+                  
+                  <div className="py-2">
+                    <Link 
+                      to="/profile" 
+                      onClick={() => setShowUserDropdown(false)} 
+                      className="w-full text-left px-5 py-2.5 text-[15px] text-gray-200 hover:bg-white/5 transition-colors flex items-center gap-3 no-underline block"
+                    >
+                      <span className="material-symbols-outlined text-[20px] font-light">person</span> View Profile
+                    </Link>
+                    <Link 
+                      to="/settings" 
+                      onClick={() => setShowUserDropdown(false)} 
+                      className="w-full text-left px-5 py-2.5 text-[15px] text-gray-200 hover:bg-white/5 transition-colors flex items-center gap-3 no-underline block"
+                    >
+                      <span className="material-symbols-outlined text-[20px] font-light">settings</span> Settings
+                    </Link>
+                  </div>
+                  
+                  <div className="px-4 py-2 mt-1">
+                    <button 
+                      onClick={handleLogout} 
+                      className="w-full text-center px-4 py-2.5 text-[14px] text-gray-300 hover:text-white bg-white/5 hover:bg-white/10 rounded-xl transition-all font-medium border border-white/5 cursor-pointer"
+                    >
+                      Sign Out
+                    </button>
+                  </div>
                 </div>
               )}
             </div>
           ) : (
-            <button 
-              onClick={() => setIsLoginModalOpen(true)}
+            <Link 
+              to="/login"
               className="bg-primary hover:bg-primary/95 text-white font-button text-xs font-semibold px-4 py-2 rounded-lg transition-all shadow-sm flex items-center gap-1.5 border-none cursor-pointer"
             >
               <span className="material-symbols-outlined text-sm">login</span> Login
-            </button>
+            </Link>
           )}
 
           <button className="md:hidden text-on-surface-variant p-1" onClick={() => setIsOpen(!isOpen)} aria-label="Toggle Menu">
@@ -153,19 +168,17 @@ function Navbar() {
                 </button>
               </div>
             ) : (
-              <button 
-                onClick={() => { setIsOpen(false); setIsLoginModalOpen(true); }}
-                className="w-full bg-primary text-white text-center py-2.5 rounded-lg font-bold text-sm mt-2 flex items-center justify-center gap-2 border-none cursor-pointer"
+              <Link 
+                to="/login"
+                onClick={() => setIsOpen(false)}
+                className="w-full bg-primary text-white text-center py-2.5 rounded-lg font-bold text-sm mt-2 flex items-center justify-center gap-2 border-none cursor-pointer block"
               >
                 <span className="material-symbols-outlined">login</span> Login / Sign Up
-              </button>
+              </Link>
             )}
           </div>
         </div>
       )}
-
-      {/* Render Login Modal */}
-      <LoginModal isOpen={isLoginModalOpen} onClose={() => setIsLoginModalOpen(false)} />
     </nav>
   )
 }

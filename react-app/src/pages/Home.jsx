@@ -60,40 +60,29 @@ function Home() {
         <section className="py-12 px-4 md:px-8 max-w-container-max mx-auto bg-surface-container-lowest">
           <div className="flex flex-col md:flex-row md:items-center justify-between mb-8 gap-4">
             <h2 className="font-headline-md text-headline-md text-on-surface font-bold">Explore Destinations</h2>
-            <div className="flex gap-3 overflow-x-auto hide-scrollbar py-1">
-              <Link to="/group-trips" className="whitespace-nowrap px-4 py-2 rounded-full border-2 border-primary text-primary font-button text-button flex items-center gap-2 bg-primary/5 cursor-pointer">
-                <span className="material-symbols-outlined" style={{ fontSize: '18px' }}>public</span> All
-              </Link>
-              <Link to="/group-trips?style=Mountains" className="whitespace-nowrap px-4 py-2 rounded-full border border-outline-variant/50 text-on-surface hover:border-primary hover:text-primary hover:bg-primary/5 transition-colors font-button text-button flex items-center gap-2 bg-surface cursor-pointer">
-                <span className="material-symbols-outlined" style={{ fontSize: '18px' }}>landscape</span> Mountains
-              </Link>
-              <Link to="/group-trips?style=Beaches" className="whitespace-nowrap px-4 py-2 rounded-full border border-outline-variant/50 text-on-surface hover:border-primary hover:text-primary hover:bg-primary/5 transition-colors font-button text-button flex items-center gap-2 bg-surface cursor-pointer">
-                <span className="material-symbols-outlined" style={{ fontSize: '18px' }}>beach_access</span> Beaches
-              </Link>
-            </div>
           </div>
           
           <div className="flex gap-8 overflow-x-auto hide-scrollbar py-4 px-2 -mx-2">
-            {/* Spain */}
-            <div onClick={() => navigate('/group-trips?search=Spain')} className="flex flex-col items-center gap-3 cursor-pointer group min-w-[100px] destination-circle">
+            {/* Uttarakhand */}
+            <div onClick={() => navigate('/uttarakhand')} className="flex flex-col items-center gap-3 cursor-pointer group min-w-[100px] destination-circle">
               <div className="w-24 h-24 rounded-full overflow-hidden border-2 border-transparent group-hover:border-primary transition-all duration-300 shadow-sm group-hover:shadow-md group-hover:-translate-y-1">
-                <img className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105" alt="Spain" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBg6Yy2y1B5_zWhldPgOEjCjf_mFK-MB5PkN0aygVffQIP-tCSPDr5lepNbZ9SiqN36VBop5DEfKD9iuXPhOykaVrbRxg_CNqaR5Ga-8N21myCpBf0_mblz5ozmxPPeZzvZUFzICH8Nf0ej71uXRPpT3jiDlXwrLrSM3Dg3e9k-PLX9JQhVuY8ywoVk1hgOYZ_aIgNVhPhPCEeORhAJzGmZgs3iIYpWea9JW4EvAQOnyFq181A4snTAsYTLEPTAl8LuIv_cXqeNqlFB" />
+                <img className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105" alt="Uttarakhand" src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=600&q=80" />
               </div>
-              <span className="font-button text-button text-on-surface group-hover:text-primary text-center max-w-[100px] leading-tight transition-colors">Spain & Ibiza</span>
+              <span className="font-button text-button text-on-surface group-hover:text-primary text-center max-w-[100px] leading-tight transition-colors">Uttarakhand</span>
             </div>
-            {/* Japan */}
-            <div onClick={() => navigate('/group-trips?search=Japan')} className="flex flex-col items-center gap-3 cursor-pointer group min-w-[100px] destination-circle">
+            {/* Himachal Pradesh */}
+            <div onClick={() => navigate('/himachal')} className="flex flex-col items-center gap-3 cursor-pointer group min-w-[100px] destination-circle">
               <div className="w-24 h-24 rounded-full overflow-hidden border-2 border-transparent group-hover:border-primary transition-all duration-300 shadow-sm group-hover:shadow-md group-hover:-translate-y-1">
-                <img className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105" alt="Japan" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD8DxhOnB12NwDl9aSCd17cmp-hBViBvqvS-mQG__5JFfNGB1OWdWCrkklFOtMxqSmHS878pacq5l8_uX0qmWEuU5DxxOFyfI4gnNFJdFay7qwNfnwfqEJfORb6ea9_WCcGjGuSySGUQBM1akWuJULFuw4DbYMnX2UJruyzBMH3_n4LTH63bSqelO0NhSYXfaYT3pq5IW5vFRFaQ4q8UR5zW2Qzh6eTQwwdXnqrpAz-N6frYOVxJoxA19vOvRquurOoXB7OZVoebAWM" />
+                <img className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105" alt="Himachal Pradesh" src="https://images.unsplash.com/photo-1626621341517-bbf3d9990a23?w=600&q=80" />
               </div>
-              <span className="font-button text-button text-on-surface group-hover:text-primary text-center transition-colors">Japan</span>
+              <span className="font-button text-button text-on-surface group-hover:text-primary text-center transition-colors">Himachal Pradesh</span>
             </div>
-            {/* Vietnam */}
-            <div onClick={() => navigate('/group-trips?search=Vietnam')} className="flex flex-col items-center gap-3 cursor-pointer group min-w-[100px] destination-circle">
+            {/* Kashmir */}
+            <div onClick={() => navigate('/group-trips?search=Kashmir')} className="flex flex-col items-center gap-3 cursor-pointer group min-w-[100px] destination-circle">
               <div className="w-24 h-24 rounded-full overflow-hidden border-2 border-transparent group-hover:border-primary transition-all duration-300 shadow-sm group-hover:shadow-md group-hover:-translate-y-1">
-                <img className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105" alt="Vietnam" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBHQqdIRbvN9sWBUtDeTOLN4RI3y2AbjTMoiNX3ucdssWRlILrLBRoyM2nfFOeYZYb2-_BACX1poFT6Bmg8wVkf21C_NdzoCTz_ylxhI3HnmSBbjh_2r-QOinsuIe8gRdkO4_2T0h1GOAadQUkBYjFg77L2XL-Macwm-oYcc2cf-uW3zM1VkHqbkV3ZNaXfah6an2uXwuWBFBNGbC56xp0nz7O5cGtoPjfNdQVh2LwRP_LeVFzI2HnwXTEAH3JaWSBawED0T04k8Rl5" />
+                <img className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105" alt="Kashmir" src="https://images.unsplash.com/photo-1595815771614-ade9d652a65d?w=600&q=80" />
               </div>
-              <span className="font-button text-button text-on-surface group-hover:text-primary text-center transition-colors">Vietnam</span>
+              <span className="font-button text-button text-on-surface group-hover:text-primary text-center transition-colors">Kashmir</span>
             </div>
             {/* Bali */}
             <div onClick={() => navigate('/group-trips?search=Bali')} className="flex flex-col items-center gap-3 cursor-pointer group min-w-[100px] destination-circle">

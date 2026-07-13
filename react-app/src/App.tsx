@@ -1,5 +1,5 @@
-import React, { useState } from 'react'
-import { Routes, Route } from 'react-router-dom'
+import React, { useState, useEffect } from 'react'
+import { Routes, Route, useLocation } from 'react-router-dom'
 import Home from './pages/Home'
 import WeekendTrips from './pages/WeekendTrips'
 import UpcomingTrips from './pages/UpcomingTrips'
@@ -12,6 +12,8 @@ import ShippingPolicy from './pages/ShippingPolicy'
 import TermsConditions from './pages/TermsConditions'
 import ContactUs from './pages/ContactUs'
 import Login from './pages/Login'
+import SignUp from './pages/SignUp'
+import Settings from './pages/Settings'
 import Profile from './pages/Profile'
 import Search from './pages/Search'
 import Uttarakhand from './pages/Uttarakhand'
@@ -20,11 +22,21 @@ import AboutUs from './pages/AboutUs'
 import BottomDock from './components/BottomDock'
 import Chatbot from './components/Chatbot'
 
+// Create a component that forces layout re-render on route change
+function ScrollToTop() {
+  const { pathname } = useLocation();
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
+  return null;
+}
+
 function App() {
   const [chatOpen, setChatOpen] = useState(false)
 
   return (
     <>
+      <ScrollToTop />
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/weekend-trips" element={<WeekendTrips />} />
@@ -36,6 +48,8 @@ function App() {
         <Route path="/itinerary/:id" element={<ItinerarySpiti />} />
         <Route path="/checkout" element={<Checkout />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/signup" element={<SignUp />} />
+        <Route path="/settings" element={<Settings />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/search" element={<Search />} />
         <Route path="/privacy-policy" element={<PrivacyPolicy />} />
