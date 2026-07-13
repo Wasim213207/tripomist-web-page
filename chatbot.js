@@ -27,7 +27,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // Create Chat Window DOM Element
   const chatWindow = document.createElement('div');
   chatWindow.id = 'chatbot-window';
-  chatWindow.className = 'fixed bottom-24 left-8 z-50 w-full max-w-[360px] sm:max-w-[400px] h-[500px] sm:h-[550px] rounded-[1.5rem] overflow-hidden flex flex-col bg-white/95 backdrop-blur-md shadow-2xl border border-outline-variant/30 transition-all duration-300 hidden';
+  chatWindow.className = 'fixed bottom-[150px] md:bottom-28 left-4 md:left-8 z-50 w-[calc(100%-2rem)] sm:w-auto max-w-[360px] sm:max-w-[400px] h-[480px] sm:h-[520px] rounded-[1.5rem] overflow-hidden flex flex-col bg-white/95 backdrop-blur-md shadow-2xl border border-outline-variant/30 transition-all duration-300 hidden';
   
   chatWindow.innerHTML = `
     <!-- Header -->
@@ -148,19 +148,32 @@ document.addEventListener('DOMContentLoaded', () => {
   // Toggle Chat Window
   function toggleChat() {
     isOpen = !isOpen;
+    const triggerIcon = document.getElementById('chatbot-trigger-icon');
+    const triggerText = document.getElementById('chatbot-trigger-text');
+    
     if (isOpen) {
       chatWindow.classList.remove('hidden');
       renderMessages();
       
       // Update trigger icon
-      triggerBtn.innerHTML = '<span class="material-symbols-outlined text-[28px] leading-none">close</span>';
+      if (triggerIcon && triggerText) {
+        triggerIcon.textContent = 'close';
+        triggerText.textContent = 'Close Chat';
+      } else {
+        triggerBtn.innerHTML = '<span class="material-symbols-outlined text-[28px] leading-none">close</span>';
+      }
       
       // Remove green badge if any
-      const badge = triggerBtn.querySelector('span.absolute');
+      const badge = triggerBtn.querySelector('.notification-badge-el');
       if (badge) badge.remove();
     } else {
       chatWindow.classList.add('hidden');
-      triggerBtn.innerHTML = '<span class="material-symbols-outlined text-[28px] leading-none">smart_toy</span>';
+      if (triggerIcon && triggerText) {
+        triggerIcon.textContent = 'chat_bubble';
+        triggerText.textContent = 'How can I help you today?';
+      } else {
+        triggerBtn.innerHTML = '<span class="material-symbols-outlined text-[28px] leading-none">smart_toy</span>';
+      }
     }
   }
 
@@ -246,7 +259,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Add green badge to notify the user there is a bot ready
   const notificationBadge = document.createElement('span');
-  notificationBadge.className = 'absolute -top-1 -right-1 flex h-3.5 w-3.5';
+  notificationBadge.className = 'absolute -top-1 -right-1 flex h-3.5 w-3.5 notification-badge-el';
   notificationBadge.innerHTML = `
     <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
     <span class="relative inline-flex rounded-full h-3.5 w-3.5 bg-emerald-500"></span>

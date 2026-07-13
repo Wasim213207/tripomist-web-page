@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
-  <title>TripoMist - Contact Us</title>
+  <title>TripoMist - Your Travel Cart</title>
   <link href="https://fonts.googleapis.com" rel="preconnect">
   <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect">
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
@@ -64,6 +64,40 @@
               "background": "#faf8ff",
               "tertiary-container": "#949da3",
               "on-secondary-fixed": "#001e2b"
+            },
+            "borderRadius": {
+              "DEFAULT": "0.25rem",
+              "lg": "0.5rem",
+              "xl": "0.75rem",
+              "full": "9999px"
+            },
+            "spacing": {
+              "md": "24px",
+              "margin": "32px",
+              "xs": "8px",
+              "sm": "16px",
+              "gutter": "24px",
+              "xl": "80px",
+              "lg": "48px",
+              "base": "4px"
+            },
+            "fontFamily": {
+              "headline-lg": ["Manrope"],
+              "headline-md": ["Manrope"],
+              "display-lg": ["Manrope"],
+              "body-lg": ["Inter"],
+              "label-sm": ["JetBrains Mono"],
+              "headline-lg-mobile": ["Manrope"],
+              "body-md": ["Inter"]
+            },
+            "fontSize": {
+              "headline-lg": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "700" }],
+              "headline-md": ["24px", { "lineHeight": "32px", "fontWeight": "600" }],
+              "display-lg": ["48px", { "lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "800" }],
+              "body-lg": ["18px", { "lineHeight": "28px", "fontWeight": "400" }],
+              "label-sm": ["12px", { "lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "500" }],
+              "headline-lg-mobile": ["28px", { "lineHeight": "36px", "fontWeight": "700" }],
+              "body-md": ["16px", { "lineHeight": "24px", "fontWeight": "400" }]
             }
           }
         }
@@ -76,7 +110,7 @@
       backdrop-filter: blur(20px);
       -webkit-backdrop-filter: blur(20px);
       border: 1px solid rgba(226, 232, 240, 0.8);
-      box-shadow: 0 10px 25px -5px rgba(14, 165, 233, 0.05);
+      box-shadow: 0 10px 25px -5px rgba(0, 101, 145, 0.05);
     }
     .input-glass {
       background-color: #F8FAFC;
@@ -85,140 +119,185 @@
     }
     .input-glass:focus {
       background-color: #FFFFFF;
-      border-color: #0EA5E9;
-      box-shadow: 0 0 0 2px rgba(14, 165, 233, 0.1);
+      border-color: #006591;
+      box-shadow: 0 0 0 2px rgba(0, 101, 145, 0.1);
     }
   </style>
 </head>
-<body class="bg-surface text-on-surface antialiased font-body-md min-h-screen flex flex-col">
+<body class="bg-surface text-on-surface antialiased font-body-md selection:bg-primary-container selection:text-on-primary-container min-h-screen flex flex-col pb-36">
 
-  <!-- Header -->
+  <!-- Top Navigation Header -->
   <header class="bg-white/80 backdrop-blur-md border-b border-outline-variant/30 sticky top-0 z-40">
     <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
       <a class="font-headline-md text-headline-md font-bold tracking-tight text-primary flex items-center gap-2 hover:opacity-95" href="index.html">
         <span class="material-symbols-outlined text-[24px]">arrow_back</span>
-        Back to Home
+        <span>TripoMist</span>
       </a>
-      <span class="text-on-surface-variant font-bold text-sm tracking-widest uppercase">TripoMist Travel</span>
+      <div class="flex items-center gap-4">
+        <span class="text-sm font-medium text-on-surface-variant/80">Your Trip Cart</span>
+        <span class="material-symbols-outlined text-primary text-[20px]">shopping_cart</span>
+      </div>
     </div>
   </header>
 
   <!-- Main Content -->
-  <main class="flex-grow max-w-7xl mx-auto w-full px-6 py-12">
-    <div class="text-center mb-12">
-      <h1 class="font-display-lg text-4xl md:text-5xl font-bold text-on-surface mb-4">Contact Us</h1>
-      <p class="text-on-surface-variant max-w-2xl mx-auto text-lg">Have any queries, suggestions, or need customized trip planning? Get in touch with our team.</p>
-    </div>
-
-    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-      <!-- Contact Info Cards -->
-      <div class="lg:col-span-5 space-y-6">
-        <div class="glass-panel rounded-2xl p-6 relative overflow-hidden flex gap-4">
-          <div class="absolute top-0 left-0 w-1.5 h-full bg-primary"></div>
-          <span class="material-symbols-outlined text-primary text-3xl">store</span>
-          <div>
-            <h3 class="font-bold text-lg mb-1 text-on-surface">Trade Name</h3>
-            <p class="text-on-surface-variant">TripoMist (TripoMist Travel Agency)</p>
+  <main class="flex-grow max-w-7xl w-full mx-auto px-6 py-8">
+    <h1 class="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-surface mb-8">Trips in your Cart</h1>
+    
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+      
+      <!-- Cart Items Section -->
+      <div class="lg:col-span-2 flex flex-col gap-6" id="cart-items-container">
+        
+        <!-- Cart Item 1 -->
+        <div class="glass-panel p-5 rounded-2xl flex flex-col sm:flex-row gap-5 transition-all duration-300 relative group" id="cart-item-1" data-price="22500">
+          <div class="w-full sm:w-44 h-32 rounded-xl overflow-hidden bg-slate-100 flex-shrink-0">
+            <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuBg6Yy2y1B5_zWhldPgOEjCjf_mFK-MB5PkN0aygVffQIP-tCSPDr5lepNbZ9SiqN36VBop5DEfKD9iuXPhOykaVrbRxg_CNqaR5Ga-8N21myCpBf0_mblz5ozmxPPeZzvZUFzICH8Nf0ej71uXRPpT3jiDlXwrLrSM3Dg3e9k-PLX9JQhVuY8ywoVk1hgOYZ_aIgNVhPhPCEeORhAJzGmZgs3iIYpWea9JW4EvAQOnyFq181A4snTAsYTLEPTAl8LuIv_cXqeNqlFB" alt="Spiti Valley" class="w-full h-full object-cover">
+          </div>
+          <div class="flex-grow flex flex-col justify-between">
+            <div>
+              <div class="flex items-center justify-between mb-1.5">
+                <span class="text-xs font-semibold text-primary uppercase tracking-wider">Group Trip</span>
+                <button onclick="removeItem(1)" class="text-on-surface-variant/40 hover:text-error transition-colors p-1" title="Remove trip">
+                  <span class="material-symbols-outlined text-[20px]">delete</span>
+                </button>
+              </div>
+              <h3 class="font-bold text-lg text-on-surface mb-1">Spiti Valley Winter Expedition</h3>
+              <p class="text-sm text-on-surface-variant flex items-center gap-1.5 mb-3">
+                <span class="material-symbols-outlined text-[16px]">calendar_today</span>
+                <span>20 Feb - 27 Feb 2026 (7N/8D)</span>
+              </p>
+            </div>
+            
+            <div class="flex flex-wrap items-center justify-between gap-4 border-t border-slate-100 pt-3">
+              <!-- Traveler Counter -->
+              <div class="flex items-center gap-1.5">
+                <span class="text-xs text-on-surface-variant font-medium mr-2">Travelers:</span>
+                <div class="flex items-center border border-outline/30 rounded-lg overflow-hidden bg-slate-50/50">
+                  <button onclick="updateQty(1, -1)" class="px-2.5 py-1 text-on-surface-variant hover:bg-slate-100 transition-colors font-bold">-</button>
+                  <span id="qty-1" class="px-3 text-sm font-semibold text-on-surface">1</span>
+                  <button onclick="updateQty(1, 1)" class="px-2.5 py-1 text-on-surface-variant hover:bg-slate-100 transition-colors font-bold">+</button>
+                </div>
+              </div>
+              
+              <!-- Pricing -->
+              <div class="text-right">
+                <span class="text-xs text-on-surface-variant block">₹22,500 / traveler</span>
+                <span class="font-headline-md text-lg text-primary font-bold">₹<span id="price-1">22,500</span></span>
+              </div>
+            </div>
           </div>
         </div>
 
-        <div class="glass-panel rounded-2xl p-6 relative overflow-hidden flex gap-4">
-          <div class="absolute top-0 left-0 w-1.5 h-full bg-primary"></div>
-          <span class="material-symbols-outlined text-primary text-3xl">location_on</span>
-          <div>
-            <h3 class="font-bold text-lg mb-1 text-on-surface">Registered Address</h3>
-            <p class="text-on-surface-variant leading-relaxed">
-              3rd Floor, Main Ring Road,<br>
-              Rajouri Garden, New Delhi,<br>
-              Delhi, 110027, India
-            </p>
+        <!-- Cart Item 2 -->
+        <div class="glass-panel p-5 rounded-2xl flex flex-col sm:flex-row gap-5 transition-all duration-300 relative group" id="cart-item-2" data-price="6499">
+          <div class="w-full sm:w-44 h-32 rounded-xl overflow-hidden bg-slate-100 flex-shrink-0">
+            <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuBHQqdIRbvN9sWBUtDeTOLN4RI3y2AbjTMoiNX3ucdssWRlILrLBRoyM2nfFOeYZYb2-_BACX1poFT6Bmg8wVkf21C_NdzoCTz_ylxhI3HnmSBbjh_2r-QOinsuIe8gRdkO4_2T0h1GOAadQUkBYjFg77L2XL-Macwm-oYcc2cf-uW3zM1VkHqbkV3ZNaXfah6an2uXwuWBFBNGbC56xp0nz7O5cGtoPjfNdQVh2LwRP_LeVFzI2HnwXTEAH3JaWSBawED0T04k8Rl5" alt="Mussoorie" class="w-full h-full object-cover">
+          </div>
+          <div class="flex-grow flex flex-col justify-between">
+            <div>
+              <div class="flex items-center justify-between mb-1.5">
+                <span class="text-xs font-semibold text-emerald-600 uppercase tracking-wider">Weekend Trip</span>
+                <button onclick="removeItem(2)" class="text-on-surface-variant/40 hover:text-error transition-colors p-1" title="Remove trip">
+                  <span class="material-symbols-outlined text-[20px]">delete</span>
+                </button>
+              </div>
+              <h3 class="font-bold text-lg text-on-surface mb-1">Weekend Getaway to Mussoorie</h3>
+              <p class="text-sm text-on-surface-variant flex items-center gap-1.5 mb-3">
+                <span class="material-symbols-outlined text-[16px]">calendar_today</span>
+                <span>12 Mar - 14 Mar 2026 (2N/3D)</span>
+              </p>
+            </div>
+            
+            <div class="flex flex-wrap items-center justify-between gap-4 border-t border-slate-100 pt-3">
+              <!-- Traveler Counter -->
+              <div class="flex items-center gap-1.5">
+                <span class="text-xs text-on-surface-variant font-medium mr-2">Travelers:</span>
+                <div class="flex items-center border border-outline/30 rounded-lg overflow-hidden bg-slate-50/50">
+                  <button onclick="updateQty(2, -1)" class="px-2.5 py-1 text-on-surface-variant hover:bg-slate-100 transition-colors font-bold">-</button>
+                  <span id="qty-2" class="px-3 text-sm font-semibold text-on-surface">1</span>
+                  <button onclick="updateQty(2, 1)" class="px-2.5 py-1 text-on-surface-variant hover:bg-slate-100 transition-colors font-bold">+</button>
+                </div>
+              </div>
+              
+              <!-- Pricing -->
+              <div class="text-right">
+                <span class="text-xs text-on-surface-variant block">₹6,499 / traveler</span>
+                <span class="font-headline-md text-lg text-primary font-bold">₹<span id="price-2">6,499</span></span>
+              </div>
+            </div>
           </div>
         </div>
 
-        <div class="glass-panel rounded-2xl p-6 relative overflow-hidden flex gap-4">
-          <div class="absolute top-0 left-0 w-1.5 h-full bg-primary"></div>
-          <span class="material-symbols-outlined text-primary text-3xl">call</span>
-          <div>
-            <h3 class="font-bold text-lg mb-1 text-on-surface">Phone Number</h3>
-            <a href="tel:+919990802608" class="text-primary font-semibold hover:underline">+91 9990802608</a>
-            <p class="text-xs text-on-surface-variant mt-1">Available 10:00 AM - 7:00 PM (Mon-Sat)</p>
-          </div>
-        </div>
-
-        <div class="glass-panel rounded-2xl p-6 relative overflow-hidden flex gap-4">
-          <div class="absolute top-0 left-0 w-1.5 h-full bg-primary"></div>
-          <span class="material-symbols-outlined text-primary text-3xl">mail</span>
-          <div>
-            <h3 class="font-bold text-lg mb-1 text-on-surface">Email Address</h3>
-            <a href="mailto:contact@tripomist.com" class="text-primary font-semibold hover:underline">contact@tripomist.com</a>
-            <p class="text-xs text-on-surface-variant mt-1">We typically reply within 24 hours.</p>
-          </div>
+        <!-- Empty Cart State (Hidden by default) -->
+        <div class="glass-panel p-12 text-center rounded-2xl hidden" id="empty-cart-state">
+          <span class="material-symbols-outlined text-[64px] text-on-surface-variant/20 mb-4">shopping_cart_off</span>
+          <h3 class="font-bold text-xl text-on-surface mb-2">Your Cart is Empty</h3>
+          <p class="text-on-surface-variant mb-6">Explore our curated adventures and add them to your cart to begin planning!</p>
+          <a href="index.html" class="inline-flex items-center gap-2 bg-primary text-white font-semibold py-3 px-6 rounded-xl hover:bg-[#004e72] transition-colors shadow-md">
+            <span>Explore Trips</span>
+            <span class="material-symbols-outlined text-[20px]">arrow_forward</span>
+          </a>
         </div>
       </div>
-
-      <!-- Quick Message Form -->
-      <div class="lg:col-span-7">
-        <div class="glass-panel rounded-2xl p-8 relative overflow-hidden">
-          <div class="absolute top-0 left-0 w-full h-1.5 bg-gradient-to-r from-primary to-primary-container"></div>
-          <h2 class="text-2xl font-bold text-on-surface mb-6 flex items-center gap-2">
-            <span class="material-symbols-outlined text-primary">send</span> Send a Message
-          </h2>
+      
+      <!-- Order Summary Card -->
+      <div class="lg:col-span-1">
+        <div class="glass-panel p-6 rounded-2xl sticky top-24 shadow-lg">
+          <h3 class="font-headline-md text-lg text-on-surface mb-5 font-bold">Order Summary</h3>
           
-          <form id="contact-form" class="space-y-4">
+          <div class="flex flex-col gap-3.5 border-b border-slate-100 pb-5">
+            <div class="flex items-center justify-between text-sm text-on-surface-variant">
+              <span>Subtotal</span>
+              <span class="font-semibold text-on-surface">₹<span id="summary-subtotal">28,999</span></span>
+            </div>
+            
+            <!-- GST -->
+            <div class="flex items-center justify-between text-sm text-on-surface-variant">
+              <span>GST (5%)</span>
+              <span class="font-semibold text-on-surface">₹<span id="summary-gst">1,450</span></span>
+            </div>
+            
+            <!-- Promo Discount -->
+            <div class="flex items-center justify-between text-sm text-emerald-600 hidden" id="discount-row">
+              <span>Promo Discount (10%)</span>
+              <span class="font-semibold">-₹<span id="summary-discount">2,900</span></span>
+            </div>
+          </div>
+          
+          <!-- Promo Code Box -->
+          <div class="my-5">
+            <label class="block text-xs font-semibold text-on-surface-variant mb-1.5 uppercase">Promo Code</label>
+            <div class="flex gap-2">
+              <input type="text" id="promo-input" placeholder="e.g. TRIBE10" class="flex-grow input-glass rounded-xl px-3 py-2 text-sm focus:outline-none uppercase">
+              <button onclick="applyPromo()" class="bg-primary/10 hover:bg-primary/20 text-primary font-bold text-xs px-4 py-2 rounded-xl transition-colors">Apply</button>
+            </div>
+            <p id="promo-message" class="text-xs mt-1.5 font-medium"></p>
+          </div>
+          
+          <!-- Total Payable -->
+          <div class="flex items-end justify-between border-t border-slate-100 pt-5 mb-6">
             <div>
-              <label class="block text-sm font-semibold text-on-surface mb-1" for="name">Your Name</label>
-              <input required id="name" type="text" class="input-glass w-full rounded-lg px-4 py-2.5 text-on-surface placeholder:text-outline focus:outline-none" placeholder="Rahul Sharma">
+              <span class="text-xs text-on-surface-variant block uppercase">Total Payable</span>
+              <span class="text-xs text-slate-400 font-normal">All taxes included</span>
             </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div>
-                <label class="block text-sm font-semibold text-on-surface mb-1" for="email">Email Address</label>
-                <input required id="email" type="email" class="input-glass w-full rounded-lg px-4 py-2.5 text-on-surface placeholder:text-outline focus:outline-none" placeholder="rahul@example.com">
-              </div>
-              <div>
-                <label class="block text-sm font-semibold text-on-surface mb-1" for="phone">Phone Number</label>
-                <input required id="phone" type="tel" class="input-glass w-full rounded-lg px-4 py-2.5 text-on-surface placeholder:text-outline focus:outline-none" placeholder="+91 9990802608">
-              </div>
-            </div>
-
-            <div>
-              <label class="block text-sm font-semibold text-on-surface mb-1" for="message">Message</label>
-              <textarea required id="message" rows="4" class="input-glass w-full rounded-lg px-4 py-2.5 text-on-surface placeholder:text-outline focus:outline-none" placeholder="Tell us about your requirements..."></textarea>
-            </div>
-
-            <button type="submit" class="w-full bg-primary hover:bg-[#004e72] text-white font-bold py-3 rounded-lg transition-colors flex items-center justify-center gap-2 shadow-md">
-              <span class="material-symbols-outlined text-base">send</span> Send Message
-            </button>
-          </form>
-
-          <div id="contact-success" class="hidden text-center p-6 rounded-xl bg-emerald-50 border border-emerald-200 mt-4">
-            <span class="material-symbols-outlined text-emerald-500 text-4xl mb-2 block">check_circle</span>
-            <h3 class="text-lg font-bold text-emerald-700">Thank you!</h3>
-            <p class="text-emerald-600 text-sm">Your message has been received. Our team will get back to you shortly.</p>
+            <span class="font-headline-md text-2xl text-primary font-bold">₹<span id="summary-total">30,449</span></span>
+          </div>
+          
+          <a href="checkout.html" class="w-full flex items-center justify-center gap-2 bg-primary hover:bg-[#004e72] text-white font-bold py-3.5 px-6 rounded-xl transition-all shadow-lg hover:shadow-xl active:scale-98 cursor-pointer select-none">
+            <span>Proceed to Checkout</span>
+            <span class="material-symbols-outlined text-[20px]">arrow_forward</span>
+          </a>
+          
+          <div class="mt-4 flex items-center justify-center gap-2 text-on-surface-variant/40 text-xs">
+            <span class="material-symbols-outlined text-[16px]">verified_user</span>
+            <span>256-bit Secure Encryption</span>
           </div>
         </div>
       </div>
+      
     </div>
   </main>
-
-  <!-- Footer -->
-  <footer class="bg-surface-container-lowest border-t border-outline-variant/30 py-6 pb-40 text-center mt-12">
-    <p class="text-sm text-on-surface-variant">© 2026 TripoMist. All rights reserved.</p>
-  </footer>
-
-  <script>
-    const form = document.getElementById('contact-form');
-    const successBox = document.getElementById('contact-success');
-    
-    if (form) {
-      form.addEventListener('submit', (e) => {
-        e.preventDefault();
-        form.classList.add('hidden');
-        successBox.classList.remove('hidden');
-      });
-    }
-  </script>
-  <script src="auth-navbar.js"></script>
 
   <!-- Liquid Glass Bottom Dock -->
   <div class="fixed bottom-4 left-1/2 -translate-x-1/2 z-50 flex flex-col items-center gap-3.5 w-auto select-none pointer-events-auto max-w-[95vw] md:max-w-none">
@@ -348,7 +427,7 @@
         </svg>
       </a>
 
-      <!-- Icon 6: Cart/Booking App Icon -->
+      <!-- Icon 6: Cart/Booking App Icon (active page) -->
       <a href="cart.html" class="relative z-30 w-8 h-8 md:w-11 md:h-11 transition-all duration-500 hover:scale-115 hover:-translate-y-2 cursor-pointer shrink-0" style="transform-origin: center center; transition-timing-function: cubic-bezier(0.175, 0.885, 0.32, 2.2);" title="Cart / Booking">
         <svg viewBox="0 0 64 64" class="w-full h-full">
           <defs>
@@ -365,6 +444,8 @@
             <rect x="18" y="26" width="28" height="22" rx="4" />
             <path d="M24 26 V20 C24 15.5 27.5 12 32 12 C36.5 12 40 15.5 40 20 V26" />
           </g>
+          <!-- Active Indicator dot -->
+          <circle cx="32" cy="56" r="3.5" fill="url(#cart-bg)" />
           <path d="M 0,16 A 16,16 0 0,1 16,0 H 48 A 16,16 0 0,1 64,16 C 64,16 48,24 32,24 C 16,24 0,16 0,16 Z" fill="white" opacity="0.15" />
           <rect x="0.5" y="0.5" width="63" height="63" rx="15.5" fill="none" stroke="white" stroke-width="1.2" stroke-opacity="0.4" />
         </svg>
@@ -392,5 +473,93 @@
       <feDisplacementMap in="SourceGraphic" in2="softMap" scale="20" xChannelSelector="R" yChannelSelector="G" />
     </filter>
   </svg>
+
+  <!-- Interactive Cart Logic -->
+  <script>
+    let isPromoApplied = false;
+    
+    function updateQty(itemId, change) {
+      const qtyEl = document.getElementById(`qty-${itemId}`);
+      const priceEl = document.getElementById(`price-${itemId}`);
+      const container = document.getElementById(`cart-item-${itemId}`);
+      
+      let qty = parseInt(qtyEl.innerText) + change;
+      if (qty < 1) return;
+      
+      qtyEl.innerText = qty;
+      const basePrice = parseInt(container.getAttribute('data-price'));
+      const newPrice = basePrice * qty;
+      priceEl.innerText = newPrice.toLocaleString('en-IN');
+      
+      recalculateCart();
+    }
+    
+    function removeItem(itemId) {
+      const itemEl = document.getElementById(`cart-item-${itemId}`);
+      itemEl.style.opacity = '0';
+      itemEl.style.transform = 'scale(0.95)';
+      setTimeout(() => {
+        itemEl.remove();
+        recalculateCart();
+      }, 300);
+    }
+    
+    function recalculateCart() {
+      let subtotal = 0;
+      const items = ['1', '2'];
+      let activeItems = 0;
+      
+      items.forEach(id => {
+        const itemEl = document.getElementById(`cart-item-${id}`);
+        if (itemEl) {
+          const qty = parseInt(document.getElementById(`qty-${id}`).innerText);
+          const price = parseInt(itemEl.getAttribute('data-price'));
+          subtotal += price * qty;
+          activeItems++;
+        }
+      });
+      
+      if (activeItems === 0) {
+        document.getElementById('empty-cart-state').classList.remove('hidden');
+      }
+      
+      let gst = Math.round(subtotal * 0.05);
+      let discount = 0;
+      
+      if (isPromoApplied) {
+        discount = Math.round(subtotal * 0.1);
+        document.getElementById('discount-row').classList.remove('hidden');
+      } else {
+        document.getElementById('discount-row').classList.add('hidden');
+      }
+      
+      let total = subtotal + gst - discount;
+      
+      document.getElementById('summary-subtotal').innerText = subtotal.toLocaleString('en-IN');
+      document.getElementById('summary-gst').innerText = gst.toLocaleString('en-IN');
+      document.getElementById('summary-discount').innerText = discount.toLocaleString('en-IN');
+      document.getElementById('summary-total').innerText = total.toLocaleString('en-IN');
+    }
+    
+    function applyPromo() {
+      const input = document.getElementById('promo-input').value.trim().toUpperCase();
+      const message = document.getElementById('promo-message');
+      
+      if (input === 'TRIBE10') {
+        isPromoApplied = true;
+        message.className = 'text-xs mt-1.5 font-medium text-emerald-600';
+        message.innerText = 'Promo code applied: 10% discount!';
+        recalculateCart();
+      } else if (input === '') {
+        message.className = 'text-xs mt-1.5 font-medium text-error';
+        message.innerText = 'Please enter a promo code.';
+      } else {
+        isPromoApplied = false;
+        message.className = 'text-xs mt-1.5 font-medium text-error';
+        message.innerText = 'Invalid promo code.';
+        recalculateCart();
+      }
+    }
+  </script>
 </body>
 </html>
