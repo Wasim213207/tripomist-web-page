@@ -84,24 +84,24 @@ function Home() {
               </div>
               <span className="font-button text-button text-on-surface group-hover:text-primary text-center transition-colors">Kashmir</span>
             </div>
-            {/* Bali */}
-            <div onClick={() => navigate('/group-trips?search=Bali')} className="flex flex-col items-center gap-3 cursor-pointer group min-w-[100px] destination-circle">
+            {/* Rajasthan */}
+            <div onClick={() => navigate('/group-trips?search=Rajasthan')} className="flex flex-col items-center gap-3 cursor-pointer group min-w-[100px] destination-circle">
               <div className="w-24 h-24 rounded-full overflow-hidden border-2 border-transparent group-hover:border-primary transition-all duration-300 shadow-sm group-hover:shadow-md group-hover:-translate-y-1">
-                <img className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105" alt="Bali" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCtn1wDKcsh5073nbZOT8l9ZwwZZoS-mrpjG6COUn9gGKWLb_8FYL7a8PEyX_BEEkBVhEbO3A7nNW0UQp7TAulteeO7xsbvhHWrpvg-i5gIUS_wqKLRfrTH6I24lThbfLxxVeZOFQJRTpDEX-iOqh6ulM2MVvUDD9_DYyDI63BDvhRQcjTtpXRvZJk1F8wDQe-FlsfH7YVAR6TVCFvhqLz3lgErFLgI911voNWPN-9bPWjepNk2rYYTbsSpLuP6KsaoxKHfJQteCFLD" />
+                <img className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105" alt="Rajasthan" src="https://images.unsplash.com/photo-1477587458883-47145ed94245?w=600&q=80" />
               </div>
-              <span className="font-button text-button text-on-surface group-hover:text-primary text-center transition-colors">Bali</span>
+              <span className="font-button text-button text-on-surface group-hover:text-primary text-center transition-colors">Rajasthan</span>
             </div>
-            {/* Thailand */}
-            <div onClick={() => navigate('/group-trips?search=Thailand')} className="flex flex-col items-center gap-3 cursor-pointer group min-w-[100px] destination-circle">
+            {/* Meghalaya */}
+            <div onClick={() => navigate('/group-trips?search=Meghalaya')} className="flex flex-col items-center gap-3 cursor-pointer group min-w-[100px] destination-circle">
               <div className="w-24 h-24 rounded-full overflow-hidden border-2 border-transparent group-hover:border-primary transition-all duration-300 shadow-sm group-hover:shadow-md group-hover:-translate-y-1">
-                <img className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105" alt="Thailand" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCXf1ZG0UycvUoz1FHAhSaVsAaTkfc1dWUy4KrjVPJmOHpuCxMQtvvH8vnMyP4D74eXykeMX-Tq924pRbQ9KZo4X3EysKCbdGhMgufPFljfU3FCgV-Za3MpKBGxegKGMyrXk_P0CRl1NDTcesnTqGSPbKWhsoc4FvX72xAHECyLrAF-v8q0SwKGwNNMjz-DYwTCPXEaMubazz5zgS_aqtglb1HKHJqqSucXpjm_EgrFObN_pzTEzOJ-ALgeyVjIVKWsIWJ89era_0Yb" />
+                <img className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105" alt="Meghalaya" src="https://images.unsplash.com/photo-1629211252194-2795f72da0bc?w=600&q=80" />
               </div>
-              <span className="font-button text-button text-on-surface group-hover:text-primary text-center transition-colors">Thailand</span>
+              <span className="font-button text-button text-on-surface group-hover:text-primary text-center transition-colors">Meghalaya</span>
             </div>
             {/* Ladakh */}
             <div onClick={() => navigate('/itinerary/Ladakh')} className="flex flex-col items-center gap-3 cursor-pointer group min-w-[100px] destination-circle">
               <div className="w-24 h-24 rounded-full overflow-hidden border-2 border-transparent group-hover:border-primary transition-all duration-300 shadow-sm group-hover:shadow-md group-hover:-translate-y-1">
-                <img className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105" alt="Ladakh" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBZ_LVCgCoAYnwHPqtkSQujITiiomC5hwDNNBsmhdHh64fvHdPU9fTW9dH4r2ZMd3IZy7_ELIuQ5ktlG-Fy8TdpksKLInWdntfnoOfIIeMtsH1ZlcLsM_o5x-TFeFv_jGhdblCWYBTQch77PU0roJvzWOJNquEWga461jVuRtl6wHLIy5pz7LDHtD6cGn13l00Pbe1kE7ZP3B2Ibg6FzsyDY5CGZJSwKPFSz_NVjZGms-ZDNFoacJbYne_bkFr1KNLK1hQqQd2ZJ3P" />
+                <img className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105" alt="Ladakh" src="https://images.unsplash.com/photo-1596500412806-0361280031dc?w=600&q=80" />
               </div>
               <span className="font-button text-button text-on-surface group-hover:text-primary text-center transition-colors">Ladakh</span>
             </div>
@@ -131,8 +131,9 @@ function Home() {
                 <span className="font-label-caps text-label-caps tracking-widest uppercase">Explore</span>
               </div>
               <h2 className="font-headline-lg-mobile md:font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-surface font-bold">
-                Destinations made for<br />
-                <span className="text-primary">your camera roll.</span>
+                Explore More.<br />
+                Capture Better.<br />
+                <span className="text-primary">With TripoMist.</span>
               </h2>
             </div>
             

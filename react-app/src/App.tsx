@@ -46,6 +46,7 @@ function App() {
         <Route path="/about" element={<AboutUs />} />
         <Route path="/itinerary/:id" element={<ItinerarySpiti />} />
         <Route path="/checkout" element={<Checkout />} />
+        <Route path="/cart" element={<Checkout />} />
         <Route path="/login" element={<Login />} />
         <Route path="/settings" element={<Settings />} />
         <Route path="/profile" element={<Profile />} />
