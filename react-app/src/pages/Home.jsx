@@ -137,13 +137,7 @@ function Home() {
               </h2>
             </div>
             
-            {/* Filters */}
-            <div className="flex flex-wrap gap-2">
-              <Link className="px-4 py-2 rounded-full bg-primary text-on-primary font-button text-button hover:bg-primary/95 transition-colors" to="/group-trips">All</Link>
-              <Link className="px-4 py-2 rounded-full border border-outline-variant/50 text-on-surface hover:border-primary hover:text-primary hover:bg-primary/5 font-button text-button transition-colors bg-surface" to="/group-trips?style=Mountains">Mountains</Link>
-              <Link className="px-4 py-2 rounded-full border border-outline-variant/50 text-on-surface hover:border-primary hover:text-primary hover:bg-primary/5 font-button text-button transition-colors bg-surface" to="/group-trips?style=Beaches">Beaches</Link>
-              <Link className="px-4 py-2 rounded-full border border-outline-variant/50 text-on-surface hover:border-primary hover:text-primary hover:bg-primary/5 font-button text-button transition-colors bg-surface" to="/weekend-trips">Weekend</Link>
-            </div>
+            {/* Filters removed as per user request */}
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -337,6 +331,89 @@ function Home() {
             <div className="text-center w-full">
               <div className="font-headline-lg text-headline-lg text-primary mb-1 font-bold">100+</div>
               <div className="font-label-caps text-label-caps text-on-surface-variant uppercase tracking-widest text-[12px]">Domestic Trips</div>
+            </div>
+          </div>
+        </section>
+
+        {/* International Trips Coming Soon */}
+        <section className="py-24 px-4 md:px-8 max-w-container-max mx-auto border-t border-outline-variant/30 bg-surface-container-lowest">
+          <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
+            <div>
+              <div className="inline-flex items-center gap-2 mb-4 text-primary">
+                <span className="material-symbols-outlined text-[16px]">flight_takeoff</span>
+                <span className="font-label-caps text-label-caps tracking-widest uppercase">International</span>
+              </div>
+              <h2 className="font-headline-lg-mobile md:font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-surface font-bold font-headline-lg">
+                Soon you can plan <span className="text-primary">abroad trips with us</span>
+              </h2>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {/* Bali Escape */}
+            <div className="bg-surface rounded-xl overflow-hidden border border-outline-variant/30 flex flex-col h-full shadow-sm hover:shadow-md transition-all duration-300">
+              <div className="relative h-64 overflow-hidden">
+                <div className="absolute inset-0 bg-cover bg-center w-full h-full" style={{ backgroundImage: "url('https://images.unsplash.com/photo-1537996194471-e657df975ab4?w=600&q=80')" }}></div>
+              </div>
+              <div className="p-6 flex flex-col flex-grow">
+                <div className="flex items-center gap-3 mb-3">
+                  <span className="font-label-caps text-[10px] text-on-surface-variant flex items-center gap-1 uppercase"><span className="material-symbols-outlined text-[14px]">schedule</span> 6N/7D</span>
+                  <span className="font-label-caps text-[10px] text-on-surface-variant flex items-center gap-1 uppercase"><span className="material-symbols-outlined text-[14px]">group</span> Group</span>
+                </div>
+                <h3 className="font-headline-sm text-headline-sm text-on-surface font-bold mb-2">Bali Escape</h3>
+                <p className="font-body-md text-body-md text-on-surface-variant mb-6 flex-grow">Experience the magic of Bali, from pristine beaches to lush rice terraces and ancient temples.</p>
+                <div className="flex items-end justify-between pt-4 border-t border-outline-variant/30">
+                  <div>
+                    <div className="font-label-caps text-[10px] text-on-surface-variant uppercase mb-1">Starts At</div>
+                    <div className="font-headline-md text-headline-md text-primary font-bold">₹51,999</div>
+                  </div>
+                  <button className="px-4 py-2 border border-outline-variant/50 rounded-md text-on-surface font-button text-sm font-semibold hover:border-primary hover:text-primary transition-colors bg-surface">View Details</button>
+                </div>
+              </div>
+            </div>
+
+            {/* Vietnam Adventure */}
+            <div className="bg-surface rounded-xl overflow-hidden border border-outline-variant/30 flex flex-col h-full shadow-sm hover:shadow-md transition-all duration-300">
+              <div className="relative h-64 overflow-hidden">
+                <div className="absolute inset-0 bg-cover bg-center w-full h-full" style={{ backgroundImage: "url('https://images.unsplash.com/photo-1528127269322-539801943592?w=600&q=80')" }}></div>
+              </div>
+              <div className="p-6 flex flex-col flex-grow">
+                <div className="flex items-center gap-3 mb-3">
+                  <span className="font-label-caps text-[10px] text-on-surface-variant flex items-center gap-1 uppercase"><span className="material-symbols-outlined text-[14px]">schedule</span> 5N/6D</span>
+                  <span className="font-label-caps text-[10px] text-on-surface-variant flex items-center gap-1 uppercase"><span className="material-symbols-outlined text-[14px]">group</span> Group</span>
+                </div>
+                <h3 className="font-headline-sm text-headline-sm text-on-surface font-bold mb-2">Vietnam Adventure</h3>
+                <p className="font-body-md text-body-md text-on-surface-variant mb-6 flex-grow">Discover the breathtaking landscapes, rich history, and vibrant culture of Vietnam.</p>
+                <div className="flex items-end justify-between pt-4 border-t border-outline-variant/30">
+                  <div>
+                    <div className="font-label-caps text-[10px] text-on-surface-variant uppercase mb-1">Starts At</div>
+                    <div className="font-headline-md text-headline-md text-primary font-bold">₹56,999</div>
+                  </div>
+                  <button className="px-4 py-2 border border-outline-variant/50 rounded-md text-on-surface font-button text-sm font-semibold hover:border-primary hover:text-primary transition-colors bg-surface">View Details</button>
+                </div>
+              </div>
+            </div>
+
+            {/* Singapore Highlights */}
+            <div className="bg-surface rounded-xl overflow-hidden border border-outline-variant/30 flex flex-col h-full shadow-sm hover:shadow-md transition-all duration-300">
+              <div className="relative h-64 overflow-hidden">
+                <div className="absolute inset-0 bg-cover bg-center w-full h-full" style={{ backgroundImage: "url('https://images.unsplash.com/photo-1525625293386-3f8f99389edd?w=600&q=80')" }}></div>
+              </div>
+              <div className="p-6 flex flex-col flex-grow">
+                <div className="flex items-center gap-3 mb-3">
+                  <span className="font-label-caps text-[10px] text-on-surface-variant flex items-center gap-1 uppercase"><span className="material-symbols-outlined text-[14px]">schedule</span> 4N/5D</span>
+                  <span className="font-label-caps text-[10px] text-on-surface-variant flex items-center gap-1 uppercase"><span className="material-symbols-outlined text-[14px]">group</span> Group</span>
+                </div>
+                <h3 className="font-headline-sm text-headline-sm text-on-surface font-bold mb-2">Singapore Highlights</h3>
+                <p className="font-body-md text-body-md text-on-surface-variant mb-6 flex-grow">Explore the futuristic city-state of Singapore, offering a perfect blend of nature and modern marvels.</p>
+                <div className="flex items-end justify-between pt-4 border-t border-outline-variant/30">
+                  <div>
+                    <div className="font-label-caps text-[10px] text-on-surface-variant uppercase mb-1">Starts At</div>
+                    <div className="font-headline-md text-headline-md text-primary font-bold">₹55,999</div>
+                  </div>
+                  <button className="px-4 py-2 border border-outline-variant/50 rounded-md text-on-surface font-button text-sm font-semibold hover:border-primary hover:text-primary transition-colors bg-surface">View Details</button>
+                </div>
+              </div>
             </div>
           </div>
         </section>
