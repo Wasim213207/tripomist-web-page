@@ -32,7 +32,7 @@ export default function BottomDock({ isChatOpen, onOpenChat, onCloseChat }: Bott
   if (location.pathname === '/login') return null
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 z-50 flex flex-col items-center pb-2 gap-8 pointer-events-none">
+    <div className="fixed bottom-6 left-0 right-0 z-[80] flex flex-col items-center gap-6 pointer-events-none">
 
       {/* "How can I help you today?" or "Close Chat" pill */}
       <motion.button
