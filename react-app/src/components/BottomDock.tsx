@@ -33,21 +33,18 @@ export default function BottomDock({ isChatOpen, onOpenChat, onCloseChat }: Bott
   if (location.pathname === '/login') return null
 
   return (
-    <motion.div 
-      drag
-      dragMomentum={false}
-      dragElastic={0.1}
-      className="fixed bottom-6 left-0 right-0 z-[80] w-full px-4 sm:px-6 pointer-events-none flex justify-center items-end"
-    >
+    <div className="fixed bottom-6 left-0 right-0 z-[80] w-full px-4 sm:px-6 pointer-events-none flex justify-center items-end">
+      
       {/* Center Group: Pill and Dock */}
-      <div className="flex flex-col items-center gap-4 pointer-events-auto cursor-grab active:cursor-grabbing">
+      <div className="flex flex-col items-center gap-4 pointer-events-auto">
+        
         {/* "How can I help you today?" or "Close Chat" pill */}
         <motion.button
           initial={{ opacity: 0, y: 20, scale: 0.9 }}
           animate={{ opacity: 1, y: 0, scale: 1 }}
           transition={{ type: 'spring', stiffness: 260, damping: 22, delay: 0.4 }}
           onClick={() => isChatOpen ? onCloseChat?.() : onOpenChat?.()}
-          className="flex items-center gap-2 px-4 py-2 rounded-full select-none transition-all duration-300"
+          className="flex items-center justify-center gap-2 px-5 py-2.5 rounded-full select-none transition-all duration-300"
           style={{
             background: 'rgba(255,255,255,0.18)',
             backdropFilter: 'blur(20px)',
@@ -60,7 +57,7 @@ export default function BottomDock({ isChatOpen, onOpenChat, onCloseChat }: Bott
             <span className="material-symbols-outlined text-white text-[16px]">close</span>
           )}
           <span
-            className="text-xs font-semibold tracking-wide"
+            className="text-[13px] font-semibold tracking-wide text-center"
             style={{ color: isChatOpen ? 'black' : 'rgba(0,0,0,0.85)', textShadow: 'none' }}
           >
             {isChatOpen ? 'Close Chat' : 'How can I help you today?'}
@@ -83,7 +80,7 @@ export default function BottomDock({ isChatOpen, onOpenChat, onCloseChat }: Bott
       </div>
 
       {/* Right Corner Group: Contact FAB */}
-      <div className="absolute right-4 sm:right-6 bottom-0 flex flex-col items-center justify-end pointer-events-auto cursor-grab active:cursor-grabbing">
+      <div className="absolute right-4 sm:right-6 bottom-0 flex flex-col items-center justify-end pointer-events-auto">
         <AnimatePresence>
           {isFabOpen && (
             <motion.div 
@@ -135,6 +132,6 @@ export default function BottomDock({ isChatOpen, onOpenChat, onCloseChat }: Bott
           </motion.span>
         </button>
       </div>
-    </motion.div>
+    </div>
   )
 }
