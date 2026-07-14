@@ -51,7 +51,7 @@ function Home() {
 
       <main className="w-full flex-grow">
         {/* Hero Section */}
-        <section className="relative w-full min-h-[921px] flex flex-col justify-end pt-32 pb-margin-mobile md:pb-margin-desktop px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto">
+        <section className="relative w-full min-h-[921px] flex flex-col justify-end pt-32 pb-48 md:pb-margin-desktop px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto">
           <div className="absolute inset-0 w-full h-full -z-10 bg-black">
             <video 
               autoPlay 

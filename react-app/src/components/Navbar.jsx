@@ -150,56 +150,57 @@ function Navbar() {
             <span className="material-symbols-outlined">menu</span>
           </button>
         </div>
-      </div>
+      </nav>
 
-      {/* Mobile Overlay */}
+      {/* Mobile Overlay (Outside Nav for perfect z-index) */}
       {isOpen && (
-        <div className="fixed inset-0 bg-black/40 z-40 md:hidden" onClick={() => setIsOpen(false)}></div>
+        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[60] md:hidden transition-opacity duration-300" onClick={() => setIsOpen(false)}></div>
       )}
 
-      {/* Mobile Drawer Navigation (Slides from right) */}
-      <div className={`fixed top-0 right-0 h-full w-[280px] bg-white shadow-2xl z-50 transform transition-transform duration-300 ease-in-out md:hidden flex flex-col ${isOpen ? 'translate-x-0' : 'translate-x-full'}`}>
-        <div className="flex justify-end p-4 border-b border-gray-100">
-          <button className="text-gray-500 p-2" onClick={() => setIsOpen(false)} aria-label="Close Menu">
+      {/* Mobile Drawer Navigation (Slides from right, Outside Nav for perfect z-index) */}
+      <div className={`fixed top-0 right-0 h-[100dvh] w-[280px] bg-white dark:bg-slate-900 shadow-2xl z-[70] transform transition-transform duration-300 ease-in-out md:hidden flex flex-col ${isOpen ? 'translate-x-0' : 'translate-x-full'}`}>
+        <div className="flex justify-between items-center p-5 border-b border-gray-100 dark:border-gray-800">
+          <span className="font-bold text-gray-900 dark:text-white text-lg">Menu</span>
+          <button className="text-gray-500 hover:text-gray-800 dark:text-gray-400 dark:hover:text-white transition-colors p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800" onClick={() => setIsOpen(false)} aria-label="Close Menu">
             <span className="material-symbols-outlined">close</span>
           </button>
         </div>
         
-        <div className="flex flex-col p-6 gap-4 overflow-y-auto">
+        <div className="flex flex-col p-6 gap-2 overflow-y-auto">
           {/* Cart placed inside the menu on mobile */}
-          <Link className="text-lg pb-3 border-b border-gray-100 flex items-center gap-3 text-gray-700 hover:text-primary" onClick={() => setIsOpen(false)} to="/cart">
-            <span className="material-symbols-outlined text-gray-500">shopping_cart</span> Your Cart
+          <Link className="text-lg py-3 border-b border-gray-100 dark:border-gray-800 flex items-center gap-3 text-gray-800 dark:text-gray-200 hover:text-primary transition-colors" onClick={() => setIsOpen(false)} to="/cart">
+            <span className="material-symbols-outlined text-gray-500 dark:text-gray-400">shopping_cart</span> Your Cart
           </Link>
 
-          <Link className={`text-lg pb-3 border-b border-gray-100 ${isActive('/uttarakhand') ? 'text-primary font-bold' : 'text-gray-700'}`} onClick={() => setIsOpen(false)} to="/uttarakhand">Uttarakhand</Link>
-          <Link className={`text-lg pb-3 border-b border-gray-100 ${isActive('/himachal') ? 'text-primary font-bold' : 'text-gray-700'}`} onClick={() => setIsOpen(false)} to="/himachal">Himachal Pradesh</Link>
-          <Link className={`text-lg pb-3 border-b border-gray-100 ${isActive('/about') ? 'text-primary font-bold' : 'text-gray-700'}`} onClick={() => setIsOpen(false)} to="/about">About Us</Link>
+          <Link className={`text-lg py-3 border-b border-gray-100 dark:border-gray-800 transition-colors ${isActive('/uttarakhand') ? 'text-primary font-bold' : 'text-gray-800 dark:text-gray-200'}`} onClick={() => setIsOpen(false)} to="/uttarakhand">Uttarakhand</Link>
+          <Link className={`text-lg py-3 border-b border-gray-100 dark:border-gray-800 transition-colors ${isActive('/himachal') ? 'text-primary font-bold' : 'text-gray-800 dark:text-gray-200'}`} onClick={() => setIsOpen(false)} to="/himachal">Himachal Pradesh</Link>
+          <Link className={`text-lg py-3 border-b border-gray-100 dark:border-gray-800 transition-colors ${isActive('/about') ? 'text-primary font-bold' : 'text-gray-800 dark:text-gray-200'}`} onClick={() => setIsOpen(false)} to="/about">About Us</Link>
           
           {user ? (
-            <div className="pt-4 flex flex-col gap-3">
-              <div className="px-2 py-2 text-sm font-semibold text-gray-700 bg-gray-50 rounded-lg">
+            <div className="pt-6 flex flex-col gap-3">
+              <div className="px-4 py-3 text-sm font-semibold text-gray-800 dark:text-gray-200 bg-gray-50 dark:bg-gray-800 rounded-xl border border-gray-100 dark:border-gray-700">
                 Hi, {user.user_metadata?.full_name || user.email.split('@')[0]}
               </div>
               <Link 
                 to="/profile" 
                 onClick={() => setIsOpen(false)} 
-                className="w-full bg-slate-50 text-slate-700 border border-slate-200 py-3 rounded-xl font-bold text-sm flex items-center justify-center gap-2 no-underline text-center mt-2"
+                className="w-full bg-slate-50 dark:bg-slate-800 text-slate-700 dark:text-slate-200 border border-slate-200 dark:border-slate-700 py-3.5 rounded-xl font-bold text-sm flex items-center justify-center gap-2 no-underline text-center transition-colors hover:bg-slate-100 dark:hover:bg-slate-700"
               >
                 <span className="material-symbols-outlined text-sm">person</span> Profile Dashboard
               </Link>
               <button 
                 onClick={() => { handleLogout(); setIsOpen(false); }} 
-                className="w-full bg-red-50 text-red-500 border border-red-200 py-3 rounded-xl font-bold text-sm flex items-center justify-center gap-2 mt-1"
+                className="w-full bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400 border border-red-200 dark:border-red-800/30 py-3.5 rounded-xl font-bold text-sm flex items-center justify-center gap-2 transition-colors hover:bg-red-100 dark:hover:bg-red-900/40"
               >
                 <span className="material-symbols-outlined">logout</span> Logout
               </button>
             </div>
           ) : (
-            <div className="pt-4">
+            <div className="pt-6">
               <Link 
                 to="/login"
                 onClick={() => setIsOpen(false)}
-                className="w-full bg-primary text-white text-center py-3 rounded-xl font-bold text-sm flex items-center justify-center gap-2 border-none cursor-pointer block"
+                className="w-full bg-primary hover:bg-primary/90 text-white text-center py-3.5 rounded-xl font-bold text-sm flex items-center justify-center gap-2 border-none cursor-pointer transition-colors shadow-sm"
               >
                 <span className="material-symbols-outlined">login</span> Login / Sign Up
               </Link>
@@ -207,7 +208,7 @@ function Navbar() {
           )}
         </div>
       </div>
-    </nav>
+    </>
   )
 }
 
