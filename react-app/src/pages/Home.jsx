@@ -108,7 +108,7 @@ function Home() {
         </section>
 
         {/* Explore Destinations - Circles */}
-        <section className="py-12 px-4 md:px-8 max-w-container-max mx-auto bg-surface-container-lowest">
+        <section className="w-full py-12 px-4 md:px-12 lg:px-20 bg-surface-container-lowest">
           <div className="flex flex-col md:flex-row md:items-center justify-between mb-8 gap-4">
             <h2 className="font-headline-md text-headline-md text-on-surface font-bold">Explore Destinations</h2>
           </div>
@@ -166,7 +166,7 @@ function Home() {
         </section>
 
         {/* Camera Roll Destinations */}
-        <section className="py-24 px-4 md:px-8 max-w-[1400px] mx-auto bg-surface-container-lowest overflow-hidden">
+        <section className="w-full py-24 px-4 md:px-12 lg:px-20 bg-surface-container-lowest overflow-hidden">
           <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
             <div>
               <div className="inline-flex items-center gap-2 mb-4 text-[#136b8a]">
@@ -227,7 +227,7 @@ function Home() {
         </section>
 
         {/* Featured Group Trips */}
-        <section className="py-24 px-4 md:px-8 max-w-[1400px] mx-auto border-t border-gray-100 bg-surface-container-lowest overflow-hidden">
+        <section className="w-full py-24 px-4 md:px-12 lg:px-20 border-t border-gray-100 bg-surface-container-lowest overflow-hidden">
           <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
             <div>
               <div className="inline-flex items-center gap-2 mb-4 text-[#136b8a]">
@@ -281,7 +281,7 @@ function Home() {
         </section>
 
         {/* International Trips Coming Soon */}
-        <section className="py-24 px-4 md:px-8 max-w-[1400px] mx-auto border-t border-gray-100 bg-surface-container-lowest overflow-hidden">
+        <section className="w-full py-24 px-4 md:px-12 lg:px-20 border-t border-gray-100 bg-surface-container-lowest overflow-hidden">
           <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
             <div>
               <div className="inline-flex items-center gap-2 mb-4 text-[#136b8a]">
@@ -331,7 +331,7 @@ function Home() {
         </section>
 
         {/* Experience banner stats */}
-        <section className="px-4 md:px-8 max-w-container-max mx-auto mb-24 mt-24">
+        <section className="w-full px-4 md:px-12 lg:px-20 mb-24 mt-24">
           <div className="flex flex-col md:flex-row justify-between items-center bg-surface-container-low border border-outline-variant/30 rounded-2xl p-8 shadow-sm gap-8 md:gap-16">
             <div className="text-center w-full">
               <div className="font-headline-lg text-headline-lg text-[#136b8a] mb-1 flex items-center justify-center gap-1 font-bold">4.9<span className="material-symbols-outlined fill-current text-[24px]">star</span></div>
