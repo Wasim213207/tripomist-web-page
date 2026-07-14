@@ -169,13 +169,13 @@ function Navbar() {
         </div>
         
         <div className="flex flex-col p-6 gap-2 overflow-y-auto">
-          {/* Cart placed inside the menu on mobile */}
-          <Link className="text-lg py-3 border-b border-gray-100 dark:border-gray-800 flex items-center gap-3 text-gray-800 dark:text-gray-200 hover:text-primary transition-colors" onClick={() => setIsOpen(false)} to="/cart">
-            <span className="material-symbols-outlined text-gray-500 dark:text-gray-400">shopping_cart</span> Your Cart
-          </Link>
-
           <Link className={`text-lg py-3 border-b border-gray-100 dark:border-gray-800 transition-colors ${isActive('/uttarakhand') ? 'text-primary font-bold' : 'text-gray-800 dark:text-gray-200'}`} onClick={() => setIsOpen(false)} to="/uttarakhand">Uttarakhand</Link>
           <Link className={`text-lg py-3 border-b border-gray-100 dark:border-gray-800 transition-colors ${isActive('/himachal') ? 'text-primary font-bold' : 'text-gray-800 dark:text-gray-200'}`} onClick={() => setIsOpen(false)} to="/himachal">Himachal Pradesh</Link>
+          
+          <Link className="text-lg py-3 border-b border-gray-100 dark:border-gray-800 text-gray-800 dark:text-gray-200 hover:text-primary transition-colors" onClick={() => setIsOpen(false)} to="/cart">
+            Your Cart
+          </Link>
+
           <Link className={`text-lg py-3 border-b border-gray-100 dark:border-gray-800 transition-colors ${isActive('/about') ? 'text-primary font-bold' : 'text-gray-800 dark:text-gray-200'}`} onClick={() => setIsOpen(false)} to="/about">About Us</Link>
           
           {user ? (
