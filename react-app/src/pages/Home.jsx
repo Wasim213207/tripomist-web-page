@@ -64,7 +64,7 @@ function Home() {
               className="w-full h-full object-cover opacity-0 transition-opacity duration-1000 ease-in-out"
               style={{ objectPosition: 'center center' }}
             >
-              <source src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260629_032424_3c9c2a9d-807b-4482-80e6-dd6d9dfd4545.mp4" type="video/mp4" />
+              <source src="https://res.cloudinary.com/hahfviqe/video/upload/hero_video_for_website_l5dsxk.mp4" type="video/mp4" />
               Your browser does not support the video tag.
             </video>
             {/* Subtle dark overlay (20-30%) for text readability */}
