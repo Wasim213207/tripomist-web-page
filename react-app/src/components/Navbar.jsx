@@ -142,55 +142,71 @@ function Navbar() {
             </Link>
           )}
 
-          <Link className="text-on-surface-variant hover:text-primary transition-colors p-1" to="/cart" aria-label="Cart">
+          <Link className="hidden md:flex items-center text-on-surface-variant hover:text-primary transition-colors p-1" to="/cart" aria-label="Cart">
             <span className="material-symbols-outlined">shopping_cart</span>
           </Link>
 
-          <button className="md:hidden text-on-surface-variant p-1" onClick={() => setIsOpen(!isOpen)} aria-label="Toggle Menu">
-            <span className="material-symbols-outlined">{isOpen ? 'close' : 'menu'}</span>
+          <button className="md:hidden text-on-surface-variant p-1 ml-1" onClick={() => setIsOpen(true)} aria-label="Open Menu">
+            <span className="material-symbols-outlined">menu</span>
           </button>
         </div>
       </div>
 
-      {/* Mobile Dropdown Navigation */}
+      {/* Mobile Overlay */}
       {isOpen && (
-        <div className="fixed top-[65px] left-0 w-full bg-white border-b border-outline-variant/30 shadow-lg z-40 md:hidden">
-          <div className="flex flex-col p-6 gap-4">
-            <Link className={`text-lg pb-1 border-b border-outline-variant/20 ${isActive('/uttarakhand') ? 'text-primary font-bold' : 'text-on-surface-variant'}`} onClick={() => setIsOpen(false)} to="/uttarakhand">Uttarakhand</Link>
-            <Link className={`text-lg pb-1 border-b border-outline-variant/20 ${isActive('/himachal') ? 'text-primary font-bold' : 'text-on-surface-variant'}`} onClick={() => setIsOpen(false)} to="/himachal">Himachal Pradesh</Link>
-            <Link className={`text-lg pb-1 border-b border-outline-variant/20 ${isActive('/about') ? 'text-primary font-bold' : 'text-on-surface-variant'}`} onClick={() => setIsOpen(false)} to="/about">About Us</Link>
-            
-            {user ? (
-              <div className="pt-2 flex flex-col gap-2">
-                <div className="px-1 py-1 text-sm font-semibold text-on-surface-variant">
-                  Hi, {user.user_metadata?.full_name || user.email.split('@')[0]}
-                </div>
-                <Link 
-                  to="/profile" 
-                  onClick={() => setIsOpen(false)} 
-                  className="w-full bg-slate-50 text-slate-700 border border-slate-200 py-2.5 rounded-lg font-bold text-sm flex items-center justify-center gap-2 no-underline text-center block"
-                >
-                  <span className="material-symbols-outlined text-sm">person</span> Profile Dashboard
-                </Link>
-                <button 
-                  onClick={() => { handleLogout(); setIsOpen(false); }} 
-                  className="w-full bg-red-50 text-red-500 border border-red-200 py-2.5 rounded-lg font-bold text-sm flex items-center justify-center gap-2"
-                >
-                  <span className="material-symbols-outlined">logout</span> Logout
-                </button>
+        <div className="fixed inset-0 bg-black/40 z-40 md:hidden" onClick={() => setIsOpen(false)}></div>
+      )}
+
+      {/* Mobile Drawer Navigation (Slides from right) */}
+      <div className={`fixed top-0 right-0 h-full w-[280px] bg-white shadow-2xl z-50 transform transition-transform duration-300 ease-in-out md:hidden flex flex-col ${isOpen ? 'translate-x-0' : 'translate-x-full'}`}>
+        <div className="flex justify-end p-4 border-b border-gray-100">
+          <button className="text-gray-500 p-2" onClick={() => setIsOpen(false)} aria-label="Close Menu">
+            <span className="material-symbols-outlined">close</span>
+          </button>
+        </div>
+        
+        <div className="flex flex-col p-6 gap-4 overflow-y-auto">
+          {/* Cart placed inside the menu on mobile */}
+          <Link className="text-lg pb-3 border-b border-gray-100 flex items-center gap-3 text-gray-700 hover:text-primary" onClick={() => setIsOpen(false)} to="/cart">
+            <span className="material-symbols-outlined text-gray-500">shopping_cart</span> Your Cart
+          </Link>
+
+          <Link className={`text-lg pb-3 border-b border-gray-100 ${isActive('/uttarakhand') ? 'text-primary font-bold' : 'text-gray-700'}`} onClick={() => setIsOpen(false)} to="/uttarakhand">Uttarakhand</Link>
+          <Link className={`text-lg pb-3 border-b border-gray-100 ${isActive('/himachal') ? 'text-primary font-bold' : 'text-gray-700'}`} onClick={() => setIsOpen(false)} to="/himachal">Himachal Pradesh</Link>
+          <Link className={`text-lg pb-3 border-b border-gray-100 ${isActive('/about') ? 'text-primary font-bold' : 'text-gray-700'}`} onClick={() => setIsOpen(false)} to="/about">About Us</Link>
+          
+          {user ? (
+            <div className="pt-4 flex flex-col gap-3">
+              <div className="px-2 py-2 text-sm font-semibold text-gray-700 bg-gray-50 rounded-lg">
+                Hi, {user.user_metadata?.full_name || user.email.split('@')[0]}
               </div>
-            ) : (
+              <Link 
+                to="/profile" 
+                onClick={() => setIsOpen(false)} 
+                className="w-full bg-slate-50 text-slate-700 border border-slate-200 py-3 rounded-xl font-bold text-sm flex items-center justify-center gap-2 no-underline text-center mt-2"
+              >
+                <span className="material-symbols-outlined text-sm">person</span> Profile Dashboard
+              </Link>
+              <button 
+                onClick={() => { handleLogout(); setIsOpen(false); }} 
+                className="w-full bg-red-50 text-red-500 border border-red-200 py-3 rounded-xl font-bold text-sm flex items-center justify-center gap-2 mt-1"
+              >
+                <span className="material-symbols-outlined">logout</span> Logout
+              </button>
+            </div>
+          ) : (
+            <div className="pt-4">
               <Link 
                 to="/login"
                 onClick={() => setIsOpen(false)}
-                className="w-full bg-primary text-white text-center py-2.5 rounded-lg font-bold text-sm mt-2 flex items-center justify-center gap-2 border-none cursor-pointer block"
+                className="w-full bg-primary text-white text-center py-3 rounded-xl font-bold text-sm flex items-center justify-center gap-2 border-none cursor-pointer block"
               >
                 <span className="material-symbols-outlined">login</span> Login / Sign Up
               </Link>
-            )}
-          </div>
+            </div>
+          )}
         </div>
-      )}
+      </div>
     </nav>
   )
 }
