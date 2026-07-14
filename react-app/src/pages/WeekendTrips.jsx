@@ -67,27 +67,7 @@ function WeekendTrips() {
             
             {/* Filter and Search Layout */}
             <div className="flex flex-col items-center justify-center gap-4 mt-8 w-full max-w-md">
-              <div className="glass-card p-4 rounded-xl flex flex-wrap gap-4 justify-center items-center">
-                <span className="font-label-sm text-label-sm text-on-surface-variant mr-2">Duration:</span>
-                <button 
-                  onClick={() => setFilter('All')} 
-                  className={`px-5 py-2 rounded-lg font-body-md transition-all duration-200 cursor-pointer ${filter === 'All' ? 'bg-primary text-white shadow-sm border-none' : 'bg-white border border-outline-variant/40 text-on-surface-variant hover:border-primary/50 hover:text-primary'}`}
-                >
-                  All
-                </button>
-                <button 
-                  onClick={() => setFilter('1N/2D')} 
-                  className={`px-5 py-2 rounded-lg font-body-md transition-all duration-200 cursor-pointer ${filter === '1N/2D' ? 'bg-primary text-white shadow-sm border-none' : 'bg-white border border-outline-variant/40 text-on-surface-variant hover:border-primary/50 hover:text-primary'}`}
-                >
-                  1N/2D
-                </button>
-                <button 
-                  onClick={() => setFilter('2N/3D')} 
-                  className={`px-5 py-2 rounded-lg font-body-md transition-all duration-200 cursor-pointer ${filter === '2N/3D' ? 'bg-primary text-white shadow-sm border-none' : 'bg-white border border-outline-variant/40 text-on-surface-variant hover:border-primary/50 hover:text-primary'}`}
-                >
-                  2N/3D
-                </button>
-              </div>
+
 
               {/* Search input field */}
               <div className="relative flex items-center bg-white border border-outline-variant/60 rounded-xl px-4 py-2.5 w-full shadow-md focus-within:ring-2 focus-within:ring-primary/20">

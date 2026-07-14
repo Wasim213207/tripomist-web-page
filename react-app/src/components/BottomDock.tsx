@@ -49,13 +49,8 @@ export default function BottomDock({ isChatOpen, onOpenChat, onCloseChat }: Bott
           boxShadow: '0 4px 20px rgba(0,0,0,0.12)',
         }}
       >
-        {isChatOpen ? (
+        {isChatOpen && (
           <span className="material-symbols-outlined text-white text-[16px]">close</span>
-        ) : (
-          <span className="relative flex h-2 w-2 flex-shrink-0">
-            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
-            <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-500" />
-          </span>
         )}
         <span
           className="text-xs font-semibold tracking-wide"
@@ -63,7 +58,6 @@ export default function BottomDock({ isChatOpen, onOpenChat, onCloseChat }: Bott
         >
           {isChatOpen ? 'Close Chat' : 'How can I help you today?'}
         </span>
-        {!isChatOpen && <span className="h-1.5 w-1.5 rounded-full bg-red-400 flex-shrink-0" />}
       </motion.button>
 
       {/* GooeyDock — smaller icons */}

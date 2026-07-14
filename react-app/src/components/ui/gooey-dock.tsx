@@ -30,26 +30,6 @@ export default function GooeyDock({ items, className }: GooeyDockProps) {
     <div
       className={cn("flex items-center justify-center w-full py-2", className)}
     >
-      {/* SVG goo filter */}
-      <svg className="absolute h-0 w-0" aria-hidden="true">
-        <defs>
-          <filter id="goo">
-            <feGaussianBlur in="SourceGraphic" stdDeviation="10" result="blur" />
-            <feColorMatrix
-              in="blur"
-              mode="matrix"
-              values="
-                1 0 0 0 0
-                0 1 0 0 0
-                0 0 1 0 0
-                0 0 0 20 -5"
-              result="goo"
-            />
-            <feBlend in="SourceGraphic" in2="goo" />
-          </filter>
-        </defs>
-      </svg>
-
       <TooltipProvider delayDuration={100}>
         <div className="relative flex gap-1 px-2 py-1">
           {items.map((item, i) => {
@@ -63,7 +43,6 @@ export default function GooeyDock({ items, className }: GooeyDockProps) {
                     onMouseEnter={() => setHovered(i)}
                     onMouseLeave={() => setHovered(null)}
                     animate={{
-                      scale: isHovered ? 1.25 : 1,
                       y: isHovered ? -4 : 0,
                     }}
                     transition={{
@@ -73,23 +52,20 @@ export default function GooeyDock({ items, className }: GooeyDockProps) {
                     }}
                     className="relative flex flex-col items-center"
                   >
-                    {/* Liquid blob background with goo filter */}
+                    {/* Background hover/active indicator without the huge blur/scale */}
                     <motion.div
                       className="absolute inset-0 rounded-full"
                       style={{
-                        filter: "url(#goo)",
                         background: isActive
-                          ? "rgba(99,102,241,0.35)"
-                          : "rgba(99,102,241,0.18)",
+                          ? "rgba(99,102,241,0.15)"
+                          : "rgba(99,102,241,0)",
                       }}
                       animate={{
-                        scale: isHovered ? 1.7 : 1,
-                        opacity: isHovered ? 1 : isActive ? 0.8 : 0.5,
+                        opacity: isHovered ? 1 : isActive ? 1 : 0,
+                        background: isHovered ? "rgba(99,102,241,0.1)" : isActive ? "rgba(99,102,241,0.15)" : "rgba(99,102,241,0)"
                       }}
                       transition={{
-                        type: "spring",
-                        stiffness: 200,
-                        damping: 25,
+                        duration: 0.2
                       }}
                     />
 

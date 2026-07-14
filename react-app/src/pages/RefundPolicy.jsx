@@ -1,19 +1,17 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
+import Navbar from '../components/Navbar'
+import Footer from '../components/Footer'
 
 function RefundPolicy() {
   return (
     <div className="bg-surface text-on-surface antialiased font-body-md min-h-screen flex flex-col">
-      {/* Header */}
-      <header className="bg-white/80 backdrop-blur-md border-b border-outline-variant/30 sticky top-0 z-40">
-        <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
-          <Link className="font-bold tracking-tight text-primary flex items-center gap-2 hover:opacity-95 text-[#006591]" to="/">
-            <span className="material-symbols-outlined text-[24px]">arrow_back</span>
-            Back to Home
-          </Link>
-          <span className="text-on-surface-variant font-bold text-sm tracking-widest uppercase text-xs md:text-sm text-[#3e4850]">TripoMist Refunds</span>
-        </div>
-      </header>
+      <Navbar />
+      
+      {/* Grey Banner */}
+      <div className="bg-gray-300 py-16 text-center w-full">
+        <h1 className="font-display-lg text-4xl md:text-5xl font-bold text-white uppercase tracking-wider">Refund Policy</h1>
+      </div>
 
       {/* Main Content */}
       <main className="flex-grow max-w-4xl mx-auto w-full px-6 py-12">
@@ -77,7 +75,7 @@ function RefundPolicy() {
 
             <section>
               <h2 className="text-xl font-bold text-on-surface mb-2">4. How to Request a Cancellation</h2>
-              <p>To request a cancellation, please email us directly at <a href="mailto:contact@tripomist.com" className="text-[#006591] hover:underline font-semibold">contact@tripomist.com</a> from your registered email address with your booking ID and details. Phone/WhatsApp requests will not be considered official until followed up by email.</p>
+              <p>To request a cancellation, please email us directly at <a href="mailto:info@tripomist.com" className="text-[#006591] hover:underline font-semibold">info@tripomist.com</a> from your registered email address with your booking ID and details. Phone/WhatsApp requests will not be considered official until followed up by email.</p>
             </section>
 
             <section>
@@ -89,10 +87,7 @@ function RefundPolicy() {
         </div>
       </main>
 
-      {/* Footer */}
-      <footer className="bg-white border-t border-[#bec8d2]/30 py-6 text-center">
-        <p className="text-sm text-[#3e4850]">© 2026 TripoMist. All rights reserved.</p>
-      </footer>
+      <Footer />
     </div>
   )
 }

@@ -6,6 +6,7 @@ import UpcomingTrips from './pages/UpcomingTrips'
 import GroupTrips from './pages/GroupTrips'
 import ItinerarySpiti from './pages/ItinerarySpiti'
 import Checkout from './pages/Checkout'
+import Cart from './pages/Cart'
 import PrivacyPolicy from './pages/PrivacyPolicy'
 import RefundPolicy from './pages/RefundPolicy'
 import ShippingPolicy from './pages/ShippingPolicy'
@@ -17,6 +18,12 @@ import Profile from './pages/Profile'
 import Search from './pages/Search'
 import Uttarakhand from './pages/Uttarakhand'
 import Himachal from './pages/Himachal'
+import Kashmir from './pages/Kashmir'
+import Rajasthan from './pages/Rajasthan'
+import Meghalaya from './pages/Meghalaya'
+import Ladakh from './pages/Ladakh'
+import Spiti from './pages/Spiti'
+import Andaman from './pages/Andaman'
 import AboutUs from './pages/AboutUs'
 import BottomDock from './components/BottomDock'
 import Chatbot from './components/Chatbot'
@@ -43,10 +50,16 @@ function App() {
         <Route path="/group-trips" element={<GroupTrips />} />
         <Route path="/uttarakhand" element={<Uttarakhand />} />
         <Route path="/himachal" element={<Himachal />} />
+        <Route path="/kashmir" element={<Kashmir />} />
+        <Route path="/rajasthan" element={<Rajasthan />} />
+        <Route path="/meghalaya" element={<Meghalaya />} />
+        <Route path="/ladakh" element={<Ladakh />} />
+        <Route path="/spiti" element={<Spiti />} />
+        <Route path="/andaman" element={<Andaman />} />
         <Route path="/about" element={<AboutUs />} />
         <Route path="/itinerary/:id" element={<ItinerarySpiti />} />
         <Route path="/checkout" element={<Checkout />} />
-        <Route path="/cart" element={<Checkout />} />
+        <Route path="/cart" element={<Cart />} />
         <Route path="/login" element={<Login />} />
         <Route path="/settings" element={<Settings />} />
         <Route path="/profile" element={<Profile />} />

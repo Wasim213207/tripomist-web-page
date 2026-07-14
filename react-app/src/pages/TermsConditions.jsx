@@ -1,19 +1,17 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
+import Navbar from '../components/Navbar'
+import Footer from '../components/Footer'
 
 function TermsConditions() {
   return (
     <div className="bg-surface text-on-surface antialiased font-body-md min-h-screen flex flex-col">
-      {/* Header */}
-      <header className="bg-white/80 backdrop-blur-md border-b border-outline-variant/30 sticky top-0 z-40">
-        <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
-          <Link className="font-bold tracking-tight text-primary flex items-center gap-2 hover:opacity-95 text-[#006591]" to="/">
-            <span className="material-symbols-outlined text-[24px]">arrow_back</span>
-            Back to Home
-          </Link>
-          <span className="text-on-surface-variant font-bold text-sm tracking-widest uppercase text-xs md:text-sm text-[#3e4850]">TripoMist Terms</span>
-        </div>
-      </header>
+      <Navbar />
+      
+      {/* Grey Banner */}
+      <div className="bg-gray-300 py-16 text-center w-full">
+        <h1 className="font-display-lg text-4xl md:text-5xl font-bold text-white uppercase tracking-wider">Terms & Conditions</h1>
+      </div>
 
       {/* Main Content */}
       <main className="flex-grow max-w-4xl mx-auto w-full px-6 py-12">
@@ -68,19 +66,16 @@ function TermsConditions() {
               <p>For any inquiries regarding these terms, please contact us at:</p>
               <div className="bg-[#faf8ff] rounded-lg p-4 mt-2 border border-[#bec8d2]/30 text-on-surface">
                 <strong>TripoMist Travel Agency</strong><br />
-                Email: contact@tripomist.com<br />
+                Email: info@tripomist.com<br />
                 Phone: +91 9990802608<br />
-                Address: 3rd Floor, Main Ring Road, Rajouri Garden, New Delhi, Delhi, 110027, India
+                Address: c-1/28 New Kondli, Mayur Vihar Phase-3, Delhi 110096, India
               </div>
             </section>
           </div>
         </div>
       </main>
 
-      {/* Footer */}
-      <footer className="bg-white border-t border-[#bec8d2]/30 py-6 text-center">
-        <p className="text-sm text-[#3e4850]">© 2026 TripoMist. All rights reserved.</p>
-      </footer>
+      <Footer />
     </div>
   )
 }

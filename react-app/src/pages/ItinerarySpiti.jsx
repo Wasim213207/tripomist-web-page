@@ -4,13 +4,18 @@ import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
 import DownloadItineraryModal from '../components/DownloadItineraryModal'
 
-function ItinerarySpiti() {
+export default function ItinerarySpiti() {
   const { id } = useParams()
   const navigate = useNavigate()
   const [searchParams] = useSearchParams()
 
   const [activeAccordion, setActiveAccordion] = useState(0)
   const [isModalOpen, setIsModalOpen] = useState(false)
+  const [isReadMore, setIsReadMore] = useState(false)
+  
+  // New States for Redesign
+  const [activeTab, setActiveTab] = useState('Itinerary')
+  const [travellers, setTravellers] = useState(1)
 
   const tripsData = {
     "Spiti Valley": {
@@ -106,134 +111,226 @@ function ItinerarySpiti() {
   const trip = tripsData[currentKey] || tripsData["Spiti Valley"]
 
   const handleBookNow = () => {
-    navigate(`/checkout?trip=${encodeURIComponent(trip.title)}&price=${trip.numericPrice}`)
+    navigate(`/checkout?trip=${encodeURIComponent(trip.title)}&price=${trip.numericPrice * travellers}`)
   }
 
   const toggleAccordion = (index) => {
     setActiveAccordion(activeAccordion === index ? null : index)
   }
 
+  const handleSendEnquiry = () => {
+    const message = `Hey *TripoMist* I'm interested in *${trip.title}*\nMy Full Name: \nPrefer Travel date: \nDestination: ${trip.title}\nHow Many people travel with me : ${travellers}`;
+    const whatsappUrl = `https://wa.me/919990802608?text=${encodeURIComponent(message)}`;
+    window.open(whatsappUrl, '_blank');
+  }
+
+  const strikePrice = trip.numericPrice + 3000
+  const totalAmount = trip.numericPrice * travellers
+
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className="flex flex-col min-h-screen bg-white">
       <Navbar />
 
-      <main className="w-full">
+      {/* Top Mobile Sticky Bar */}
+      <div className="md:hidden sticky top-0 z-40 bg-[#136b8a] text-white text-center py-2 text-sm font-semibold shadow-sm w-full">
+        {trip.title} Early Bird - Save up to ₹3,000 🎉
+      </div>
+
+      <main className="w-full flex-grow pb-24 md:pb-0">
         {/* Hero Section */}
-        <div className="relative w-full h-[512px] md:h-[614px] lg:h-[650px] bg-surface-container-high overflow-hidden">
-          <div className="absolute inset-0 bg-cover bg-center w-full h-full transform scale-100 transition-all duration-1000" style={{ backgroundImage: `url('${trip.bg}')` }}></div>
-          <div className="absolute inset-0 bg-gradient-to-t from-surface via-surface/30 to-transparent"></div>
-          
-          <div className="absolute bottom-0 left-0 w-full max-w-7xl mx-auto px-4 md:px-8 pb-lg flex flex-col justify-end">
-            <div className="inline-flex items-center gap-2 bg-white/70 backdrop-blur-md px-3.5 py-1 rounded-full w-fit mb-4 border border-white/50 shadow-sm">
-              <span className="material-symbols-outlined text-[16px] text-primary">location_on</span>
-              <span className="font-label-sm text-primary uppercase tracking-wider font-bold text-xs">{trip.location}</span>
-            </div>
-            <h1 className="font-display-lg text-display-lg text-on-surface mb-2 font-bold drop-shadow-sm">{trip.title}</h1>
-            <p className="font-body-lg text-body-lg text-on-surface-variant max-w-2xl">{trip.description}</p>
+        <div className="relative w-full h-[45vh] md:h-[60vh] bg-gray-900 overflow-hidden">
+          <div className="absolute inset-0 bg-cover bg-center w-full h-full" style={{ backgroundImage: `url('${trip.bg}')` }}></div>
+          <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex items-end justify-center pb-8">
+            <h1 className="text-white text-2xl md:text-4xl font-bold tracking-wide drop-shadow-lg text-center">
+              {trip.title} {trip.duration.split(',')[0]}
+            </h1>
           </div>
         </div>
 
         {/* Content Layout */}
-        <div className="max-w-7xl mx-auto px-4 md:px-8 py-lg grid grid-cols-1 lg:grid-cols-12 gap-gutter relative">
+        <div className="max-w-7xl mx-auto px-4 md:px-8 py-8 grid grid-cols-1 lg:grid-cols-12 gap-10 relative">
           
-          {/* Left Column: Itinerary Accordion */}
-          <div className="lg:col-span-8 flex flex-col gap-xl">
-            {/* Stats Bar */}
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-sm">
-              <div className="glass-card p-5 rounded-[1.25rem] flex flex-col items-center justify-center text-center">
-                <span className="material-symbols-outlined text-primary text-3xl mb-2" style={{ fontVariationSettings: "'wght' 300" }}>calendar_clock</span>
-                <span className="font-label-sm text-outline uppercase text-[10px] mb-1 font-bold">Duration</span>
-                <span className="font-body-md font-bold text-on-surface">{trip.duration}</span>
-              </div>
-              <div className="glass-card p-5 rounded-[1.25rem] flex flex-col items-center justify-center text-center">
-                <span className="material-symbols-outlined text-primary text-3xl mb-2" style={{ fontVariationSettings: "'wght' 300" }}>groups</span>
-                <span className="font-label-sm text-outline uppercase text-[10px] mb-1 font-bold">Group Size</span>
-                <span className="font-body-md font-bold text-on-surface">12-15 Explorers</span>
-              </div>
-              <div className="glass-card p-5 rounded-[1.25rem] flex flex-col items-center justify-center text-center">
-                <span className="material-symbols-outlined text-primary text-3xl mb-2" style={{ fontVariationSettings: "'wght' 300" }}>terrain</span>
-                <span className="font-label-sm text-outline uppercase text-[10px] mb-1 font-bold">Difficulty</span>
-                <span className="font-body-md font-bold text-on-surface">{trip.difficulty}</span>
-              </div>
-              <div className="glass-card p-5 rounded-[1.25rem] flex flex-col items-center justify-center text-center">
-                <span className="material-symbols-outlined text-primary text-3xl mb-2" style={{ fontVariationSettings: "'wght' 300" }}>star</span>
-                <span className="font-label-sm text-outline uppercase text-[10px] mb-1 font-bold">Rating</span>
-                <span className="font-body-md font-bold text-on-surface flex items-center gap-1">4.9 <span className="text-xs text-on-surface-variant font-normal">(120+)</span></span>
-              </div>
+          {/* Left Column: Itinerary & Details */}
+          <div className="lg:col-span-8 flex flex-col">
+            
+            {/* Title & Description */}
+            <div className="mb-6">
+              <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4 font-sans tracking-tight">
+                About {trip.title} Trip From Delhi
+              </h1>
+              <p className="text-gray-700 text-base md:text-lg leading-relaxed mb-2">
+                {isReadMore ? trip.description : `${trip.description.slice(0, 80)}...`}
+              </p>
+              <button onClick={() => setIsReadMore(!isReadMore)} className="text-[#136b8a] font-bold hover:underline text-sm md:text-base cursor-pointer">
+                {isReadMore ? 'Read Less' : 'Read More'}
+              </button>
             </div>
 
-            {/* Itinerary */}
-            <section>
-              <h2 className="font-headline-lg text-headline-lg text-on-surface mb-6 flex items-center gap-3 font-bold">
-                <span className="material-symbols-outlined text-primary-container text-[28px]">route</span>
-                The Itinerary
-              </h2>
-              
-              <div className="flex flex-col gap-6">
-                {trip.days.map((day, idx) => (
-                  <div key={day.num} className="glass-card rounded-[1.25rem] overflow-hidden group">
-                    <button 
-                      onClick={() => toggleAccordion(idx)}
-                      className="w-full px-6 py-5 flex items-center justify-between bg-white text-left focus:outline-none focus:ring-2 focus:ring-primary/20 accordion-btn cursor-pointer"
-                    >
-                      <div className="flex items-center gap-4">
-                        <div className="bg-surface-container-low text-primary font-label-sm px-3 py-1.5 rounded-md uppercase tracking-wide border border-outline-variant/20 font-bold">Day {day.num}</div>
-                        <h3 className="font-headline-md text-headline-md text-on-surface font-bold text-lg md:text-xl">{day.title}</h3>
-                      </div>
-                      <span 
-                        className="material-symbols-outlined text-outline-variant group-hover:text-primary transition-colors transform duration-300 icon-expand"
-                        style={{ transform: activeAccordion === idx ? 'rotate(180deg)' : 'rotate(0deg)' }}
+            {/* Tabs */}
+            <div className="flex gap-3 overflow-x-auto pb-2 mb-10 hide-scrollbar border-b border-gray-100">
+              {['Itinerary', 'Inclusions', 'Costing'].map((tab) => (
+                <button 
+                  key={tab}
+                  onClick={() => setActiveTab(tab)}
+                  className={`px-6 py-2 rounded-full whitespace-nowrap font-bold text-sm transition-all border cursor-pointer
+                    ${activeTab === tab 
+                      ? 'bg-[#eff6f9] text-[#136b8a] border-[#136b8a]' 
+                      : 'bg-white text-gray-700 border-gray-200 hover:border-gray-300'
+                    }`}
+                >
+                  {tab}
+                </button>
+              ))}
+            </div>
+
+            {/* Itinerary Section */}
+            {activeTab === 'Itinerary' && (
+              <section className="mb-10">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
+                  <h2 className="text-2xl md:text-3xl font-bold text-gray-900 tracking-tight">Itinerary Breakdown</h2>
+                  <button 
+                    onClick={() => setIsModalOpen(true)}
+                    className="btn-shiny bg-[#136b8a] hover:bg-[#0f556e] text-white px-5 py-2.5 rounded-lg text-sm font-semibold shadow-sm transition-colors flex items-center justify-center gap-2 w-full sm:w-auto cursor-pointer"
+                  >
+                    <span className="relative z-10 flex items-center gap-2">
+                      <span className="material-symbols-outlined text-[18px]">download</span>
+                      Download Itinerary
+                    </span>
+                  </button>
+                </div>
+                
+                <div className="flex flex-col gap-4">
+                  {trip.days.map((day, idx) => (
+                    <div key={day.num} className="bg-[#eff6f9] rounded-2xl overflow-hidden border border-[#b9dae6]">
+                      <button 
+                        onClick={() => toggleAccordion(idx)}
+                        className="w-full px-5 py-4 md:px-6 md:py-5 flex items-center justify-between text-left cursor-pointer hover:bg-[#deedf4] transition-colors"
                       >
-                        expand_more
-                      </span>
-                    </button>
-                    {activeAccordion === idx && (
-                      <div className="px-6 pb-6 pt-2 accordion-content text-on-surface-variant font-body-md leading-relaxed border-t border-outline-variant/10">
-                        <p>{day.desc}</p>
-                      </div>
-                    )}
-                  </div>
-                ))}
-              </div>
-            </section>
+                        <div className="flex flex-col sm:flex-row sm:items-center gap-3 md:gap-5 flex-grow pr-4">
+                          <div className="flex-shrink-0 bg-white border border-[#136b8a] text-gray-900 font-bold px-4 py-1.5 rounded-full text-sm uppercase tracking-wide w-fit">
+                            Day {day.num}
+                          </div>
+                          <h3 className="font-bold text-gray-900 text-base md:text-lg uppercase tracking-tight">{day.title}</h3>
+                        </div>
+                        <span 
+                          className="material-symbols-outlined text-gray-800 transition-transform duration-300 flex-shrink-0 font-bold"
+                          style={{ transform: activeAccordion === idx ? 'rotate(180deg)' : 'rotate(0deg)' }}
+                        >
+                          expand_more
+                        </span>
+                      </button>
+                      {activeAccordion === idx && (
+                        <div className="px-5 md:px-6 pb-5 pt-1 text-gray-800 text-sm md:text-base">
+                          <ul className="space-y-3 list-disc pl-4 marker:text-gray-500">
+                            {day.desc.split('. ').filter(Boolean).map((sentence, sIdx) => (
+                              <li key={sIdx}>{sentence.trim()}{sentence.endsWith('.') ? '' : '.'}</li>
+                            ))}
+                          </ul>
+                        </div>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              </section>
+            )}
+
+            {/* Other Tabs Placeholders */}
+            {activeTab !== 'Itinerary' && (
+              <section className="mb-10 min-h-[200px] flex items-center justify-center bg-gray-50 rounded-2xl border border-gray-100">
+                <p className="text-gray-500 font-medium">Content for {activeTab} will be available here.</p>
+              </section>
+            )}
+            
           </div>
 
-          {/* Right Column: Sticky Booking Card */}
-          <div className="lg:col-span-4 relative">
-            <div className="sticky top-[100px] bg-white rounded-[1.5rem] border border-outline-variant/30 p-lg shadow-sm glass-reveal">
-              <div className="mb-6 pb-6 border-b border-outline-variant/20 mb-8">
-                <span className="font-label-sm text-outline uppercase tracking-wider block mb-2 font-bold text-[10px]">Starting from</span>
-                <div className="flex items-end gap-2">
-                  <span className="font-display-lg text-display-lg text-primary leading-none font-bold">{trip.price}</span>
-                  <span className="font-body-md text-on-surface-variant pb-1 text-sm">/ person</span>
+          {/* Right Column: Sticky Booking Card (Desktop Only) */}
+          <div className="hidden lg:block lg:col-span-4 relative">
+            <div className="sticky top-[100px] bg-white rounded-3xl border border-gray-200 p-6 shadow-lg shadow-gray-100">
+              
+              {/* Price Details */}
+              <div className="mb-6 border-b border-gray-100 pb-5">
+                <span className="font-semibold text-gray-900 text-sm block mb-1">Starting Price</span>
+                <div className="flex items-center gap-3 mb-1">
+                  <span className="text-[#136b8a] text-3xl font-bold">{trip.price}</span>
+                  <div className="flex items-center gap-1 text-xs font-semibold">
+                    <span className="line-through text-gray-500 font-normal">₹{strikePrice.toLocaleString()}</span>
+                    <span className="text-red-500 font-bold">₹3,000 Off</span>
+                  </div>
                 </div>
-                <p className="font-label-sm text-tertiary mt-2 flex items-center gap-1 text-[11px]">
-                  <span className="material-symbols-outlined text-[14px]">info</span>
-                  Prices inclusive of all taxes
-                </p>
+                <p className="text-gray-500 text-sm font-medium">Per Person</p>
+              </div>
+
+              {/* No of Travellers */}
+              <div className="flex items-center justify-between mb-4">
+                <div className="flex items-center gap-2 font-semibold text-gray-800">
+                  <span className="material-symbols-outlined text-purple-600 text-[20px]">group</span>
+                  No. of Travellers
+                </div>
+                <div className="flex items-center gap-4 bg-white border border-gray-200 rounded-full px-2 py-1 shadow-sm">
+                  <button onClick={() => setTravellers(Math.max(1, travellers - 1))} className="w-8 h-8 flex items-center justify-center text-gray-600 hover:bg-gray-100 rounded-full font-bold transition-colors text-lg cursor-pointer">-</button>
+                  <span className="font-bold text-gray-900 text-base w-4 text-center">{travellers}</span>
+                  <button onClick={() => setTravellers(travellers + 1)} className="w-8 h-8 flex items-center justify-center text-gray-600 hover:bg-gray-100 rounded-full font-bold transition-colors text-lg cursor-pointer">+</button>
+                </div>
+              </div>
+
+              {/* Total Amount */}
+              <div className="flex items-center justify-between mb-8 bg-[#eff6f9] px-4 py-3 rounded-xl border border-[#cde5ef]">
+                <span className="font-bold text-gray-800 text-sm">Total Amount</span>
+                <span className="font-extrabold text-[#136b8a] text-xl">₹{totalAmount.toLocaleString()}</span>
               </div>
               
+              {/* Action Buttons */}
               <button 
                 onClick={handleBookNow}
-                className="w-full bg-gradient-to-r from-primary to-primary-container hover:opacity-95 text-on-primary font-headline-md text-headline-md py-4 rounded-xl shadow-md hover:-translate-y-0.5 transition-all duration-200 cursor-pointer font-bold"
+                className="btn-shiny w-full bg-[#136b8a] hover:bg-[#0f556e] text-white font-bold py-3.5 rounded-xl shadow-md transition-all active:scale-[0.98] mb-4 text-lg cursor-pointer"
               >
-                Book Now
+                <span className="relative z-10">Book Now</span>
               </button>
-              
+
               <button 
-                onClick={() => setIsModalOpen(true)}
-                className="w-full flex items-center justify-center gap-2 mt-4 text-primary font-semibold hover:text-secondary transition-colors py-2 cursor-pointer"
+                onClick={handleSendEnquiry}
+                className="w-full bg-[#25D366] hover:bg-[#20b858] text-white font-bold py-3.5 rounded-xl shadow-md transition-all active:scale-[0.98] flex items-center justify-center gap-2 text-lg cursor-pointer"
               >
-                <span className="material-symbols-outlined text-[20px]">download</span>
-                <span>Download Itinerary</span>
+                <img src="https://cdn.jsdelivr.net/npm/simple-icons@v11/icons/whatsapp.svg" alt="WhatsApp" className="w-5 h-5 filter invert" />
+                Send Enquiry to trip experts
               </button>
-              <p className="text-center font-label-sm text-outline mt-4 text-[11px]">
-                Secure checkout • Free cancellation up to 30 days
+              <p className="text-center text-gray-500 text-[11px] font-medium mt-2">
+                fill the blanks to send enquiry to expert
               </p>
+              
             </div>
           </div>
         </div>
       </main>
+
+      {/* Mobile Bottom Sticky Bar */}
+      <div className="md:hidden fixed bottom-0 left-0 w-full bg-white border-t border-gray-200 p-4 pb-6 flex items-center justify-between z-40 shadow-[0_-4px_10px_rgba(0,0,0,0.05)]">
+        <div>
+          <div className="flex items-center gap-2">
+            <span className="text-lg font-extrabold text-gray-900">₹{totalAmount.toLocaleString()}</span>
+            <span className="text-[10px] text-gray-500 font-medium">for {travellers}</span>
+          </div>
+          <div className="flex items-center gap-1 text-[10px] font-semibold mt-0.5">
+            <span className="line-through text-gray-500 font-normal">₹{strikePrice.toLocaleString()}</span>
+            <span className="text-red-500 font-bold">₹3,000 Off</span>
+          </div>
+        </div>
+        <button 
+          onClick={handleBookNow}
+          className="btn-shiny bg-[#136b8a] hover:bg-[#0f556e] text-white font-bold px-8 py-3 rounded-xl shadow-md active:scale-95 transition-transform cursor-pointer"
+        >
+          <span className="relative z-10">Book Now</span>
+        </button>
+      </div>
+
+      {/* Mobile Floating WhatsApp Icon */}
+      <button 
+        onClick={handleSendEnquiry}
+        className="md:hidden fixed bottom-28 right-4 w-14 h-14 bg-[#25D366] text-white rounded-full flex items-center justify-center shadow-xl hover:bg-[#20b858] active:scale-95 transition-all z-40 border-2 border-white cursor-pointer"
+        aria-label="Send Enquiry to trip experts"
+      >
+        <img src="https://cdn.jsdelivr.net/npm/simple-icons@v11/icons/whatsapp.svg" alt="WhatsApp" className="w-8 h-8 filter invert" />
+      </button>
 
       <DownloadItineraryModal 
         isOpen={isModalOpen}
@@ -241,9 +338,9 @@ function ItinerarySpiti() {
         tripTitle={trip.title}
       />
 
-      <Footer />
+      <div className="pb-16 md:pb-0">
+        <Footer />
+      </div>
     </div>
   )
 }
-
-export default ItinerarySpiti

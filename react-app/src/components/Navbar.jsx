@@ -63,10 +63,6 @@ function Navbar() {
         
         {/* Actions/Icons */}
         <div className="flex items-center gap-4">
-          <Link className="text-on-surface-variant hover:text-primary transition-colors p-1" to="/cart" aria-label="Cart">
-            <span className="material-symbols-outlined">shopping_cart</span>
-          </Link>
-          
           {/* User Auth Profile Dropdown */}
           {user ? (
             <div className="relative">
@@ -145,6 +141,10 @@ function Navbar() {
               <span className="material-symbols-outlined text-sm">login</span> Login
             </Link>
           )}
+
+          <Link className="text-on-surface-variant hover:text-primary transition-colors p-1" to="/cart" aria-label="Cart">
+            <span className="material-symbols-outlined">shopping_cart</span>
+          </Link>
 
           <button className="md:hidden text-on-surface-variant p-1" onClick={() => setIsOpen(!isOpen)} aria-label="Toggle Menu">
             <span className="material-symbols-outlined">{isOpen ? 'close' : 'menu'}</span>

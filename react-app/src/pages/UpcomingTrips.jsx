@@ -73,26 +73,7 @@ function UpcomingTrips() {
             
             {/* Filter and Search Controls */}
             <div className="flex flex-col items-center justify-center gap-4 mt-8 w-full max-w-md">
-              <div className="flex items-center gap-3 bg-white/10 backdrop-blur-md p-2 rounded-full border border-white/20">
-                <button 
-                  onClick={() => setFilter('All')} 
-                  className={`px-5 py-2 rounded-full font-semibold transition-all shadow-sm cursor-pointer border-none ${filter === 'All' ? 'bg-primary text-white' : 'text-white/90 hover:bg-white/20'}`}
-                >
-                  All Trips
-                </button>
-                <button 
-                  onClick={() => setFilter('1N/2D')} 
-                  className={`px-5 py-2 rounded-full font-semibold transition-all shadow-sm cursor-pointer border-none ${filter === '1N/2D' ? 'bg-primary text-white' : 'text-white/90 hover:bg-white/20'}`}
-                >
-                  1N/2D
-                </button>
-                <button 
-                  onClick={() => setFilter('2N/3D')} 
-                  className={`px-5 py-2 rounded-full font-semibold transition-all shadow-sm cursor-pointer border-none ${filter === '2N/3D' ? 'bg-primary text-white' : 'text-white/90 hover:bg-white/20'}`}
-                >
-                  2N/3D
-                </button>
-              </div>
+
 
               {/* Search input field */}
               <div className="relative flex items-center bg-white border border-outline-variant/60 rounded-xl px-4 py-2.5 w-full shadow-md focus-within:ring-2 focus-within:ring-primary/20">

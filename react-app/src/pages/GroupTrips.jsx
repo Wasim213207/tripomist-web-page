@@ -131,63 +131,6 @@ function GroupTrips() {
           <p className="text-on-surface-variant text-sm md:text-base max-w-xl mx-auto">Explore premium group adventures across stunning landscapes, beaches, and scenic mountain trails.</p>
         </div>
 
-        {/* Style Filter Tabs */}
-        <div className="flex justify-center gap-3 mb-10 overflow-x-auto hide-scrollbar py-1">
-          <button 
-            onClick={() => setActiveStyle('All')} 
-            className={`whitespace-nowrap px-4 py-2 rounded-full border text-sm transition-all duration-200 cursor-pointer ${
-              activeStyle === 'All' 
-                ? 'border-2 border-primary text-primary font-bold bg-primary/5' 
-                : 'border-outline-variant/50 text-on-surface hover:border-primary hover:text-primary hover:bg-primary/5 bg-white'
-            }`}
-          >
-            All Trips
-          </button>
-          <button 
-            onClick={() => setActiveStyle('Mountains')} 
-            className={`whitespace-nowrap px-4 py-2 rounded-full border text-sm transition-all duration-200 cursor-pointer ${
-              activeStyle === 'Mountains' 
-                ? 'border-2 border-primary text-primary font-bold bg-primary/5' 
-                : 'border-outline-variant/50 text-on-surface hover:border-primary hover:text-primary hover:bg-primary/5 bg-white'
-            }`}
-          >
-            Mountains
-          </button>
-          <button 
-            onClick={() => setActiveStyle('Beaches')} 
-            className={`whitespace-nowrap px-4 py-2 rounded-full border text-sm transition-all duration-200 cursor-pointer ${
-              activeStyle === 'Beaches' 
-                ? 'border-2 border-primary text-primary font-bold bg-primary/5' 
-                : 'border-outline-variant/50 text-on-surface hover:border-primary hover:text-primary hover:bg-primary/5 bg-white'
-            }`}
-          >
-            Beaches
-          </button>
-          <button 
-            onClick={() => setActiveStyle('Weekend')} 
-            className={`whitespace-nowrap px-4 py-2 rounded-full border text-sm transition-all duration-200 cursor-pointer ${
-              activeStyle === 'Weekend' 
-                ? 'border-2 border-primary text-primary font-bold bg-primary/5' 
-                : 'border-outline-variant/50 text-on-surface hover:border-primary hover:text-primary hover:bg-primary/5 bg-white'
-            }`}
-          >
-            Weekend Getaways
-          </button>
-
-          {/* Favorites Filter Button */}
-          <button 
-            onClick={() => setFavoritesFilter(!favoritesFilter)} 
-            className={`whitespace-nowrap px-4 py-2 rounded-full border text-sm transition-all duration-200 cursor-pointer flex items-center gap-1.5 ${
-              favoritesFilter 
-                ? 'border-red-500 text-red-500 font-bold bg-red-50' 
-                : 'border-outline-variant/50 text-on-surface hover:border-red-500 hover:text-red-500 bg-white'
-            }`}
-          >
-            <span className="material-symbols-outlined text-[16px]">favorite</span>
-            Favorites
-          </button>
-        </div>
-
         {/* Search Input */}
         <div className="max-w-md mx-auto mb-10">
           <div className="relative flex items-center bg-white dark:bg-surface-container-high border border-outline-variant/60 rounded-xl px-4 py-2.5 shadow-sm focus-within:ring-2 focus-within:ring-primary/20">
