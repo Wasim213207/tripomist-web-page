@@ -3,6 +3,7 @@ import { Link, useLocation } from 'react-router-dom'
 import Navbar from '../components/Navbar'
 import DestinationSearch from '../components/DestinationSearch'
 import Footer from '../components/Footer'
+import PackageCard from '../components/PackageCard'
 
 function GroupTrips() {
   const location = useLocation()
@@ -205,52 +206,36 @@ function GroupTrips() {
             <button
               key={filter}
               onClick={() => setActiveStyle(filter)}
-              className={`px-5 py-2.5 rounded-full border text-sm font-semibold transition-all cursor-pointer ${
+              className={`relative overflow-hidden group/filter border px-5 py-2.5 rounded-full cursor-pointer transition-all duration-300 font-semibold text-sm ${
                 activeStyle === filter 
                   ? 'bg-primary text-white border-primary shadow-md scale-105' 
-                  : 'bg-white text-gray-700 border-gray-200 hover:border-gray-300 hover:bg-gray-50'
+                  : 'bg-white text-gray-700 border-gray-200 hover:border-primary hover:text-primary'
               }`}
             >
-              {filter}
+              {activeStyle !== filter && (
+                <div className="absolute inset-0 w-0 bg-primary/10 transition-all duration-300 ease-out group-hover/filter:w-full z-0"></div>
+              )}
+              <span className="relative z-10">
+                {filter}
+              </span>
             </button>
           ))}
         </div>
         
         {/* Trips Grid */}
-
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {filteredTrips.map(trip => (
-            <div key={trip.id} className="bg-surface-container-lowest rounded-xl overflow-hidden border border-outline-variant/30 hover:shadow-lg transition-all duration-300 group flex flex-col h-full trip-card">
-              <div className="relative h-48 w-full overflow-hidden">
-                <img className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" alt={trip.name} src={trip.img} />
-                <div className="absolute top-3 left-3 bg-primary text-on-primary px-3 py-1 rounded-md font-label-sm text-label-sm shadow-sm backdrop-blur-md bg-opacity-90 font-bold">{trip.style}</div>
-                <button 
-                  onClick={() => toggleFavorite(trip.id)} 
-                  className={`absolute top-3 right-3 p-1.5 bg-surface-container-lowest/80 backdrop-blur-sm rounded-full hover:text-red-500 transition-colors cursor-pointer ${trip.isFav ? 'text-red-500' : 'text-on-surface'}`}
-                >
-                  <span className="material-symbols-outlined text-[18px]" style={{ fontVariationSettings: trip.isFav ? "'FILL' 1" : "'FILL' 0" }}>favorite</span>
-                </button>
-              </div>
-              <div className="p-4 flex-grow flex flex-col">
-                <h3 className="font-headline-md text-headline-md text-on-surface font-bold group-hover:text-primary transition-colors">{trip.name}</h3>
-                <div className="flex items-center gap-1 text-on-surface-variant mb-4 mt-1">
-                  <span className="material-symbols-outlined text-[16px]">schedule</span>
-                  <span className="font-body-md text-body-md text-sm">{trip.durationText}</span>
-                </div>
-                <div className="mt-auto flex items-end justify-between pt-4 border-t border-outline-variant/10">
-                  <div>
-                    <span className="block font-label-sm text-label-sm text-outline uppercase tracking-wider text-[10px]">Starting from</span>
-                    <span className="font-headline-md text-headline-md text-primary font-bold">₹{trip.price.toLocaleString('en-IN')}</span>
-                  </div>
-                  <Link 
-                    to={`/itinerary/${trip.name.toLowerCase().replace(/\s+/g, '-')}`} 
-                    className="bg-primary text-on-primary px-4 py-2 rounded-lg font-body-md text-body-md font-semibold hover:bg-surface-tint transition-colors no-underline"
-                  >
-                    View Detail
-                  </Link>
-                </div>
-              </div>
-            </div>
+            <PackageCard 
+              key={trip.id}
+              className="w-full h-[340px] md:h-[360px]" 
+              tripTitle={trip.name} 
+              price={`₹${trip.price.toLocaleString('en-IN')}`} 
+              duration={trip.durationText} 
+              bg={trip.img}
+              link={`/itinerary/${trip.name.toLowerCase().replace(/\s+/g, '-')}`} 
+              badge={trip.style === 'Domestic Trips' ? 'Domestic' : 'International'}
+              blueText={true}
+            />
           ))}
         </div>
       </main>

@@ -8,42 +8,8 @@ import 'swiper/css/effect-coverflow'
 import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
 
-// Reusable Package Card Component (Clean, Classic Design matching user's image)
-const PackageCard = ({ tripTitle, price, duration, description, bg, link, label }) => {
-  return (
-    <Link 
-      to={link} 
-      draggable={false}
-      className="w-[85vw] sm:w-[240px] md:w-[260px] lg:w-[280px] h-[340px] md:h-[360px] flex-shrink-0 snap-center rounded-[28px] overflow-hidden group relative flex flex-col justify-end shadow-sm hover:shadow-xl transition-all duration-300 select-none block"
-    >
-      <div className="absolute inset-0 bg-cover bg-center w-full h-full group-hover:scale-105 transition-transform duration-700 pointer-events-none" style={{ backgroundImage: `url('${bg}')` }}></div>
-      <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] via-[#0a0a0a]/60 to-transparent h-[75%] mt-auto"></div>
-      
-      <div className="absolute top-4 right-4 bg-black/40 backdrop-blur-md text-white font-bold text-[11px] px-3 py-1.5 rounded-full tracking-wider z-10">
-        Group Trip
-      </div>
-      
-      {label && (
-        <div className="absolute top-4 left-4 bg-primary text-white font-bold text-[10px] px-3 py-1.5 rounded-full uppercase tracking-wider z-10">
-          {label}
-        </div>
-      )}
-
-      <div className="relative z-10 p-5 md:p-6 w-full flex flex-col gap-3">
-        <h3 className="text-white text-[22px] md:text-[24px] font-bold leading-tight">{tripTitle}</h3>
-        
-        <div className="flex flex-wrap gap-2.5">
-          <span className="bg-white/20 backdrop-blur-md text-white text-[12px] font-semibold px-4 py-1.5 rounded-full">
-            {duration}
-          </span>
-          <span className="bg-white/20 backdrop-blur-md text-white text-[12px] font-semibold px-4 py-1.5 rounded-full">
-            {price}
-          </span>
-        </div>
-      </div>
-    </Link>
-  )
-}
+import PackageCard from '../components/PackageCard'
+import FeaturedTripCard from '../components/FeaturedTripCard'
 
 function Home() {
   const navigate = useNavigate()
@@ -146,7 +112,7 @@ function Home() {
               <div className="w-32 h-14 rounded-full overflow-hidden border-2 border-transparent group-hover:border-primary transition-all duration-300 shadow-sm group-hover:shadow-md group-hover:-translate-y-1">
                 <img className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105" alt="Himachal Pradesh" src="https://images.unsplash.com/photo-1626621341517-bbf3d9990a23?w=600&q=80" />
               </div>
-              <span className="font-button text-button text-on-surface group-hover:text-primary text-center transition-colors">Himachal Pradesh</span>
+              <span className="font-button text-button text-on-surface group-hover:text-primary text-center transition-colors">Himachal</span>
             </Link>
             <Link to="/rajasthan" className="flex flex-col items-center gap-3 cursor-pointer group min-w-[100px] destination-circle no-underline">
               <div className="w-32 h-14 rounded-full overflow-hidden border-2 border-transparent group-hover:border-primary transition-all duration-300 shadow-sm group-hover:shadow-md group-hover:-translate-y-1">
@@ -184,126 +150,92 @@ function Home() {
                 <span className="font-label-caps text-label-caps tracking-widest uppercase font-bold">Explore</span>
               </div>
               <h2 className="font-headline-lg-mobile md:font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-surface font-bold">
-                Explore More Capture Better
-              </h2>
+              Most Popular Packages
+            </h2>
             </div>
           </div>
 
-          {/* Cards Container with Swiper Flat */}
-          <div className="-mx-4 md:mx-0">
-            <Swiper
-              grabCursor={true}
-              centeredSlides={true}
-              loop={true}
-              slidesPerView={'auto'}
-              spaceBetween={24}
-              observer={true}
-              observeParents={true}
-              touchEventsTarget="container"
-              modules={[Autoplay]}
-              className="w-full !pb-12 !pt-6"
-            >
-              <SwiperSlide className="!w-auto">
-                <PackageCard 
-                  tripTitle="Ladakh" 
-                  price="₹21,999" 
-                  duration="6N/7D" 
-                  description="Experience the raw beauty of Leh, Nubra Valley, and Pangong Tso with a close-knit group of adventurers."
-                  bg="https://images.unsplash.com/photo-1581793746485-04698e79a4e8?w=1600&q=80"
-                  link="/itinerary/Ladakh" 
-                />
-              </SwiperSlide>
-              <SwiperSlide className="!w-auto">
-                <PackageCard 
-                  tripTitle="Spiti Valley" 
-                  price="₹16,999" 
-                  duration="5N/6D" 
-                  description="Brave the frozen landscapes of the middle land. A curated winter adventure for the bold."
-                  bg="https://images.unsplash.com/photo-1549257850-25e24bcf0e13?w=1600&q=80"
-                  link="/itinerary/Spiti Valley" 
-                />
-              </SwiperSlide>
-              <SwiperSlide className="!w-auto">
-                <PackageCard 
-                  tripTitle="Kashmir" 
-                  price="₹17,999" 
-                  duration="4N/5D" 
-                  description="Explore Srinagar, Gulmarg, and Pahalgam. A perfect mix of leisure and breathtaking vistas."
-                  bg="https://images.unsplash.com/photo-1595815771614-ade9d652a65d?w=1600&q=80"
-                  link="/itinerary/Kashmir" 
-                />
-              </SwiperSlide>
-              <SwiperSlide className="!w-auto">
-                <PackageCard 
-                  tripTitle="Andaman Retreat" 
-                  price="₹25,999" 
-                  duration="5N/6D" 
-                  description="Relax on the pristine beaches of Havelock and Neil Islands with amazing scuba diving opportunities."
-                  bg="https://images.unsplash.com/photo-1590523277543-a94d2e4eb00b?w=1600&q=80"
-                  link="/group-trips" 
-                />
-              </SwiperSlide>
-              <SwiperSlide className="!w-auto">
-                <PackageCard 
-                  tripTitle="Meghalaya Expedition" 
-                  price="₹18,999" 
-                  duration="6N/7D" 
-                  description="Journey through the abode of clouds, explore living root bridges and crystal clear rivers."
-                  bg="https://images.unsplash.com/photo-1518105779142-d975f22f1b0a?w=1600&q=80"
-                  link="/group-trips" 
-                />
-              </SwiperSlide>
-              <SwiperSlide className="!w-auto">
-                <PackageCard 
-                  tripTitle="Manali Kasol" 
-                  price="₹10,999" 
-                  duration="4N/5D" 
-                  description="Experience the vibrant cafes of Kasol and the snow-capped peaks of Manali in one epic trip."
-                  bg="https://images.unsplash.com/photo-1605649487212-47bdab064df7?w=1600&q=80"
-                  link="/group-trips" 
-                />
-              </SwiperSlide>
-              <SwiperSlide className="!w-auto">
-                <PackageCard 
-                  tripTitle="Jibhi Tirthan" 
-                  price="₹9,999" 
-                  duration="3N/4D" 
-                  description="Unwind in the pristine hidden valleys of Jibhi and Tirthan, surrounded by lush green forests."
-                  bg="https://images.unsplash.com/photo-1626621341517-bbf3d9990a23?w=1600&q=80"
-                  link="/group-trips" 
-                />
-              </SwiperSlide>
-              <SwiperSlide className="!w-auto">
-                <PackageCard 
-                  tripTitle="Chopta Tungnath" 
-                  price="₹11,999" 
-                  duration="4N/5D" 
-                  description="Trek through the mini Switzerland of India and visit the highest Shiva temple in the world."
-                  bg="https://images.unsplash.com/photo-1610212594957-c5332fc39634?w=1600&q=80"
-                  link="/group-trips" 
-                />
-              </SwiperSlide>
-              <SwiperSlide className="!w-auto">
-                <PackageCard 
-                  tripTitle="Kedarnath" 
-                  price="₹14,999" 
-                  duration="5N/6D" 
-                  description="Embark on a spiritual journey to the majestic Kedarnath temple amidst the Garhwal Himalayas."
-                  bg="https://images.unsplash.com/photo-1626082927389-6cd097cdc6ec?w=1600&q=80"
-                  link="/group-trips" 
-                />
-              </SwiperSlide>
-              <SwiperSlide className="!w-auto">
-                <PackageCard 
-                  tripTitle="Madhyameshwar" 
-                  price="₹12,999" 
-                  duration="4N/5D" 
-                  description="Discover the serene beauty and spiritual aura of the mystical Madhyameshwar temple trek."
-                  bg="https://images.unsplash.com/photo-1614531341773-3bff8b7cb3fc?w=1600&q=80"
-                  link="/group-trips" 
-                />
-              </SwiperSlide>
-            </Swiper>
+          <div className="flex overflow-x-auto gap-4 md:gap-6 hide-scrollbar pb-8 snap-x snap-mandatory -mx-4 px-4 md:mx-0 md:px-0 scroll-smooth">
+            <PackageCard className="w-[85vw] sm:w-[240px] md:w-[260px] lg:w-[280px] h-[340px] md:h-[360px] snap-center shrink-0" 
+              tripTitle="Ladakh" 
+              price="₹21,999" 
+              duration="6N/7D" 
+              description="Experience the raw beauty of Leh, Nubra Valley, and Pangong Tso with a close-knit group of adventurers."
+              bg="https://images.unsplash.com/photo-1581793746485-04698e79a4e8?w=1600&q=80"
+              link="/itinerary/Ladakh" 
+            />
+            <PackageCard className="w-[85vw] sm:w-[240px] md:w-[260px] lg:w-[280px] h-[340px] md:h-[360px] snap-center shrink-0" 
+              tripTitle="Spiti Valley" 
+              price="₹16,999" 
+              duration="5N/6D" 
+              description="Brave the frozen landscapes of the middle land. A curated winter adventure for the bold."
+              bg="https://images.unsplash.com/photo-1549257850-25e24bcf0e13?w=1600&q=80"
+              link="/itinerary/Spiti Valley" 
+            />
+            <PackageCard className="w-[85vw] sm:w-[240px] md:w-[260px] lg:w-[280px] h-[340px] md:h-[360px] snap-center shrink-0" 
+              tripTitle="Kashmir" 
+              price="₹17,999" 
+              duration="4N/5D" 
+              description="Explore Srinagar, Gulmarg, and Pahalgam. A perfect mix of leisure and breathtaking vistas."
+              bg="https://images.unsplash.com/photo-1595815771614-ade9d652a65d?w=1600&q=80"
+              link="/itinerary/Kashmir" 
+            />
+            <PackageCard className="w-[85vw] sm:w-[240px] md:w-[260px] lg:w-[280px] h-[340px] md:h-[360px] snap-center shrink-0" 
+              tripTitle="Andaman Retreat" 
+              price="₹25,999" 
+              duration="5N/6D" 
+              description="Relax on the pristine beaches of Havelock and Neil Islands with amazing scuba diving opportunities."
+              bg="https://images.unsplash.com/photo-1590523277543-a94d2e4eb00b?w=1600&q=80"
+              link="/group-trips" 
+            />
+            <PackageCard className="w-[85vw] sm:w-[240px] md:w-[260px] lg:w-[280px] h-[340px] md:h-[360px] snap-center shrink-0" 
+              tripTitle="Meghalaya Expedition" 
+              price="₹18,999" 
+              duration="6N/7D" 
+              description="Journey through the abode of clouds, explore living root bridges and crystal clear rivers."
+              bg="https://images.unsplash.com/photo-1518105779142-d975f22f1b0a?w=1600&q=80"
+              link="/group-trips" 
+            />
+            <PackageCard className="w-[85vw] sm:w-[240px] md:w-[260px] lg:w-[280px] h-[340px] md:h-[360px] snap-center shrink-0" 
+              tripTitle="Manali Kasol" 
+              price="₹10,999" 
+              duration="4N/5D" 
+              description="Experience the vibrant cafes of Kasol and the snow-capped peaks of Manali in one epic trip."
+              bg="https://images.unsplash.com/photo-1605649487212-47bdab064df7?w=1600&q=80"
+              link="/group-trips" 
+            />
+            <PackageCard className="w-[85vw] sm:w-[240px] md:w-[260px] lg:w-[280px] h-[340px] md:h-[360px] snap-center shrink-0" 
+              tripTitle="Jibhi Tirthan" 
+              price="₹9,999" 
+              duration="3N/4D" 
+              description="Unwind in the pristine hidden valleys of Jibhi and Tirthan, surrounded by lush green forests."
+              bg="https://images.unsplash.com/photo-1626621341517-bbf3d9990a23?w=1600&q=80"
+              link="/group-trips" 
+            />
+            <PackageCard className="w-[85vw] sm:w-[240px] md:w-[260px] lg:w-[280px] h-[340px] md:h-[360px] snap-center shrink-0" 
+              tripTitle="Chopta Tungnath" 
+              price="₹11,999" 
+              duration="4N/5D" 
+              description="Trek through the mini Switzerland of India and visit the highest Shiva temple in the world."
+              bg="https://images.unsplash.com/photo-1610212594957-c5332fc39634?w=1600&q=80"
+              link="/group-trips" 
+            />
+            <PackageCard className="w-[85vw] sm:w-[240px] md:w-[260px] lg:w-[280px] h-[340px] md:h-[360px] snap-center shrink-0" 
+              tripTitle="Kedarnath" 
+              price="₹14,999" 
+              duration="5N/6D" 
+              description="Embark on a spiritual journey to the majestic Kedarnath temple amidst the Garhwal Himalayas."
+              bg="https://images.unsplash.com/photo-1626082927389-6cd097cdc6ec?w=1600&q=80"
+              link="/group-trips" 
+            />
+            <PackageCard className="w-[85vw] sm:w-[240px] md:w-[260px] lg:w-[280px] h-[340px] md:h-[360px] snap-center shrink-0" 
+              tripTitle="Madhyameshwar" 
+              price="₹12,999" 
+              duration="4N/5D" 
+              description="Discover the serene beauty and spiritual aura of the mystical Madhyameshwar temple trek."
+              bg="https://images.unsplash.com/photo-1614531341773-3bff8b7cb3fc?w=1600&q=80"
+              link="/group-trips" 
+            />
           </div>
         </section>
 
@@ -324,40 +256,82 @@ function Home() {
             </Link>
           </div>
 
-          <div className="flex overflow-x-auto gap-4 md:gap-6 hide-scrollbar pb-8 snap-x snap-mandatory -mx-4 px-4 md:mx-0 md:px-0">
-            <PackageCard 
-              tripTitle="Ladakh Expedition" 
-              price="₹24,999" 
-              duration="6N/7D" 
-              description="Experience the raw beauty of Leh, Nubra Valley, and Pangong Tso with a close-knit group of adventurers."
-              bg="https://images.unsplash.com/photo-1581793746485-04698e79a4e8?w=1600&q=80"
-              link="/itinerary/Ladakh" 
-              label="Best Seller"
-            />
-            <PackageCard 
-              tripTitle="Winter Spiti Circuit" 
-              price="₹16,999" 
-              duration="5N/6D" 
-              description="Brave the frozen landscapes of the middle land. A curated winter adventure for the bold."
-              bg="https://images.unsplash.com/photo-1549257850-25e24bcf0e13?w=1600&q=80"
-              link="/itinerary/Spiti Valley" 
-            />
-            <PackageCard 
-              tripTitle="Kashmir Retreat" 
-              price="₹19,999" 
-              duration="4N/5D" 
-              description="Explore Srinagar, Gulmarg, and Pahalgam. A perfect mix of leisure and breathtaking vistas."
-              bg="https://images.unsplash.com/photo-1595815771614-ade9d652a65d?w=1600&q=80"
-              link="/itinerary/Kashmir" 
-            />
-            <PackageCard 
-              tripTitle="Rajasthan Royalty" 
-              price="₹22,999" 
-              duration="6N/7D" 
-              description="Discover the majestic forts, stunning palaces, and vast deserts of historic Rajasthan."
-              bg="https://images.unsplash.com/photo-1477587458883-47145ed94245?w=600&q=80"
-              link="/group-trips" 
-            />
+          <div className="-mx-4 md:mx-0 overflow-visible relative pb-12">
+            <Swiper
+              effect={'coverflow'}
+              grabCursor={true}
+              centeredSlides={true}
+              loop={true}
+              slidesPerView={'auto'}
+              slideToClickedSlide={true}
+              autoplay={{ delay: 5000, disableOnInteraction: false }}
+              coverflowEffect={{
+                rotate: 0,
+                stretch: 0,
+                depth: 150,
+                modifier: 2.5,
+                slideShadows: true,
+              }}
+              modules={[EffectCoverflow]}
+              className="w-full"
+            >
+              <SwiperSlide className="!w-auto">
+                <FeaturedTripCard className="w-[75vw] sm:w-[240px] md:w-[280px] lg:w-[320px] h-[380px] md:h-[420px]" 
+                  tripTitle="Chopta Tungnath" 
+                  packagesCount="2" 
+                  bg="https://images.unsplash.com/photo-1610212594957-c5332fc39634?w=1600&q=80"
+                  link="/group-trips" 
+                />
+              </SwiperSlide>
+              <SwiperSlide className="!w-auto">
+                <FeaturedTripCard className="w-[75vw] sm:w-[240px] md:w-[280px] lg:w-[320px] h-[380px] md:h-[420px]" 
+                  tripTitle="Kedarnath" 
+                  packagesCount="4" 
+                  bg="https://images.unsplash.com/photo-1626082927389-6cd097cdc6ec?w=1600&q=80"
+                  link="/group-trips" 
+                />
+              </SwiperSlide>
+              <SwiperSlide className="!w-auto">
+                <FeaturedTripCard className="w-[75vw] sm:w-[240px] md:w-[280px] lg:w-[320px] h-[380px] md:h-[420px]" 
+                  tripTitle="Madhyameshwar" 
+                  packagesCount="1" 
+                  bg="https://images.unsplash.com/photo-1614531341773-3bff8b7cb3fc?w=1600&q=80"
+                  link="/group-trips" 
+                />
+              </SwiperSlide>
+              <SwiperSlide className="!w-auto">
+                <FeaturedTripCard className="w-[75vw] sm:w-[240px] md:w-[280px] lg:w-[320px] h-[380px] md:h-[420px]" 
+                  tripTitle="Ladakh Expedition" 
+                  packagesCount="3" 
+                  bg="https://images.unsplash.com/photo-1581793746485-04698e79a4e8?w=1600&q=80"
+                  link="/itinerary/Ladakh" 
+                />
+              </SwiperSlide>
+              <SwiperSlide className="!w-auto">
+                <FeaturedTripCard className="w-[75vw] sm:w-[240px] md:w-[280px] lg:w-[320px] h-[380px] md:h-[420px]" 
+                  tripTitle="Winter Spiti Circuit" 
+                  packagesCount="2" 
+                  bg="https://images.unsplash.com/photo-1549257850-25e24bcf0e13?w=1600&q=80"
+                  link="/itinerary/Spiti Valley" 
+                />
+              </SwiperSlide>
+              <SwiperSlide className="!w-auto">
+                <FeaturedTripCard className="w-[75vw] sm:w-[240px] md:w-[280px] lg:w-[320px] h-[380px] md:h-[420px]" 
+                  tripTitle="Kashmir Retreat" 
+                  packagesCount="0" 
+                  bg="https://images.unsplash.com/photo-1595815771614-ade9d652a65d?w=1600&q=80"
+                  link="/itinerary/Kashmir" 
+                />
+              </SwiperSlide>
+              <SwiperSlide className="!w-auto">
+                <FeaturedTripCard className="w-[75vw] sm:w-[240px] md:w-[280px] lg:w-[320px] h-[380px] md:h-[420px]" 
+                  tripTitle="Andaman Retreat" 
+                  packagesCount="5" 
+                  bg="https://images.unsplash.com/photo-1590523277543-a94d2e4eb00b?w=1600&q=80"
+                  link="/group-trips" 
+                />
+              </SwiperSlide>
+            </Swiper>
           </div>
         </section>
 
@@ -376,37 +350,41 @@ function Home() {
           </div>
 
           <div className="flex overflow-x-auto gap-4 md:gap-6 hide-scrollbar pb-8 snap-x snap-mandatory -mx-4 px-4 md:mx-0 md:px-0">
-            <PackageCard 
+            <PackageCard className="w-[85vw] sm:w-[240px] md:w-[260px] lg:w-[280px] h-[340px] md:h-[360px]" 
               tripTitle="Bali Escape" 
               price="₹51,999" 
               duration="6N/7D" 
               description="Experience the magic of Bali, from pristine beaches to lush rice terraces and ancient temples."
               bg="https://images.unsplash.com/photo-1537996194471-e657df975ab4?w=600&q=80"
               link="#" 
+              badge="Coming Soon"
             />
-            <PackageCard 
+            <PackageCard className="w-[85vw] sm:w-[240px] md:w-[260px] lg:w-[280px] h-[340px] md:h-[360px]" 
               tripTitle="Vietnam Adventure" 
               price="₹56,999" 
               duration="5N/6D" 
               description="Discover the breathtaking landscapes, rich history, and vibrant culture of Vietnam."
               bg="https://images.unsplash.com/photo-1528127269322-539801943592?w=600&q=80"
               link="#" 
+              badge="Coming Soon"
             />
-            <PackageCard 
+            <PackageCard className="w-[85vw] sm:w-[240px] md:w-[260px] lg:w-[280px] h-[340px] md:h-[360px]" 
               tripTitle="Singapore Highlights" 
               price="₹55,999" 
               duration="4N/5D" 
               description="Explore the futuristic city-state of Singapore, offering a perfect blend of nature and modern marvels."
               bg="https://images.unsplash.com/photo-1525625293386-3f8f99389edd?w=600&q=80"
               link="#" 
+              badge="Coming Soon"
             />
-            <PackageCard 
+            <PackageCard className="w-[85vw] sm:w-[240px] md:w-[260px] lg:w-[280px] h-[340px] md:h-[360px]" 
               tripTitle="Dubai Luxury Getaway" 
               price="₹62,999" 
               duration="5N/6D" 
               description="Experience the opulence of Dubai, from the towering Burj Khalifa to the endless desert dunes."
               bg="https://images.unsplash.com/photo-1512453979798-5ea266f8880c?w=600&q=80"
               link="#" 
+              badge="Coming Soon"
             />
           </div>
         </section>

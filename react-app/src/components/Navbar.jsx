@@ -1,13 +1,11 @@
 import { useState, useEffect } from 'react'
 import { Link, useNavigate, useLocation } from 'react-router-dom'
 import { supabase } from '../utils/supabaseClient'
-
+import { motion, AnimatePresence } from 'framer-motion'
 
 function Navbar() {
   const [isOpen, setIsOpen] = useState(false)
   const [user, setUser] = useState(null)
-  const [showUserDropdown, setShowUserDropdown] = useState(false)
-  const [cartCount, setCartCount] = useState(0)
   
   const navigate = useNavigate()
   const location = useLocation()
@@ -23,18 +21,7 @@ function Navbar() {
       setUser(session?.user || null)
     })
 
-    // Cart count listener
-    const updateCartCount = () => {
-      const items = JSON.parse(localStorage.getItem('cartItems') || '[]')
-      setCartCount(items.length)
-    }
-    updateCartCount()
-    window.addEventListener('cartUpdated', updateCartCount)
-    window.addEventListener('storage', updateCartCount)
-
     return () => {
-      window.removeEventListener('cartUpdated', updateCartCount)
-      window.removeEventListener('storage', updateCartCount)
       subscription?.unsubscribe()
     }
   }, [])
@@ -42,14 +29,7 @@ function Navbar() {
   const handleLogout = async () => {
     await supabase.auth.signOut()
     navigate('/')
-    setShowUserDropdown(false)
-  }
-
-  const handleSearchSubmit = (e) => {
-    if (e.key === 'Enter' && searchValue.trim()) {
-      navigate(`/group-trips?search=${encodeURIComponent(searchValue.trim())}`)
-      setSearchValue('')
-    }
+    setIsOpen(false)
   }
 
   const isActive = (path) => {
@@ -58,163 +38,92 @@ function Navbar() {
 
   return (
     <>
-    <nav className="bg-white dark:bg-slate-900 sticky top-0 z-50 border-b border-gray-200 dark:border-gray-800 shadow-sm transition-all duration-300">
-      <div className="flex justify-between items-center w-full px-4 md:px-8 py-3 max-w-7xl mx-auto">
-        {/* Brand */}
-        <div className="flex items-center gap-6">
-          <Link className="font-headline-md text-headline-md font-bold tracking-tight text-primary flex items-center gap-2 hover:scale-95 duration-150 transition-transform" to="/">
-            <img alt="TripoMist Logo" className="h-10 w-10 rounded-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAf4iPOLD4TW-emcX7qi8W7qPZhFbm5OzAQitvDsMARyOfBuAo9ztt29roRULWmZnSZXWDU9C66-5CEUsII9ClNmyCllVfZSQsk_Zh8SNMinjoMc_fWjzIKKChJB0UTFRB6QTigHPgLb0E2DZsOlp_JhvJp0lXnbSsTzGVqfLBMNk-0_rDP3tmtkhWYAQN9_F1nRcn8PpFGemDTJHOLelhxsCRyeTqUu0-JvD0GzZAkXaVLereGaQFPqUxJgRLojmOnEGYfiVmgV8Js0WY" />
-            TripoMist
-          </Link>
-        </div>
-        
-        {/* Desktop Nav Links */}
-        <div className="hidden md:flex gap-6 items-center">
-          <Link className={`px-3 py-1 font-body-md text-body-md transition-colors ${isActive('/uttarakhand') ? 'text-primary font-semibold border-b-2 border-primary' : 'text-gray-600 dark:text-gray-300 hover:text-primary dark:hover:text-primary'}`} to="/uttarakhand">Uttarakhand</Link>
-          <Link className={`px-3 py-1 font-body-md text-body-md transition-colors ${isActive('/himachal') ? 'text-primary font-semibold border-b-2 border-primary' : 'text-gray-600 dark:text-gray-300 hover:text-primary dark:hover:text-primary'}`} to="/himachal">Himachal Pradesh</Link>
-          <Link className={`px-3 py-1 font-body-md text-body-md transition-colors ${isActive('/about') ? 'text-primary font-semibold border-b-2 border-primary' : 'text-gray-600 dark:text-gray-300 hover:text-primary dark:hover:text-primary'}`} to="/about">About Us</Link>
-          
-        </div>
-        
-        {/* Actions/Icons */}
-        <div className="flex items-center gap-4">
-          {/* User Auth Profile Dropdown */}
-          {user ? (
-            <div className="relative">
-              <button 
-                onClick={() => setShowUserDropdown(!showUserDropdown)} 
-                className="flex items-center gap-2 focus:outline-none hover:opacity-80 transition-opacity duration-150 p-1"
-              >
-                {/* Gradient Avatar in Navbar */}
-                <div className="w-8 h-8 rounded-full bg-gradient-to-br from-teal-400 via-blue-500 to-purple-600 flex items-center justify-center text-white text-sm font-bold shadow-sm shrink-0">
-                  {user.user_metadata?.full_name ? user.user_metadata.full_name.charAt(0).toUpperCase() : 'U'}
-                </div>
-                
-                <span className="hidden md:inline font-body-md text-sm font-semibold max-w-[100px] truncate text-gray-700 dark:text-gray-200">
-                  {user.user_metadata?.full_name || user.email?.split('@')[0]}
-                </span>
-                <span className="material-symbols-outlined text-sm text-gray-500 dark:text-gray-400">expand_more</span>
-              </button>
-              
-              {showUserDropdown && (
-                <div className="absolute right-0 mt-3 w-[260px] bg-white dark:bg-slate-800 rounded-2xl border border-gray-200 dark:border-gray-700 shadow-[0_8px_30px_rgb(0,0,0,0.12)] py-2 z-50 animate-fade-in font-sans">
-                  
-                  {/* Header / User Info */}
-                  <div className="px-4 py-3 flex items-center gap-3">
-                    <div className="w-11 h-11 rounded-full bg-gradient-to-br from-teal-400 via-blue-500 to-purple-600 flex items-center justify-center text-white text-lg font-bold shadow-sm shrink-0">
-                      {user.user_metadata?.full_name ? user.user_metadata.full_name.charAt(0).toUpperCase() : 'U'}
-                    </div>
-                    <div className="flex flex-col overflow-hidden">
-                      <p className="text-[15px] font-bold text-gray-900 dark:text-white m-0 leading-tight truncate">
-                        {user.user_metadata?.full_name || "Traveler"}
-                      </p>
-                      <p className="text-[12px] text-gray-500 dark:text-gray-400 m-0 mt-0.5 truncate">
-                        {user.email}
-                      </p>
-                    </div>
-                  </div>
-                  
-                  <div className="h-px bg-gray-100 dark:bg-gray-700 w-full my-1"></div>
-                  
-                  {/* Menu Items */}
-                  <div className="py-1">
-                    <Link 
-                      to="/profile" 
-                      onClick={() => setShowUserDropdown(false)} 
-                      className="w-full text-left px-4 py-2.5 text-[14px] font-medium text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-slate-700 transition-colors flex items-center gap-3 no-underline block"
-                    >
-                      <span className="material-symbols-outlined text-[20px] text-gray-500 dark:text-gray-400">person</span> View Profile
-                    </Link>
-                  </div>
-                  
-                  <div className="h-px bg-gray-100 dark:bg-gray-700 w-full my-1"></div>
-                  
-                  {/* Sign Out Button */}
-                  <div className="px-4 py-3">
-                    <button 
-                      onClick={handleLogout} 
-                      className="w-full text-center py-2.5 text-[14px] font-semibold text-gray-700 dark:text-gray-200 bg-white dark:bg-slate-800 border border-gray-300 dark:border-gray-600 hover:border-gray-400 dark:hover:border-gray-500 hover:bg-gray-50 dark:hover:bg-slate-700 rounded-xl transition-all cursor-pointer"
-                    >
-                      Sign Out
-                    </button>
-                  </div>
-                </div>
-              )}
-            </div>
-          ) : (
-            <Link 
-              to="/login"
-              className="bg-primary hover:bg-primary/95 text-white font-button text-xs font-semibold px-4 py-2 rounded-lg transition-all shadow-sm flex items-center gap-1.5 border-none cursor-pointer"
-            >
-              <span className="material-symbols-outlined text-sm">login</span> Login
+      <nav className="bg-white sticky top-0 z-50 transition-all duration-300 relative">
+        <div className="flex justify-between items-center w-full px-4 md:px-8 py-4 max-w-7xl mx-auto bg-white relative z-50">
+          {/* Brand */}
+          <div className="flex items-center gap-6">
+            <Link className="font-headline-md text-headline-md font-bold tracking-tight text-black flex items-center gap-2 hover:scale-95 duration-150 transition-transform" to="/">
+              <img alt="TripoMist Logo" className="h-10 w-10 rounded-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAf4iPOLD4TW-emcX7qi8W7qPZhFbm5OzAQitvDsMARyOfBuAo9ztt29roRULWmZnSZXWDU9C66-5CEUsII9ClNmyCllVfZSQsk_Zh8SNMinjoMc_fWjzIKKChJB0UTFRB6QTigHPgLb0E2DZsOlp_JhvJp0lXnbSsTzGVqfLBMNk-0_rDP3tmtkhWYAQN9_F1nRcn8PpFGemDTJHOLelhxsCRyeTqUu0-JvD0GzZAkXaVLereGaQFPqUxJgRLojmOnEGYfiVmgV8Js0WY" />
+              TripoMist
             </Link>
-          )}
-
+          </div>
           
-
-          <button className="md:hidden text-gray-800 dark:text-gray-200 p-1 ml-1" onClick={() => setIsOpen(true)} aria-label="Open Menu">
-            <span className="material-symbols-outlined text-2xl">menu</span>
-          </button>
+          {/* Search Bar (Center) */}
+          <div className="hidden md:flex flex-1 max-w-xl mx-8 relative">
+            <input 
+              type="text" 
+              placeholder="Search here..." 
+              className="w-full bg-white text-black border-2 border-primary rounded-full py-2.5 pl-6 pr-12 focus:outline-none focus:ring-2 focus:ring-primary/50 text-[14px] font-medium placeholder-black/50 transition-all shadow-sm"
+            />
+            <button className="absolute right-2 top-1/2 -translate-y-1/2 bg-white rounded-full p-1.5 flex items-center justify-center text-black hover:bg-gray-100 transition-colors shadow-sm">
+              <span className="material-symbols-outlined text-[18px]">search</span>
+            </button>
+          </div>
+          
+          {/* Actions/Icons */}
+          <div className="flex items-center gap-2">
+            <button 
+              className={`font-semibold px-5 py-2 rounded-full transition-all text-sm hover:opacity-90 min-w-[80px] border ${isOpen ? 'bg-white text-black border-gray-200 shadow-sm' : 'bg-primary text-white border-transparent'}`}
+              onClick={() => setIsOpen(!isOpen)}
+            >
+              {isOpen ? 'Close' : 'Menu'}
+            </button>
+            
+            {user ? (
+              <Link to="/profile" className="bg-primary text-white font-semibold px-5 py-2 rounded-full transition-all text-sm hover:bg-primary/90 flex items-center gap-1 shadow-sm">
+                Profile
+              </Link>
+            ) : (
+              <Link to="/login" className="bg-primary text-white font-semibold px-5 py-2 rounded-full transition-all text-sm hover:bg-primary/90 flex items-center gap-1 shadow-sm">
+                <span className="material-symbols-outlined text-[16px]">login</span> Login
+              </Link>
+            )}
+          </div>
         </div>
-      </div>
-    </nav>
 
-      {/* Mobile Overlay (Outside Nav for perfect z-index) */}
-      {isOpen && (
-        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[60] md:hidden transition-opacity duration-300" onClick={() => setIsOpen(false)}></div>
-      )}
-
-      {/* Mobile Drawer Navigation (Drops from top, Outside Nav for perfect z-index) */}
-      <div className={`fixed top-0 left-0 w-full bg-white dark:bg-slate-900 shadow-2xl z-[70] transform transition-all duration-300 ease-in-out md:hidden flex flex-col rounded-b-3xl max-h-[90dvh] overflow-hidden ${isOpen ? 'translate-y-0 opacity-100' : '-translate-y-full opacity-0'}`}>
-        <div className="flex justify-between items-center p-5 border-b border-gray-100 dark:border-gray-800 shrink-0">
-          <span className="font-bold text-gray-900 dark:text-white text-lg">Menu</span>
-          <button className="text-gray-500 hover:text-gray-800 dark:text-gray-400 dark:hover:text-white transition-colors p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800" onClick={() => setIsOpen(false)} aria-label="Close Menu">
-            <span className="material-symbols-outlined">close</span>
-          </button>
-        </div>
-        
-        <div className="flex flex-col p-6 gap-2 overflow-y-auto">
-          <Link className={`text-lg py-3 border-b border-gray-100 dark:border-gray-800 transition-colors ${isActive('/uttarakhand') ? 'text-primary font-bold' : 'text-gray-800 dark:text-gray-200'}`} onClick={() => setIsOpen(false)} to="/uttarakhand">Uttarakhand</Link>
-          <Link className={`text-lg py-3 border-b border-gray-100 dark:border-gray-800 transition-colors ${isActive('/himachal') ? 'text-primary font-bold' : 'text-gray-800 dark:text-gray-200'}`} onClick={() => setIsOpen(false)} to="/himachal">Himachal Pradesh</Link>
-          
-          <Link className="text-lg py-3 border-b border-gray-100 dark:border-gray-800 text-gray-800 dark:text-gray-200 hover:text-primary transition-colors" onClick={() => setIsOpen(false)} to="/cart">
-            Your Cart
-          </Link>
-
-          <Link className={`text-lg py-3 border-b border-gray-100 dark:border-gray-800 transition-colors ${isActive('/about') ? 'text-primary font-bold' : 'text-gray-800 dark:text-gray-200'}`} onClick={() => setIsOpen(false)} to="/about">About Us</Link>
-          
-          {user ? (
-            <div className="pt-6 flex flex-col gap-3">
-              <div className="px-4 py-3 text-sm font-semibold text-gray-800 dark:text-gray-200 bg-gray-50 dark:bg-gray-800 rounded-xl border border-gray-100 dark:border-gray-700">
-                Hi, {user.user_metadata?.full_name || user.email.split('@')[0]}
+        {/* Full Screen Menu Dropdown */}
+        <AnimatePresence>
+          {isOpen && (
+            <motion.div 
+              initial={{ opacity: 0, y: -20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              transition={{ duration: 0.2 }}
+              className="absolute inset-x-0 top-[100%] z-[40] px-4 md:px-8 max-w-7xl mx-auto -mt-2"
+            >
+              <div className="bg-white rounded-[24px] shadow-2xl p-6 md:p-10 w-full border border-gray-100">
+                <div className="flex flex-col gap-2">
+                  <Link className={`text-xl md:text-2xl py-4 border-b border-black/10 transition-colors hover:pl-2 ${isActive('/uttarakhand') ? 'font-bold text-black' : 'text-black/80 hover:text-black'}`} onClick={() => setIsOpen(false)} to="/uttarakhand">Uttarakhand</Link>
+                  <Link className={`text-xl md:text-2xl py-4 border-b border-black/10 transition-colors hover:pl-2 ${isActive('/himachal') ? 'font-bold text-black' : 'text-black/80 hover:text-black'}`} onClick={() => setIsOpen(false)} to="/himachal">Himachal</Link>
+                  <Link className={`text-xl md:text-2xl py-4 border-b border-black/10 transition-colors hover:pl-2 ${isActive('/about') ? 'font-bold text-black' : 'text-black/80 hover:text-black'}`} onClick={() => setIsOpen(false)} to="/about">About Us</Link>
+                  
+                  {user && (
+                    <button 
+                      onClick={handleLogout}
+                      className="text-xl md:text-2xl py-4 text-left transition-colors hover:pl-2 text-black/80 hover:text-black"
+                    >
+                      Logout
+                    </button>
+                  )}
+                </div>
               </div>
-              <Link 
-                to="/profile" 
-                onClick={() => setIsOpen(false)} 
-                className="w-full bg-slate-50 dark:bg-slate-800 text-slate-700 dark:text-slate-200 border border-slate-200 dark:border-slate-700 py-3.5 rounded-xl font-bold text-sm flex items-center justify-center gap-2 no-underline text-center transition-colors hover:bg-slate-100 dark:hover:bg-slate-700"
-              >
-                <span className="material-symbols-outlined text-sm">person</span> Profile Dashboard
-              </Link>
-              <button 
-                onClick={() => { handleLogout(); setIsOpen(false); }} 
-                className="w-full bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400 border border-red-200 dark:border-red-800/30 py-3.5 rounded-xl font-bold text-sm flex items-center justify-center gap-2 transition-colors hover:bg-red-100 dark:hover:bg-red-900/40"
-              >
-                <span className="material-symbols-outlined">logout</span> Logout
-              </button>
-            </div>
-          ) : (
-            <div className="pt-6 mb-4">
-              <Link 
-                to="/login"
-                onClick={() => setIsOpen(false)}
-                className="w-full bg-primary hover:bg-primary/90 text-white text-center py-3.5 rounded-xl font-bold text-sm flex items-center justify-center gap-2 border-none cursor-pointer transition-colors shadow-sm"
-              >
-                <span className="material-symbols-outlined">login</span> Login / Sign Up
-              </Link>
-            </div>
+            </motion.div>
           )}
-        </div>
-      </div>
+        </AnimatePresence>
+      </nav>
+
+      {/* Overlay to close menu when clicking outside */}
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={() => setIsOpen(false)}
+            className="fixed inset-0 bg-black/20 backdrop-blur-sm z-[30]"
+          />
+        )}
+      </AnimatePresence>
     </>
   )
 }

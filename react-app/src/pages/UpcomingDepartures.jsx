@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
 import ReadMoreText from '../components/ReadMoreText'
+import PackageCard from '../components/PackageCard'
 
 const allDestinations = [
   // Domestic
@@ -80,13 +81,18 @@ export default function UpcomingDepartures() {
             <button
               key={filter}
               onClick={() => setActiveFilter(filter)}
-              className={`px-5 py-2.5 rounded-full border text-sm font-semibold transition-all cursor-pointer ${
+              className={`relative overflow-hidden group/filter border px-5 py-2.5 rounded-full cursor-pointer transition-all duration-300 font-semibold text-sm ${
                 activeFilter === filter 
                   ? 'bg-primary text-white border-primary shadow-md scale-105' 
-                  : 'bg-white text-gray-700 border-gray-200 hover:border-gray-300 hover:bg-gray-50'
+                  : 'bg-white text-gray-700 border-gray-200 hover:border-primary hover:text-primary'
               }`}
             >
-              {filter}
+              {activeFilter !== filter && (
+                <div className="absolute inset-0 w-0 bg-primary/10 transition-all duration-300 ease-out group-hover/filter:w-full z-0"></div>
+              )}
+              <span className="relative z-10">
+                {filter}
+              </span>
             </button>
           ))}
         </div>
@@ -95,40 +101,17 @@ export default function UpcomingDepartures() {
       <main className="max-w-6xl mx-auto px-4 pb-36 w-full">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {filteredDestinations.map((dest) => (
-            <Link
+            <PackageCard 
               key={dest.id}
-              to={`/itinerary/${dest.name.toLowerCase().replace(/\s+/g, '-')}`}
-              className="group bg-white rounded-2xl overflow-hidden shadow-sm border border-outline-variant/20 hover:shadow-xl transition-all duration-300 hover:-translate-y-1 no-underline flex flex-col"
-            >
-              <div className="relative h-48 overflow-hidden shrink-0">
-                <img
-                  src={dest.img}
-                  alt={dest.name}
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                />
-                <div className="absolute top-3 right-3 bg-white/90 backdrop-blur-sm text-primary text-xs font-bold px-2.5 py-1 rounded-full shadow">
-                  {dest.duration}
-                </div>
-              </div>
-              <div className="p-4 flex flex-col flex-grow">
-                <h3 className="font-bold text-lg text-on-surface">{dest.name}</h3>
-                <p className="text-on-surface-variant text-sm mt-0.5 flex-grow">{dest.tagline}</p>
-                <div className="flex flex-wrap gap-1.5 mt-3">
-                  {dest.tags.map((t) => (
-                    <span key={t} className="text-[11px] bg-primary/10 text-primary font-medium px-2 py-0.5 rounded-full">{t}</span>
-                  ))}
-                </div>
-                <div className="flex items-center justify-between mt-4">
-                  <div>
-                    <span className="text-xs text-on-surface-variant">Starting from</span>
-                    <p className="text-primary font-bold text-lg">₹{dest.price.toLocaleString()}</p>
-                  </div>
-                  <span className="bg-primary text-white text-sm font-semibold px-4 py-2 rounded-xl group-hover:bg-primary/90 transition-colors">
-                    View Detail
-                  </span>
-                </div>
-              </div>
-            </Link>
+              className="w-full h-[340px] md:h-[360px]" 
+              tripTitle={dest.name} 
+              price={`₹${dest.price.toLocaleString()}`} 
+              duration={dest.duration} 
+              bg={dest.img}
+              link={`/itinerary/${dest.name.toLowerCase().replace(/\s+/g, '-')}`} 
+              badge="Coming Soon"
+              blueText={true}
+            />
           ))}
         </div>
       </main>

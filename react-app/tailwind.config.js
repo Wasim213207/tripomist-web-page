@@ -78,16 +78,16 @@ export default {
         "stack-lg": "48px"
       },
       "fontFamily": {
-        "headline-md": ["Manrope"],
-        "headline-lg-mobile": ["Manrope"],
-        "label-sm": ["JetBrains Mono"],
-        "body-md": ["Inter"],
-        "body-lg": ["Inter"],
-        "headline-lg": ["Manrope"],
-        "display-lg": ["Manrope"],
-        "display-lg-mobile": ["Manrope"],
-        "label-caps": ["JetBrains Mono"],
-        "button": ["Manrope"]
+        "headline-md": ["Inter", "sans-serif"],
+        "headline-lg-mobile": ["Inter", "sans-serif"],
+        "label-sm": ["Inter", "sans-serif"],
+        "body-md": ["Inter", "sans-serif"],
+        "body-lg": ["Inter", "sans-serif"],
+        "headline-lg": ["Inter", "sans-serif"],
+        "display-lg": ["Inter", "sans-serif"],
+        "display-lg-mobile": ["Inter", "sans-serif"],
+        "label-caps": ["Inter", "sans-serif"],
+        "button": ["Inter", "sans-serif"]
       },
       "fontSize": {
         "headline-md": ["24px", { "lineHeight": "32px", "fontWeight": "600" }],
