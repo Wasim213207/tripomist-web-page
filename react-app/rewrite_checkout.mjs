@@ -1,4 +1,6 @@
-import React, { useState, useEffect } from 'react'
+import fs from 'fs';
+
+const checkoutContent = `import React, { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
@@ -111,3 +113,7 @@ export default function Checkout() {
     </div>
   )
 }
+`
+
+fs.writeFileSync('src/pages/Checkout.jsx', checkoutContent, 'utf8');
+console.log('Checkout.jsx rewritten');
