@@ -1,9 +1,24 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 
-const PackageCard = ({ tripTitle, price, duration, bg, link, label, badge = 'Best Seller', className }) => {
+const PackageCard = ({ 
+  tripTitle, 
+  price, 
+  originalPrice,
+  discountText,
+  duration, 
+  bg, 
+  link, 
+  label, 
+  bestSeller,
+  badge,
+  className 
+}) => {
   const displayPrice = price ? (typeof price === 'string' && !price.includes('/-') ? `${price}/-` : price) : null;
+  const displayOriginalPrice = originalPrice ? (typeof originalPrice === 'string' && !originalPrice.includes('/-') ? `${originalPrice}/-` : originalPrice) : null;
+  
   const isClickable = link && link !== '#';
+  const showBadge = bestSeller ? 'Best Seller' : badge;
 
   return (
     <Link 
@@ -15,13 +30,19 @@ const PackageCard = ({ tripTitle, price, duration, bg, link, label, badge = 'Bes
       <div className="absolute inset-0 bg-cover bg-center w-full h-full group-hover:scale-105 transition-transform duration-700 pointer-events-none" style={{ backgroundImage: `url('${bg}')` }}></div>
       <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] via-[#0a0a0a]/60 to-transparent h-[75%] mt-auto pointer-events-none"></div>
       
-      {badge && (
+      {showBadge && (
         <div className="absolute top-4 right-4 bg-gray-500/80 backdrop-blur-md text-white font-bold text-[11px] px-4 py-1.5 rounded-full tracking-wider z-10">
-          {badge}
+          {showBadge}
         </div>
       )}
       
-      {label && label.toLowerCase() !== 'international' && (
+      {discountText && (
+        <div className="absolute top-4 left-4 bg-red-600/90 text-white font-bold text-[10px] px-3 py-1.5 rounded-md uppercase tracking-wider z-10 shadow-sm">
+          {discountText}
+        </div>
+      )}
+
+      {label && label.toLowerCase() !== 'international' && !discountText && (
         <div className="absolute top-4 left-4 bg-primary text-white font-bold text-[10px] px-3 py-1.5 rounded-sm uppercase tracking-wider z-10">
           {label}
         </div>
@@ -30,9 +51,17 @@ const PackageCard = ({ tripTitle, price, duration, bg, link, label, badge = 'Bes
       <div className="relative z-10 p-4 md:p-5 w-full flex flex-col gap-3 mt-auto">
         <div className="flex flex-row items-end justify-between gap-x-2 w-full mb-1">
           <h3 className="text-white text-[24px] md:text-[28px] font-extrabold leading-[1.1] drop-shadow-md break-words shrink">{tripTitle}</h3>
-          <span className="text-white font-bold text-[16px] md:text-[20px] drop-shadow-md whitespace-nowrap shrink-0">
-            {displayPrice}
-          </span>
+          
+          <div className="flex flex-col items-end shrink-0">
+            {displayOriginalPrice && (
+              <span className="text-gray-300 text-[12px] line-through font-medium drop-shadow-sm leading-none mb-1">
+                {displayOriginalPrice}
+              </span>
+            )}
+            <span className="text-white font-bold text-[16px] md:text-[20px] drop-shadow-md whitespace-nowrap leading-none">
+              {displayPrice}
+            </span>
+          </div>
         </div>
         
         <div className="flex items-center gap-2 w-full">
@@ -48,7 +77,7 @@ const PackageCard = ({ tripTitle, price, duration, bg, link, label, badge = 'Bes
                   <span className="hidden group-hover/btn:inline">Click</span>
                 </>
               ) : (
-                <span>View Detail</span>
+                "Coming Soon"
               )}
             </span>
           </div>

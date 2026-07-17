@@ -19,18 +19,22 @@ export default function FamilyTours() {
       if (error) {
         console.error('Error fetching packages:', error);
       } else {
-        const activePackages = data.filter(pkg => pkg.status && pkg.status.includes('active'));
+        const activePackages = data.filter(pkg => pkg.status && pkg.status.trim() === 'active');
         // Try to filter by specific logic if matches, else fallback to all active
         let categoryPackages = activePackages.filter(pkg => pkg.category === 'Family Tour' || pkg.title.toLowerCase().includes('family'));
         if (categoryPackages.length === 0) categoryPackages = activePackages; // Fallback if no specific packages found
         
         const mappedTrips = categoryPackages.map(pkg => ({
           id: pkg.id,
+          slug: pkg.slug,
           name: pkg.title,
           location: pkg.destination || pkg.state,
           style: pkg.category === 'International' ? 'International Trips' : 'Domestic Trips',
           durationText: pkg.duration,
           price: pkg.price,
+          originalPrice: pkg.original_price,
+          discountText: pkg.discount_text,
+          bestSeller: pkg.best_seller,
           isFav: false,
           tagline: pkg.short_description ? pkg.short_description.substring(0, 80) + '...' : pkg.title,
           img: pkg.image_url || pkg.banner_image
@@ -82,11 +86,14 @@ export default function FamilyTours() {
               <PackageCard 
                 key={dest.id}
                 tripTitle={dest.name} 
-                price={"₹" + dest.price.toLocaleString('en-IN')}
+                price={"₹" + Number(dest.price).toLocaleString('en-IN')}
+                originalPrice={dest.originalPrice ? "₹" + Number(dest.originalPrice).toLocaleString('en-IN') : null}
+                discountText={dest.discountText}
+                bestSeller={dest.bestSeller}
                 duration={dest.durationText} 
                 description={dest.tagline}
                 bg={dest.img}
-                link={`/itinerary/${dest.id}`} 
+                link={`/itinerary/${dest.slug || dest.id}`} 
                 blueText={true}
               />
             ))}

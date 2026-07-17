@@ -94,7 +94,7 @@ function App() {
           <Route path="/itinerary/kedarnath" element={<ItineraryKedarnath />} />
           <Route path="/itinerary/madhyameshwar" element={<ItineraryMadhyameshwar />} />
           <Route path="/itinerary/udaipur-and-kumbhalgarh" element={<ItineraryUdaipurKumbhalgarh />} />
-          <Route path="/itinerary/:id" element={<PackageDetail />} />
+          <Route path="/itinerary/:slug" element={<PackageDetail />} />
           <Route path="/checkout" element={<Checkout />} />
           <Route path="/cart" element={<Cart />} />
           <Route path="/login" element={<Login />} />

@@ -5,7 +5,7 @@ import Footer from '../components/Footer'
 import { supabase } from '../supabaseClient'
 
 function PackageDetail() {
-  const { id } = useParams()
+  const { slug } = useParams()
   const [trip, setTrip] = useState(null)
   const [loading, setLoading] = useState(true)
   const [activeTab, setActiveTab] = useState('itinerary')
@@ -18,7 +18,7 @@ function PackageDetail() {
       const { data, error } = await supabase
         .from('Pakage')
         .select('*')
-        .eq('id', id)
+        .eq('slug', slug)
         .single()
       
       if (error) {
@@ -41,15 +41,16 @@ function PackageDetail() {
           inclusions: data.inclusions || [],
           exclusions: data.exclusions || [],
           highlights: data.itinerary ? data.itinerary.map(item => item.title) : [],
-          itinerary: data.itinerary || []
+          itinerary: data.itinerary || [],
+          costings: data.costings || []
         })
       }
       setLoading(false)
     }
-    if (id) {
+    if (slug) {
       fetchPackage()
     }
-  }, [id])
+  }, [slug])
 
   useEffect(() => {
     if (!trip) return;
@@ -191,7 +192,7 @@ function PackageDetail() {
 // ------------------------------
 
 export default function ItinerarySpiti() {
-  const { id } = useParams()
+  const { slug } = useParams()
   const navigate = useNavigate()
   const [searchParams] = useSearchParams()
 
@@ -291,7 +292,7 @@ export default function ItinerarySpiti() {
 
   // Determine active itinerary dynamically
   let trip = tripsData["Spiti Valley"];
-  if (id) {
+  if (slug) {
     const formattedId = id.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
     
     // Check specific overrides first

@@ -9,9 +9,29 @@ import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
 
 import PackageCard from '../components/PackageCard'
+import { supabase } from '../supabaseClient'
 import FeaturedTripCard from '../components/FeaturedTripCard'
 
 function Home() {
+  const [bestSellers, setBestSellers] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    async function fetchBestSellers() {
+      const { data, error } = await supabase
+        .from('Pakage')
+        .select('*')
+        .eq('best_seller', true)
+        .ilike('status', '%active%');
+        
+      if (!error && data) {
+        setBestSellers(data);
+      }
+      setLoading(false);
+    }
+    fetchBestSellers();
+  }, []);
+
   const navigate = useNavigate()
   const [searchValue, setSearchValue] = useState('')
   const [isFabOpen, setIsFabOpen] = useState(false)
@@ -191,88 +211,29 @@ function Home() {
           </div>
 
           <div ref={scrollRef} className="flex overflow-x-auto gap-4 md:gap-6 hide-scrollbar pb-8 snap-x snap-mandatory -mx-4 px-4 md:mx-0 md:px-0 scroll-smooth">
-            <PackageCard className="w-[85vw] sm:w-[240px] md:w-[260px] lg:w-[280px] h-[340px] md:h-[360px] snap-center shrink-0" 
-              tripTitle="Ladakh" 
-              price="₹21,999" 
-              duration="6N/7D" 
-              description="Experience the raw beauty of Leh, Nubra Valley, and Pangong Tso with a close-knit group of adventurers."
-              bg="https://images.unsplash.com/photo-1581793746485-04698e79a4e8?w=1600&q=80"
-              link="/itinerary/Ladakh" 
-            />
-            <PackageCard className="w-[85vw] sm:w-[240px] md:w-[260px] lg:w-[280px] h-[340px] md:h-[360px] snap-center shrink-0" 
-              tripTitle="Spiti Valley" 
-              price="₹16,999" 
-              duration="5N/6D" 
-              description="Brave the frozen landscapes of the middle land. A curated winter adventure for the bold."
-              bg="https://images.unsplash.com/photo-1549257850-25e24bcf0e13?w=1600&q=80"
-              link="/itinerary/Spiti Valley" 
-            />
-            <PackageCard className="w-[85vw] sm:w-[240px] md:w-[260px] lg:w-[280px] h-[340px] md:h-[360px] snap-center shrink-0" 
-              tripTitle="Kashmir" 
-              price="₹17,999" 
-              duration="4N/5D" 
-              description="Explore Srinagar, Gulmarg, and Pahalgam. A perfect mix of leisure and breathtaking vistas."
-              bg="https://images.unsplash.com/photo-1595815771614-ade9d652a65d?w=1600&q=80"
-              link="/itinerary/Kashmir" 
-            />
-            <PackageCard className="w-[85vw] sm:w-[240px] md:w-[260px] lg:w-[280px] h-[340px] md:h-[360px] snap-center shrink-0" 
-              tripTitle="Andaman Retreat" 
-              price="₹25,999" 
-              duration="5N/6D" 
-              description="Relax on the pristine beaches of Havelock and Neil Islands with amazing scuba diving opportunities."
-              bg="https://images.unsplash.com/photo-1590523277543-a94d2e4eb00b?w=1600&q=80"
-              link="/group-trips" 
-            />
-            <PackageCard className="w-[85vw] sm:w-[240px] md:w-[260px] lg:w-[280px] h-[340px] md:h-[360px] snap-center shrink-0" 
-              tripTitle="Meghalaya Expedition" 
-              price="₹18,999" 
-              duration="6N/7D" 
-              description="Journey through the abode of clouds, explore living root bridges and crystal clear rivers."
-              bg="https://images.unsplash.com/photo-1518105779142-d975f22f1b0a?w=1600&q=80"
-              link="/group-trips" 
-            />
-            <PackageCard className="w-[85vw] sm:w-[240px] md:w-[260px] lg:w-[280px] h-[340px] md:h-[360px] snap-center shrink-0" 
-              tripTitle="Manali Kasol" 
-              price="₹10,999" 
-              duration="4N/5D" 
-              description="Experience the vibrant cafes of Kasol and the snow-capped peaks of Manali in one epic trip."
-              bg="https://images.unsplash.com/photo-1605649487212-47bdab064df7?w=1600&q=80"
-              link="/group-trips" 
-            />
-            <PackageCard className="w-[85vw] sm:w-[240px] md:w-[260px] lg:w-[280px] h-[340px] md:h-[360px] snap-center shrink-0" 
-              tripTitle="Jibhi Tirthan" 
-              price="₹9,999" 
-              duration="3N/4D" 
-              description="Unwind in the pristine hidden valleys of Jibhi and Tirthan, surrounded by lush green forests."
-              bg="https://images.unsplash.com/photo-1626621341517-bbf3d9990a23?w=1600&q=80"
-              link="/group-trips" 
-            />
-            <PackageCard className="w-[85vw] sm:w-[240px] md:w-[260px] lg:w-[280px] h-[340px] md:h-[360px] snap-center shrink-0" 
-              tripTitle="Chopta Tungnath" 
-              price="₹11,999" 
-              duration="4N/5D" 
-              description="Trek through the mini Switzerland of India and visit the highest Shiva temple in the world."
-              bg="https://images.unsplash.com/photo-1610212594957-c5332fc39634?w=1600&q=80"
-              link="/group-trips" 
-            />
-            <PackageCard className="w-[85vw] sm:w-[240px] md:w-[260px] lg:w-[280px] h-[340px] md:h-[360px] snap-center shrink-0" 
-              tripTitle="Kedarnath" 
-              price="₹14,999" 
-              duration="5N/6D" 
-              description="Embark on a spiritual journey to the majestic Kedarnath temple amidst the Garhwal Himalayas."
-              bg="https://images.unsplash.com/photo-1626082927389-6cd097cdc6ec?w=1600&q=80"
-              link="/group-trips" 
-            />
-            <PackageCard className="w-[85vw] sm:w-[240px] md:w-[260px] lg:w-[280px] h-[340px] md:h-[360px] snap-center shrink-0" 
-              tripTitle="Madhyameshwar" 
-              price="₹12,999" 
-              duration="4N/5D" 
-              description="Discover the serene beauty and spiritual aura of the mystical Madhyameshwar temple trek."
-              bg="https://images.unsplash.com/photo-1614531341773-3bff8b7cb3fc?w=1600&q=80"
-              link="/group-trips" 
-            />
-          </div>
-        </section>
+            {loading ? (
+              <p className="text-gray-500 font-bold ml-4">Loading Best Sellers...</p>
+            ) : bestSellers.length > 0 ? (
+              bestSellers.map((pkg) => (
+                <PackageCard 
+                  key={pkg.id}
+                  className="w-[85vw] sm:w-[240px] md:w-[260px] lg:w-[280px] h-[340px] md:h-[360px] snap-center shrink-0" 
+                  tripTitle={pkg.title} 
+                  price={"₹" + Number(pkg.price).toLocaleString('en-IN')}
+                  originalPrice={pkg.original_price ? "₹" + Number(pkg.original_price).toLocaleString('en-IN') : null}
+                  discountText={pkg.discount_text}
+                  bestSeller={pkg.best_seller}
+                  duration={pkg.duration} 
+                  description={pkg.short_description ? pkg.short_description.substring(0, 80) + '...' : pkg.title}
+                  bg={pkg.image_url || pkg.banner_image}
+                  link={`/itinerary/${pkg.slug || pkg.id}`} 
+                />
+              ))
+            ) : (
+              <p className="text-gray-500 font-bold ml-4">No best sellers found.</p>
+            )}
+            </div>
+          </section>
 
         {/* Featured Group Trips */}
         <section className="w-full py-6 px-4 md:px-12 lg:px-20 border-t border-gray-100 bg-surface-container-lowest overflow-hidden">

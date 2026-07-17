@@ -79,14 +79,18 @@ export default function Rajasthan() {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {filteredDestinations.map((dest) => (
             <PackageCard 
-              key={dest.id}
-              tripTitle={dest.name} 
-              price={"₹" + dest.price.toLocaleString()}
-              duration={dest.duration} 
-              description={dest.tagline}
-              bg={dest.img}
-              link={dest.link || `/itinerary/${dest.name.toLowerCase().replace(/\s+/g, '-')}`} 
-            />
+                key={dest.id}
+                tripTitle={dest.name} 
+                price={"₹" + Number(dest.price).toLocaleString('en-IN')}
+                originalPrice={dest.originalPrice ? "₹" + Number(dest.originalPrice).toLocaleString('en-IN') : null}
+                discountText={dest.discountText}
+                bestSeller={dest.bestSeller}
+                duration={dest.durationText} 
+                description={dest.tagline}
+                bg={dest.img}
+                link={`/itinerary/${dest.slug || dest.id}`} 
+                blueText={true}
+              />
           ))}
         </div>
       </main>
