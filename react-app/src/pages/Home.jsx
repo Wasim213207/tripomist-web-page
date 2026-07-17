@@ -350,7 +350,7 @@ function Home() {
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 pb-8">
             <PackageCard className="w-full h-[340px] md:h-[360px]" 
               tripTitle="Almaty" 
-              price="54999" 
+              price="" 
               duration="5N/6D" 
               description="Experience the magic of Central Asia."
               bg="https://images.unsplash.com/photo-1558588825-450f38b1d9df?w=800&q=80"
@@ -359,7 +359,7 @@ function Home() {
             />
             <PackageCard className="w-full h-[340px] md:h-[360px]" 
               tripTitle="Kazakhstan" 
-              price="56999" 
+              price="" 
               duration="5N/6D" 
               description="Discover beautiful landscapes and culture."
               bg="https://images.unsplash.com/photo-1550989460-0adf9ea622e2?w=800&q=80"
@@ -368,7 +368,7 @@ function Home() {
             />
             <PackageCard className="w-full h-[340px] md:h-[360px]" 
               tripTitle="Thailand" 
-              price="41999" 
+              price="" 
               duration="6N/7D" 
               description="Explore vibrant beaches and culture."
               bg="https://images.unsplash.com/photo-1528181304800-259b08848526?w=800&q=80"
@@ -377,7 +377,7 @@ function Home() {
             />
             <PackageCard className="w-full h-[340px] md:h-[360px]" 
               tripTitle="Bali" 
-              price="51999" 
+              price="" 
               duration="6N/7D" 
               description="Relax on pristine tropical beaches."
               bg="https://images.unsplash.com/photo-1537996194471-e657df975ab4?w=800&q=80"

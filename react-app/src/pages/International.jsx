@@ -17,7 +17,7 @@ function International() {
       name: "Almaty",
       duration: "5N/6D",
       desc: "Experience the magic of Central Asia.",
-      price: "₹54,999",
+      price: "",
       img: "https://images.unsplash.com/photo-1558588825-450f38b1d9df?w=800&q=80"
     },
     {
@@ -25,7 +25,7 @@ function International() {
       name: "Kazakhstan",
       duration: "5N/6D",
       desc: "Discover beautiful landscapes and culture.",
-      price: "₹56,999",
+      price: "",
       img: "https://images.unsplash.com/photo-1550989460-0adf9ea622e2?w=800&q=80"
     },
     {
@@ -33,7 +33,7 @@ function International() {
       name: "Thailand",
       duration: "6N/7D",
       desc: "Explore vibrant beaches and culture.",
-      price: "₹41,999",
+      price: "",
       img: "https://images.unsplash.com/photo-1528181304800-259b08848526?w=800&q=80"
     },
     {
@@ -41,7 +41,7 @@ function International() {
       name: "Bali",
       duration: "6N/7D",
       desc: "Relax on pristine tropical beaches.",
-      price: "₹51,999",
+      price: "",
       img: "https://images.unsplash.com/photo-1537996194471-e657df975ab4?w=800&q=80"
     },
     {
@@ -49,7 +49,7 @@ function International() {
       name: "Vietnam",
       duration: "5N/6D",
       desc: "Explore breathtaking bays and historic cities.",
-      price: "₹56,999",
+      price: "",
       img: "https://images.unsplash.com/photo-1528127269322-539801943592?w=800&q=80"
     },
     {
@@ -57,7 +57,7 @@ function International() {
       name: "Dubai",
       duration: "5N/6D",
       desc: "Experience luxury and modern marvels.",
-      price: "₹62,999",
+      price: "",
       img: "https://images.unsplash.com/photo-1512453979436-5a5336f33d7b?w=800&q=80"
     },
     {
@@ -65,7 +65,7 @@ function International() {
       name: "Philippines",
       duration: "8N/9D",
       desc: "Discover beautiful islands and lagoons.",
-      price: "₹75,999",
+      price: "",
       img: "https://images.unsplash.com/photo-1518509562904-e7ef99cdcc86?w=800&q=80"
     }
   ]

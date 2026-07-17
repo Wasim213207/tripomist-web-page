@@ -42,6 +42,13 @@ const destinations = [
     link: "/group-trips"
   },
   {
+    tripTitle: "Udaipur and Kumbhalgarh",
+    price: "₹6,999",
+    duration: "2N/3D",
+    bg: "https://images.unsplash.com/photo-1615836245337-f5b9b230bc18?w=1600&q=80",
+    link: "/itinerary/udaipur-and-kumbhalgarh"
+  },
+  {
     tripTitle: "Manali Kasol",
     price: "₹10,999",
     duration: "4N/5D",

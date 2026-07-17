@@ -24,17 +24,17 @@ const allDestinations = [
   },
   // International
   {
-    id: 'bali', name: 'Bali', tagline: 'Island of the Gods', duration: '5N/6D', price: 35000,
+    id: 'bali', name: 'Bali', tagline: 'Island of the Gods', duration: '5N/6D',
     img: 'https://images.unsplash.com/photo-1537996194471-e657df975ab4?w=600&q=80',
     tags: ['Beaches', 'Culture', 'Relax'], type: 'international'
   },
   {
-    id: 'dubai', name: 'Dubai', tagline: 'City of Gold', duration: '4N/5D', price: 42000,
+    id: 'dubai', name: 'Dubai', tagline: 'City of Gold', duration: '4N/5D',
     img: 'https://images.unsplash.com/photo-1512453979798-5ea266f8880c?w=600&q=80',
     tags: ['Desert', 'Shopping', 'Luxury'], type: 'international'
   },
   {
-    id: 'singapore', name: 'Singapore', tagline: 'Lion City', duration: '4N/5D', price: 38000,
+    id: 'singapore', name: 'Singapore', tagline: 'Lion City', duration: '4N/5D',
     img: 'https://images.unsplash.com/photo-1525625293386-3f8f99389edd?w=600&q=80',
     tags: ['City', 'Modern', 'Food'], type: 'international'
   }
@@ -105,10 +105,10 @@ export default function UpcomingDepartures() {
               key={dest.id}
               className="w-full h-[340px] md:h-[360px]" 
               tripTitle={dest.name} 
-              price={`₹${dest.price.toLocaleString()}`} 
+              price={dest.price ? `₹${dest.price.toLocaleString()}` : ""} 
               duration={dest.duration} 
               bg={dest.img}
-              link={`/itinerary/${dest.name.toLowerCase().replace(/\s+/g, '-')}`} 
+              link="#"
               badge="Coming Soon"
               blueText={true}
             />

@@ -18,12 +18,12 @@ const destinations = [
   },
   {
     id: 'udaipur',
-    name: 'Udaipur',
+    name: 'Udaipur and Kumbhalgarh',
     tagline: 'City of Lakes',
-    duration: '4N/5D',
-    price: 11999,
-    img: 'https://images.unsplash.com/photo-1615836245337-f589c198ee62?w=600&q=80',
-    tags: ['Lakes', 'Palaces', 'Romantic'],
+    duration: '2N/3D',
+    price: 6999,
+    img: 'https://images.unsplash.com/photo-1615836245337-f5b9b230bc18?w=800&q=80',
+    tags: ['Lakes', 'Palaces', 'Romantic', 'Forts'],
   }
 ]
 

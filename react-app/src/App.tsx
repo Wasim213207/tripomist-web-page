@@ -14,6 +14,7 @@ import ItineraryJibhi from './pages/ItineraryJibhi'
 import ItineraryChopta from './pages/ItineraryChopta'
 import ItineraryKedarnath from './pages/ItineraryKedarnath'
 import ItineraryMadhyameshwar from './pages/ItineraryMadhyameshwar'
+import ItineraryUdaipurKumbhalgarh from './pages/ItineraryUdaipurKumbhalgarh'
 import Search from './pages/Search'
 import PrivacyPolicy from './pages/PrivacyPolicy'
 import RefundPolicy from './pages/RefundPolicy'
@@ -82,6 +83,7 @@ function App() {
           <Route path="/itinerary/chopta" element={<ItineraryChopta />} />
           <Route path="/itinerary/kedarnath" element={<ItineraryKedarnath />} />
           <Route path="/itinerary/madhyameshwar" element={<ItineraryMadhyameshwar />} />
+          <Route path="/itinerary/udaipur-and-kumbhalgarh" element={<ItineraryUdaipurKumbhalgarh />} />
           <Route path="/itinerary/:id" element={<ItinerarySpiti />} />
           <Route path="/checkout" element={<Checkout />} />
           <Route path="/cart" element={<Cart />} />

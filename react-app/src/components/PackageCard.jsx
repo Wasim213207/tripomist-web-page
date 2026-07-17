@@ -2,7 +2,7 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 
 const PackageCard = ({ tripTitle, price, duration, bg, link, label, badge = 'Best Seller', className }) => {
-  const displayPrice = typeof price === 'string' && !price.includes('/-') ? `${price}/-` : price;
+  const displayPrice = price ? (typeof price === 'string' && !price.includes('/-') ? `${price}/-` : price) : null;
   const isClickable = link && link !== '#';
 
   return (
@@ -39,7 +39,7 @@ const PackageCard = ({ tripTitle, price, duration, bg, link, label, badge = 'Bes
           <span className="bg-white text-primary text-[11px] font-bold px-3 py-1.5 rounded-full whitespace-nowrap shrink-0 shadow-sm">
             {duration}
           </span>
-          <div className={`relative overflow-hidden group/btn bg-white border border-primary rounded-full py-1.5 shadow-lg flex-1 transition-all flex justify-center items-center ${isClickable ? 'cursor-pointer' : 'cursor-default opacity-90'}`}>
+          <div className={`relative overflow-hidden group/btn bg-white rounded-full py-1.5 shadow-lg flex-1 transition-all flex justify-center items-center ${isClickable ? 'cursor-pointer' : 'cursor-default'}`}>
             {isClickable && <div className="absolute inset-0 w-0 bg-primary transition-all duration-300 ease-out group-hover/btn:w-full z-0"></div>}
             <span className={`relative z-10 font-bold text-[11px] whitespace-nowrap transition-colors duration-300 ${isClickable ? 'text-primary group-hover/btn:text-white' : 'text-primary'}`}>
               {isClickable ? (

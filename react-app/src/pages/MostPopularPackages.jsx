@@ -52,6 +52,16 @@ function MostPopularPackages() {
       img: "https://images.unsplash.com/photo-1477587458883-47145ed94245?w=600&q=80"
     },
     {
+      id: "udaipur-kumbhalgarh",
+      name: "Udaipur and Kumbhalgarh",
+      location: "Rajasthan",
+      style: "Domestic Trips",
+      durationText: "2N/3D",
+      price: 6999,
+      isFav: false,
+      img: "https://images.unsplash.com/photo-1615836245337-f5b9b230bc18?w=600&q=80"
+    },
+    {
       id: "meghalaya-monsoon",
       name: "Cherrapunji & Shillong",
       location: "Meghalaya",
