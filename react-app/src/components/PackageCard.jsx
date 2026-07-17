@@ -25,67 +25,68 @@ const PackageCard = ({
       to={link || '#'} 
       onClick={(e) => { if (!isClickable) e.preventDefault() }}
       draggable={false}
-      className={`rounded-[28px] overflow-hidden group relative flex flex-col justify-between p-4 md:p-5 shadow-sm hover:shadow-xl transition-all duration-300 select-none block ${className || 'w-full h-[340px] md:h-[360px]'}`}
+      className={`rounded-3xl overflow-hidden group relative flex flex-col shadow-sm hover:shadow-xl transition-all duration-300 select-none block bg-white border border-gray-100 ${className || 'w-full h-[360px]'}`}
     >
-      <div className="absolute inset-0 bg-cover bg-center w-full h-full group-hover:scale-105 transition-transform duration-700 pointer-events-none" style={{ backgroundImage: `url('${bg}')` }}></div>
-      <div className="absolute inset-0 bg-gradient-to-b from-[#0a0a0a]/80 via-transparent to-[#0a0a0a]/90 pointer-events-none z-0"></div>
-      
-      {/* Top Section */}
-      <div className="relative z-10 w-full flex flex-col items-start gap-2">
-        <div className="flex justify-between w-full items-start gap-2">
-          <h3 className="text-white text-[24px] md:text-[28px] font-extrabold leading-[1.1] drop-shadow-md shrink">{tripTitle}</h3>
-          {showBadge && (
-            <div className="bg-gray-500/80 backdrop-blur-md text-white font-bold text-[10px] px-3 py-1.5 rounded-full tracking-wider shrink-0 mt-1">
-              {showBadge}
-            </div>
-          )}
-        </div>
+      {/* Top Image Section */}
+      <div className="relative w-full h-[55%] overflow-hidden shrink-0">
+        <div className="absolute inset-0 bg-cover bg-center group-hover:scale-105 transition-transform duration-700" style={{ backgroundImage: `url('${bg}')` }}></div>
+        <div className="absolute inset-0 bg-black/10"></div>
         
-        <div className="flex flex-wrap gap-2 mt-1">
-          {discountText && (
-            <div className="bg-red-600/90 text-white font-bold text-[10px] px-2.5 py-1 rounded-md uppercase tracking-wider shadow-sm">
-              {discountText}
-            </div>
-          )}
-          {label && label.toLowerCase() !== 'international' && !discountText && (
-            <div className="bg-primary text-white font-bold text-[10px] px-2.5 py-1 rounded-sm uppercase tracking-wider">
-              {label}
-            </div>
-          )}
+        <div className="absolute top-4 left-4 right-4 flex justify-between items-start gap-2">
+          {/* Label (e.g., MOUNTAINS or other category) */}
+          <div className="bg-black/50 backdrop-blur-md text-white font-bold text-[10px] px-3 py-1.5 rounded-full uppercase tracking-wider flex items-center gap-1 shadow-sm">
+            <span className="material-symbols-outlined text-[12px]">location_on</span>
+            {label && label.toLowerCase() !== 'international' ? label : 'DESTINATION'}
+          </div>
+
+          {/* Badges/Discount in Lime Green */}
+          <div className="flex flex-col items-end gap-2">
+            {showBadge && (
+              <div className="bg-[#ccff00] text-black font-extrabold text-[10px] px-3 py-1.5 rounded-full uppercase tracking-wider shadow-sm">
+                {showBadge}
+              </div>
+            )}
+            {discountText && !showBadge && (
+              <div className="bg-[#ccff00] text-black font-extrabold text-[10px] px-3 py-1.5 rounded-full uppercase tracking-wider shadow-sm">
+                {discountText}
+              </div>
+            )}
+          </div>
         </div>
       </div>
 
-      {/* Bottom Section */}
-      <div className="relative z-10 w-full flex flex-col gap-2 mt-auto">
-        <div className="flex items-center gap-2 w-full">
-          <span className="bg-white text-primary text-[11px] font-bold px-3 py-1.5 rounded-full whitespace-nowrap shrink-0 shadow-sm">
-            {duration}
-          </span>
-          <div className={`relative overflow-hidden group/btn bg-white rounded-full py-1.5 shadow-lg flex-1 transition-all flex justify-center items-center ${isClickable ? 'cursor-pointer' : 'cursor-default'}`}>
-            {isClickable && <div className="absolute inset-0 w-0 bg-primary transition-all duration-300 ease-out group-hover/btn:w-full z-0"></div>}
-            <span className={`relative z-10 font-bold text-[11px] whitespace-nowrap transition-colors duration-300 ${isClickable ? 'text-primary group-hover/btn:text-white' : 'text-primary'}`}>
-              {isClickable ? (
-                <>
-                  <span className="group-hover/btn:hidden">View Detail</span>
-                  <span className="hidden group-hover/btn:inline">Click</span>
-                </>
-              ) : (
-                "Coming Soon"
-              )}
-            </span>
+      {/* Bottom Content Section */}
+      <div className="flex flex-col p-5 h-[45%] justify-between">
+        <div>
+          <h3 className="text-gray-900 text-[20px] md:text-[22px] font-extrabold leading-[1.2] mb-2 line-clamp-2">{tripTitle}</h3>
+          
+          <div className="flex items-center gap-1.5 text-gray-500">
+            <span className="material-symbols-outlined text-[16px]">schedule</span>
+            <span className="text-[12px] font-medium tracking-wide">{duration}</span>
           </div>
         </div>
 
-        {/* Full-width Price Box */}
-        <div className="w-full bg-[#136b8a]/90 backdrop-blur-md rounded-2xl py-2 flex flex-col items-center justify-center border border-white/20 shadow-md">
-            {displayOriginalPrice && (
-              <span className="text-white/70 text-[11px] line-through font-semibold leading-none mb-0.5">
-                {displayOriginalPrice}
+        <div className="flex items-end justify-between w-full mt-2">
+          <div className="flex flex-col">
+            <span className="text-[10px] text-gray-400 font-bold uppercase tracking-wider mb-0.5">From</span>
+            <div className="flex items-center gap-2">
+              <span className="text-[#136b8a] font-extrabold text-[22px] leading-none">
+                {displayPrice}
               </span>
-            )}
-            <span className="text-white font-extrabold text-[18px] md:text-[20px] drop-shadow-md whitespace-nowrap leading-none">
-              {displayPrice}
-            </span>
+              {displayOriginalPrice && (
+                <span className="text-gray-400 text-[13px] line-through font-medium leading-none">
+                  {displayOriginalPrice}
+                </span>
+              )}
+            </div>
+          </div>
+          
+          {/* Small View Detail Arrow or Discount % */}
+          <div className="flex items-center text-gray-900 font-bold text-[12px] group-hover:text-[#136b8a] transition-colors bg-gray-50 group-hover:bg-[#eaf4f7] px-3 py-1.5 rounded-full border border-gray-100 group-hover:border-[#136b8a]/20">
+            {discountText && showBadge && <span className="mr-1">{discountText}</span>}
+            {!discountText && <span className="mr-1">View</span>}
+            <span className="material-symbols-outlined text-[16px]">arrow_outward</span>
+          </div>
         </div>
       </div>
     </Link>
