@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 
 function Cart() {
   const navigate = useNavigate();
@@ -101,11 +101,17 @@ function Cart() {
                 {cartItems.map((item) => (
                   <div key={item.id} className="flex items-center justify-between border-b border-outline-variant/30 pb-4">
                     <div className="flex items-center gap-4">
-                      <div className="w-16 h-16 bg-slate-100 rounded-lg flex items-center justify-center">
-                        <span className="material-symbols-outlined text-slate-400">landscape</span>
+                      <div className="w-16 h-16 bg-slate-100 rounded-lg flex items-center justify-center overflow-hidden">
+                        {item.image ? (
+                          <img src={item.image} alt={item.title} className="w-full h-full object-cover" />
+                        ) : (
+                          <span className="material-symbols-outlined text-slate-400">landscape</span>
+                        )}
                       </div>
                       <div>
-                        <h3 className="font-bold text-lg text-on-surface">{item.title}</h3>
+                        <Link to={`/itinerary/${item.slug || item.title.toLowerCase().replace(/ /g, '-')}`} className="hover:underline">
+                          <h3 className="font-bold text-lg text-[#136b8a]">{item.title}</h3>
+                        </Link>
                         <p className="text-on-surface-variant text-sm">{item.duration} • {item.travellers} {item.travellers > 1 ? 'Travellers' : 'Traveller'}</p>
                       </div>
                     </div>

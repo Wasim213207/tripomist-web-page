@@ -80,18 +80,17 @@ function Navbar() {
 
   return (
     <>
-      <nav className="bg-white sticky top-0 z-50 transition-all duration-300 relative">
-        <div className="flex justify-between items-center w-full px-4 md:px-8 py-4 max-w-7xl mx-auto bg-white relative z-50">
+      <nav className="bg-white sticky top-0 z-50 transition-all duration-300 relative border-b border-gray-100">
+        <div className="flex justify-between items-center w-full px-4 md:px-12 lg:px-20 py-4 bg-white relative z-50">
           {/* Brand */}
           <div className="flex items-center gap-6">
             <Link className="font-headline-md text-headline-md font-bold tracking-tight text-black flex items-center gap-2 hover:scale-95 duration-150 transition-transform" to="/">
-              <img alt="TripoMist Logo" className="h-10 w-10 rounded-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAf4iPOLD4TW-emcX7qi8W7qPZhFbm5OzAQitvDsMARyOfBuAo9ztt29roRULWmZnSZXWDU9C66-5CEUsII9ClNmyCllVfZSQsk_Zh8SNMinjoMc_fWjzIKKChJB0UTFRB6QTigHPgLb0E2DZsOlp_JhvJp0lXnbSsTzGVqfLBMNk-0_rDP3tmtkhWYAQN9_F1nRcn8PpFGemDTJHOLelhxsCRyeTqUu0-JvD0GzZAkXaVLereGaQFPqUxJgRLojmOnEGYfiVmgV8Js0WY" />
               TripoMist
             </Link>
           </div>
           
           {/* Search Bar (Center) */}
-          <div ref={searchRef} className="hidden md:flex flex-1 max-w-xl mx-8 relative">
+          <div ref={searchRef} className="hidden md:flex flex-1 max-w-sm mx-auto relative">
             <input 
               type="text" 
               placeholder="Search destinations..." 
@@ -106,13 +105,13 @@ function Navbar() {
                   handleSearch(searchQuery)
                 }
               }}
-              className="w-full bg-white text-black border-2 border-primary rounded-full py-2.5 pl-6 pr-12 focus:outline-none focus:ring-2 focus:ring-primary/50 text-[14px] font-medium placeholder-black/50 transition-all shadow-sm"
+              className="w-full bg-white text-black border-[1.5px] border-[#136b8a] rounded-full py-1.5 pl-4 pr-10 focus:outline-none focus:ring-2 focus:ring-primary/50 text-[13px] font-medium placeholder-black/50 transition-all shadow-sm"
             />
             <button 
               onClick={() => handleSearch(searchQuery)}
-              className="absolute right-2 top-1/2 -translate-y-1/2 bg-white rounded-full p-1.5 flex items-center justify-center text-black hover:bg-gray-100 transition-colors shadow-sm"
+              className="absolute right-1 top-1/2 -translate-y-1/2 bg-white rounded-full p-1 flex items-center justify-center text-black hover:bg-gray-100 transition-colors shadow-sm"
             >
-              <span className="material-symbols-outlined text-[18px]">search</span>
+              <span className="material-symbols-outlined text-[16px]">search</span>
             </button>
             
             <AnimatePresence>

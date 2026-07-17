@@ -25,7 +25,7 @@ const PackageCard = ({
       to={link || '#'} 
       onClick={(e) => { if (!isClickable) e.preventDefault() }}
       draggable={false}
-      className={`rounded-3xl overflow-hidden group relative flex flex-col shadow-sm hover:shadow-xl transition-all duration-300 select-none block bg-white border border-gray-100 ${className || 'w-full h-[360px]'}`}
+      className={`rounded-3xl overflow-hidden group relative flex flex-col shadow-sm hover:shadow-xl transition-all duration-300 select-none block bg-[#cdeae7] border border-gray-100 ${className || 'w-full h-[360px]'}`}
     >
       {/* Top Image Section */}
       <div className="relative w-full h-[55%] overflow-hidden shrink-0">
@@ -42,12 +42,16 @@ const PackageCard = ({
           {/* Badges/Discount in Lime Green */}
           <div className="flex flex-col items-end gap-2">
             {showBadge && (
-              <div className="bg-[#ccff00] text-black font-extrabold text-[10px] px-3 py-1.5 rounded-full uppercase tracking-wider shadow-sm">
+              <div className={
+                showBadge.toLowerCase() === 'coming soon' 
+                  ? "bg-white/30 backdrop-blur-md text-black font-extrabold text-[10px] px-3 py-1.5 rounded-full uppercase tracking-wider shadow-sm border border-white/50" 
+                  : "bg-white/30 backdrop-blur-md text-[#136b8a] font-extrabold text-[10px] px-3 py-1.5 rounded-full uppercase tracking-wider shadow-sm border border-[#136b8a]/30"
+              }>
                 {showBadge}
               </div>
             )}
             {discountText && !showBadge && (
-              <div className="bg-[#ccff00] text-black font-extrabold text-[10px] px-3 py-1.5 rounded-full uppercase tracking-wider shadow-sm">
+              <div className="bg-white/30 backdrop-blur-md text-[#136b8a] font-extrabold text-[10px] px-3 py-1.5 rounded-full uppercase tracking-wider shadow-sm border border-[#136b8a]/30">
                 {discountText}
               </div>
             )}
@@ -68,16 +72,11 @@ const PackageCard = ({
 
         <div className="flex items-end justify-between w-full mt-2">
           <div className="flex flex-col">
-            <span className="text-[10px] text-gray-400 font-bold uppercase tracking-wider mb-0.5">From</span>
+            <span className="text-[10px] text-gray-400 font-bold uppercase tracking-wider mb-0.5">Price</span>
             <div className="flex items-center gap-2">
               <span className="text-[#136b8a] font-extrabold text-[22px] leading-none">
                 {displayPrice}
               </span>
-              {displayOriginalPrice && (
-                <span className="text-gray-400 text-[13px] line-through font-medium leading-none">
-                  {displayOriginalPrice}
-                </span>
-              )}
             </div>
           </div>
           
@@ -85,8 +84,7 @@ const PackageCard = ({
           <div className={`relative overflow-hidden group/btn bg-gray-50 rounded-full px-3 py-1.5 border border-gray-100 flex items-center transition-all ${isClickable ? 'cursor-pointer' : 'cursor-default'}`}>
             {isClickable && <div className="absolute inset-0 w-0 bg-[#136b8a] transition-all duration-300 ease-out group-hover/btn:w-full z-0"></div>}
             <div className={`relative z-10 flex items-center font-bold text-[12px] whitespace-nowrap transition-colors duration-300 ${isClickable ? 'text-gray-900 group-hover/btn:text-white' : 'text-gray-400'}`}>
-              {discountText && showBadge && <span className="mr-1">{discountText}</span>}
-              {!discountText && <span className="mr-1">View</span>}
+              <span className="mr-1">Click</span>
               <span className="material-symbols-outlined text-[16px]">arrow_outward</span>
             </div>
           </div>

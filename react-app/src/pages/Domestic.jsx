@@ -158,7 +158,17 @@ function Domestic() {
       <main className="max-w-6xl mx-auto px-4 pb-36 w-full">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {filteredTrips.map(trip => (
-            <PackageCard key={trip.id} tripTitle={trip.name} price={`₹${trip.price.toLocaleString('en-IN')}`} duration={trip.durationText} bg={trip.img} link={`/itinerary/${trip.name.toLowerCase().replace(/\s+/g, '-')}`} label={trip.style === 'Mountains' ? 'Popular' : ''} blueText={true} />
+            <PackageCard 
+              key={trip.id} 
+              tripTitle={trip.name} 
+              price={`₹${trip.price.toLocaleString('en-IN')}`} 
+              duration={trip.durationText} 
+              bg={trip.img} 
+              link={`/itinerary/${trip.name.toLowerCase().replace(/\s+/g, '-')}`} 
+              label={trip.style === 'Mountains' ? 'Popular' : ''} 
+              badge="Coming Soon"
+              blueText={true} 
+            />
           ))}
         </div>
       </main>

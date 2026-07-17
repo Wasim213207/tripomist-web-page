@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, Link } from 'react-router-dom'
 import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
 import BookingModal from '../components/BookingModal'
@@ -42,9 +42,16 @@ export default function Checkout() {
           <div className="lg:col-span-8 flex flex-col gap-6">
             {cartItems.length > 0 ? (
               cartItems.map((item, index) => (
-                <div key={index} className="bg-white rounded-3xl p-6 md:p-8 shadow-sm border border-gray-100 flex flex-col sm:flex-row gap-6">
+                 <div key={index} className="bg-white rounded-3xl p-6 md:p-8 shadow-sm border border-gray-100 flex flex-col sm:flex-row gap-6">
+                   {item.image && (
+                     <div className="w-full sm:w-32 h-32 rounded-xl overflow-hidden shrink-0">
+                       <img src={item.image} alt={item.title} className="w-full h-full object-cover" />
+                     </div>
+                   )}
                    <div className="flex-1">
-                     <h3 className="text-xl font-bold text-gray-900 mb-2">{item.title}</h3>
+                     <Link to={`/itinerary/${item.slug || item.title.toLowerCase().replace(/ /g, '-')}`} className="hover:underline">
+                       <h3 className="text-xl font-bold text-[#136b8a] mb-2">{item.title}</h3>
+                     </Link>
                      <p className="text-gray-600 text-sm mb-4">Duration: {item.duration}</p>
                      <div className="flex justify-between items-center text-sm font-semibold">
                        <span>{item.travellers} Traveller(s)</span>

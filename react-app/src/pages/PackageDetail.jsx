@@ -1,18 +1,25 @@
 import React, { useState, useEffect } from 'react'
-import { Link, useParams } from 'react-router-dom'
+import { Link, useParams, useNavigate } from 'react-router-dom'
 import BookingModal from '../components/BookingModal'
 import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
-import { supabase } from '../supabaseClient'
+import DownloadItineraryModal from '../components/DownloadItineraryModal'
+import { supabase } from '../utils/supabaseClient'
 
-function PackageDetail() {
+export default function PackageDetail() {
   const { slug } = useParams()
+  const navigate = useNavigate()
+  
   const [trip, setTrip] = useState(null)
   const [loading, setLoading] = useState(true)
-  const [activeTab, setActiveTab] = useState('itinerary')
+  const [activeTab, setActiveTab] = useState('Itinerary')
   const [travellers, setTravellers] = useState(2)
   const [isAddedToCart, setIsAddedToCart] = useState(false)
+  
+  const [activeAccordion, setActiveAccordion] = useState(0)
   const [isModalOpen, setIsModalOpen] = useState(false)
+  const [isReadMore, setIsReadMore] = useState(false)
+  const [isBookingModalOpen, setIsBookingModalOpen] = useState(false)
 
   useEffect(() => {
     async function fetchPackage() {
@@ -25,26 +32,29 @@ function PackageDetail() {
       if (error || !data) {
         console.error('Error fetching package or not found, using dummy data:', error)
         // Dummy fallback data so the page opens even if DB is empty
+        const titleFallback = slug ? slug.replace(/-/g, ' ').toUpperCase() : 'Amazing Trip';
         setTrip({
-          title: slug ? slug.replace(/-/g, ' ').toUpperCase() : 'Amazing Trip',
+          title: titleFallback,
           badge: "Most Popular",
           state: "Adventure",
           durationText: "5N 6D",
+          duration: "6 Days, 5 Nights",
           numericPrice: 19999,
           price: `₹19,999`,
           originalPrice: `₹24,999`,
           discountText: "20% OFF",
           pickup: "Delhi / Chandigarh",
           heroImg: "https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?q=80&w=1200&auto=format&fit=crop",
+          bg: "https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?q=80&w=1200&auto=format&fit=crop",
           overview: "Enjoy a breathtaking journey through stunning landscapes. This package offers a perfect mix of adventure, relaxation, and cultural exploration.",
           description: "Experience the trip of a lifetime with our carefully curated itinerary. From scenic viewpoints to local cuisines, every moment is planned for your ultimate comfort and enjoyment.",
           inclusions: ["Accommodation in premium hotels", "Daily Breakfast & Dinner", "Sightseeing transfers", "Experienced Guide"],
           exclusions: ["Flight / Train Tickets", "Personal Expenses", "Entry fees to monuments", "Travel Insurance"],
           highlights: ["Day 1: Arrival & Local Sightseeing", "Day 2: Adventure Activities", "Day 3: Scenic Drive & Departure"],
-          itinerary: [
-            { title: "Day 1: Arrival & Local Sightseeing", description: "Arrive at the destination and check into your hotel. Later, visit local attractions." },
-            { title: "Day 2: Adventure Activities", description: "Spend the day enjoying various adventure sports and exploring hidden gems." },
-            { title: "Day 3: Scenic Drive & Departure", description: "After breakfast, enjoy a scenic drive before heading back home." }
+          days: [
+            { num: 1, title: "Arrival & Local Sightseeing", desc: "Arrive at the destination and check into your hotel. Later, visit local attractions." },
+            { num: 2, title: "Adventure Activities", desc: "Spend the day enjoying various adventure sports and exploring hidden gems." },
+            { num: 3, title: "Scenic Drive & Departure", desc: "After breakfast, enjoy a scenic drive before heading back home." }
           ],
           costings: [
             { type: "Double Sharing", price: "₹19,999 per person" },
@@ -59,18 +69,24 @@ function PackageDetail() {
           badge: "Most Popular", // Default or you can add logic
           state: data.state,
           durationText: data.duration,
+          duration: data.duration,
           numericPrice: data.price, // used for cart calculation
           price: `₹${data.price.toLocaleString('en-IN')}`,
           originalPrice: `₹${data.original_price.toLocaleString('en-IN')}`,
           discountText: data.discount_text,
           pickup: data.departure_from,
           heroImg: data.banner_image || data.image_url,
+          bg: data.banner_image || data.image_url,
           overview: data.short_description,
           description: data.full_description,
           inclusions: data.inclusions || [],
           exclusions: data.exclusions || [],
           highlights: data.itinerary ? data.itinerary.map(item => item.title) : [],
-          itinerary: data.itinerary || [],
+          days: data.itinerary ? data.itinerary.map((item, idx) => ({
+            num: idx + 1,
+            title: item.title,
+            desc: item.description
+          })) : [],
           costings: data.costings || []
         })
       }
@@ -78,6 +94,8 @@ function PackageDetail() {
     }
     if (slug) {
       fetchPackage()
+    } else {
+        setLoading(false)
     }
   }, [slug])
 
@@ -99,15 +117,32 @@ function PackageDetail() {
       cartItems.push({
         id: Date.now(),
         title: trip.title,
-        duration: trip.durationText || "Package",
+        duration: trip.durationText || trip.duration || "Package",
         travellers: travellers,
         price: trip.numericPrice,
-        total: trip.numericPrice * travellers
+        total: trip.numericPrice * travellers,
+        image: trip.heroImg || trip.bg,
+        slug: slug || trip.title.toLowerCase().replace(/ /g, '-')
       });
       localStorage.setItem('cart', JSON.stringify(cartItems));
       setIsAddedToCart(true);
     }
     window.dispatchEvent(new Event('cartUpdated'));
+  }
+
+  const handleBookNow = () => {
+    setIsBookingModalOpen(true)
+  }
+
+  const toggleAccordion = (index) => {
+    setActiveAccordion(activeAccordion === index ? null : index)
+  }
+
+  const handleSendEnquiry = () => {
+    if(!trip) return;
+    const message = `Hey *TripoMist* I'm interested in *${trip.title}*\nMy Full Name: \nPrefer Travel date: \nDestination: ${trip.title}\nHow Many people travel with me : ${travellers}`;
+    const whatsappUrl = `https://wa.me/919990802608?text=${encodeURIComponent(message)}`;
+    window.open(whatsappUrl, '_blank');
   }
 
   if (loading) {
@@ -126,261 +161,6 @@ function PackageDetail() {
     )
   }
 
-  return (
-    <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[100] flex items-center justify-center p-4">
-      <div className="bg-white rounded-3xl w-full max-w-md p-6 shadow-2xl animate-fade-in relative max-h-[90vh] overflow-y-auto">
-        <button onClick={onClose} className="absolute top-4 right-4 text-gray-400 hover:text-gray-800 transition-colors">
-          <span className="material-symbols-outlined">close</span>
-        </button>
-        <h2 className="text-2xl font-bold text-gray-900 mb-6">Book Your Trip</h2>
-        <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-          
-          <div>
-            <label className="block text-sm font-semibold text-gray-700 mb-1">Full Name</label>
-            <input required type="text" value={formData.fullName} onChange={(e) => setFormData({...formData, fullName: e.target.value})} className="w-full border border-gray-200 rounded-xl px-4 py-2.5 focus:ring-2 focus:ring-[#136b8a] outline-none text-gray-700" placeholder="John Doe" />
-          </div>
-
-          <div>
-            <label className="block text-sm font-semibold text-gray-700 mb-1">Email Address</label>
-            <input required type="email" value={formData.email} onChange={(e) => setFormData({...formData, email: e.target.value})} className="w-full border border-gray-200 rounded-xl px-4 py-2.5 focus:ring-2 focus:ring-[#136b8a] outline-none text-gray-700" placeholder="john@example.com" />
-          </div>
-
-          <div>
-            <label className="block text-sm font-semibold text-gray-700 mb-1">Phone No (WhatsApp)</label>
-            <div className="flex">
-              <span className="inline-flex items-center px-4 rounded-l-xl border border-r-0 border-gray-200 bg-gray-50 text-gray-500 font-semibold">+91</span>
-              <input required type="tel" value={formData.phone} onChange={(e) => setFormData({...formData, phone: e.target.value})} className="w-full border border-gray-200 rounded-r-xl px-4 py-2.5 focus:ring-2 focus:ring-[#136b8a] outline-none text-gray-700" placeholder="9999999999" />
-            </div>
-          </div>
-
-          <div className="relative">
-            <label className="block text-sm font-semibold text-gray-700 mb-1">Select Date</label>
-            <div 
-              onClick={() => setIsCalendarOpen(!isCalendarOpen)}
-              className="w-full border border-gray-200 rounded-xl px-4 py-2.5 cursor-pointer bg-white flex justify-between items-center text-gray-700 hover:border-[#136b8a] transition-colors"
-            >
-              <span>{formData.date ? formData.date.toLocaleDateString() : "Select Date"}</span>
-              <span className="material-symbols-outlined text-gray-400">calendar_month</span>
-            </div>
-
-            {isCalendarOpen && (
-              <div className="absolute top-full left-0 right-0 mt-2 z-50 border border-gray-200 rounded-xl p-3 bg-white shadow-xl">
-                <div className="flex justify-between items-center mb-2">
-                  <button type="button" onClick={prevMonth} className="p-1 hover:bg-gray-200 rounded-full"><span className="material-symbols-outlined text-sm">chevron_left</span></button>
-                  <span className="font-bold text-sm text-gray-700">{currentMonth.toLocaleString('default', { month: 'long', year: 'numeric' })}</span>
-                  <button type="button" onClick={nextMonth} className="p-1 hover:bg-gray-200 rounded-full"><span className="material-symbols-outlined text-sm">chevron_right</span></button>
-                </div>
-                <div className="grid grid-cols-7 gap-1 text-center text-xs font-semibold text-gray-500 mb-1">
-                  {['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'].map(d => <div key={d}>{d}</div>)}
-                </div>
-                <div className="grid grid-cols-7 gap-1 text-center text-sm">
-                  {days.map((d, idx) => {
-                    if (!d) return <div key={idx} className="p-1"></div>;
-                    const isPast = d < today;
-                    const isFriday = d.getDay() === 5;
-                    const isSelected = formData.date && d.getTime() === formData.date.getTime();
-                    return (
-                      <button 
-                        key={idx}
-                        type="button"
-                        disabled={isPast || !isFriday}
-                        onClick={() => handleDateSelect(d)}
-                        className={`p-1.5 rounded-full flex items-center justify-center transition-colors ${isPast ? 'text-gray-300 cursor-not-allowed' : !isFriday ? 'text-gray-400 cursor-not-allowed' : isSelected ? 'bg-[#136b8a] text-white font-bold' : 'bg-blue-100 text-[#136b8a] hover:bg-blue-200 font-semibold cursor-pointer'}`}
-                      >
-                        {d.getDate()}
-                      </button>
-                    )
-                  })}
-                </div>
-              </div>
-            )}
-          </div>
-
-          <div>
-            <label className="block text-sm font-semibold text-gray-700 mb-1">Where did you hear about us?</label>
-            <select required value={formData.source} onChange={(e) => setFormData({...formData, source: e.target.value})} className="w-full border border-gray-200 rounded-xl px-4 py-2.5 focus:ring-2 focus:ring-[#136b8a] outline-none bg-white text-gray-700">
-              <option value="" className="text-gray-400">Select source</option>
-              <option value="Facebook" className="text-gray-700">Facebook</option>
-              <option value="Instagram" className="text-gray-700">Instagram</option>
-              <option value="WhatsApp" className="text-gray-700">WhatsApp</option>
-              <option value="Google" className="text-gray-700">Google</option>
-              <option value="Friend and Family" className="text-gray-700">Friend and Family</option>
-              <option value="I'm already travel with you" className="text-gray-700">I'm already travel with you</option>
-              <option value="Other" className="text-gray-700">Other</option>
-            </select>
-          </div>
-
-          <button type="submit" className="w-full bg-[#136b8a] hover:bg-[#0f556e] text-white font-bold py-3.5 rounded-xl shadow-md transition-all active:scale-[0.98] mt-4">
-            Proceed to Checkout
-          </button>
-        </form>
-      </div>
-    </div>
-  )
-}
-// ------------------------------
-
-export default function ItinerarySpiti() {
-  const { slug } = useParams()
-  const navigate = useNavigate()
-  const [searchParams] = useSearchParams()
-
-  const [activeAccordion, setActiveAccordion] = useState(0)
-  const [isModalOpen, setIsModalOpen] = useState(false)
-  const [isReadMore, setIsReadMore] = useState(false)
-  
-  // New States for Redesign
-  const [activeTab, setActiveTab] = useState('Itinerary')
-  const [isAddedToCart, setIsAddedToCart] = useState(false)
-  const [isBookingModalOpen, setIsBookingModalOpen] = useState(false)
-  const [travellers, setTravellers] = useState(1)
-
-  const tripsData = {
-    "Spiti Valley": {
-      title: "Spiti Valley Expedition",
-      location: "Himachal Pradesh, India",
-      description: "Journey through the high-altitude desert of the Himalayas. Experience ancient monasteries, surreal landscapes, and the raw beauty of the middle land.",
-      price: "₹24,999",
-      numericPrice: 24999,
-      duration: "6 Days, 5 Nights",
-      difficulty: "Moderate",
-      bg: "https://images.unsplash.com/photo-1549257850-25e24bcf0e13?w=1600&q=80",
-      days: [
-        {
-          num: 1,
-          title: "Arrival in Manali & Acclimatization",
-          desc: "Arrive in the beautiful hill station of Manali. Spend the day acclimatizing to the altitude. We'll have a brief orientation session in the evening, followed by a welcome dinner with the group. Explore local cafes in Old Manali."
-        },
-        {
-          num: 2,
-          title: "Manali to Kaza via Atal Tunnel",
-          desc: "Cross the engineering marvel, Atal Tunnel. Witness the dramatic change in landscape as we enter Lahaul Valley and proceed to Kaza. Drive offers stunning views of rugged mountains and Chandra River."
-        },
-        {
-          num: 3,
-          title: "Key Monastery & Kibber Village",
-          desc: "Visit the iconic Key Monastery perched on a hilltop fortress. Later, drive to Kibber, one of the highest inhabited villages. Keep an eye out for Himalayan wildlife like the Snow Leopard."
-        }
-      ]
-    },
-    "Ladakh": {
-      title: "Ladakh Himalayan Expedition",
-      location: "Ladakh, India",
-      description: "Experience the ultimate land of high passes. Drive through Khardung La, camp alongside Pangong Lake, and explore the ancient culture of Leh.",
-      price: "₹21,999",
-      numericPrice: 21999,
-      duration: "7 Days, 6 Nights",
-      difficulty: "Hard",
-      bg: "https://images.unsplash.com/photo-1581793746485-04698e79a4e8?w=1600&q=80",
-      days: [
-        {
-          num: 1,
-          title: "Arrival in Leh & Rest",
-          desc: "Fly into Leh airport. Transfer to hotel and complete absolute bed rest for acclimatization. In the evening, visit Shanti Stupa for a gorgeous sunset over Leh town."
-        },
-        {
-          num: 2,
-          title: "Leh Local Sightseeing & Confluence",
-          desc: "Explore Leh Palace, Hall of Fame, and Magnetic Hill. Visit Sangam - the spectacular confluence of Indus and Zanskar rivers. Enjoy local Ladakhi cuisine."
-        },
-        {
-          num: 3,
-          title: "Leh to Nubra Valley via Khardung La",
-          desc: "Drive across Khardung La, one of the highest motorable passes in the world. Descend into Nubra Valley, enjoy double-humped camel rides on cold desert sand dunes of Hunder."
-        }
-      ]
-    },
-    "Kashmir": {
-      title: "Kashmir Valley Paradise",
-      location: "Kashmir, India",
-      description: "Explore the stunning meadows of Gulmarg, the golden valleys of Pahalgam, and float on a traditional Shikara along the serene Dal Lake.",
-      price: "₹17,999",
-      numericPrice: 17999,
-      duration: "5 Days, 4 Nights",
-      difficulty: "Easy",
-      bg: "https://images.unsplash.com/photo-1595815771614-ade9d652a65d?w=1600&q=80",
-      days: [
-        {
-          num: 1,
-          title: "Srinagar Arrival & Houseboat Stay",
-          desc: "Arrive in Srinagar. Check into a beautiful traditional cedar wood Houseboat on Dal Lake. Enjoy a relaxing Shikara ride through floating markets during golden hour."
-        },
-        {
-          num: 2,
-          title: "Srinagar to Gulmarg Day Trip",
-          desc: "Drive to Gulmarg, the meadow of flowers. Take the Gulmarg Gondola, one of the highest cable cars in Asia, up to the snow line. Play in snow and enjoy skiing options."
-        },
-        {
-          num: 3,
-          title: "Srinagar to Pahalgam Valley",
-          desc: "Drive to Pahalgam along saffron fields. Explore Aru Valley and Betaab Valley. Walk along the crystal clear waters of Lidder River before a warm bonfire dinner."
-        }
-      ]
-    }
-  }
-
-  // Determine active itinerary dynamically
-  let trip = tripsData["Spiti Valley"];
-  if (slug) {
-    const formattedId = id.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
-    
-    // Check specific overrides first
-    if (id.toLowerCase().includes("ladakh")) trip = tripsData["Ladakh"];
-    else if (id.toLowerCase().includes("kashmir")) trip = tripsData["Kashmir"];
-    else if (tripsData[formattedId]) trip = tripsData[formattedId];
-    else {
-      // Create dynamic fallback using Spiti as a template
-      trip = {
-        ...trip,
-        title: `${formattedId} Tour Package`,
-        location: formattedId,
-        description: `Explore the beautiful landscapes of ${formattedId}. Journey through amazing places and make memories for a lifetime.`
-      };
-    }
-  }
-
-  React.useEffect(() => {
-    const cartItems = JSON.parse(localStorage.getItem('cart') || '[]');
-    const isAdded = cartItems.some(item => item.title === trip.title);
-    setIsAddedToCart(isAdded);
-  }, [trip.title]);
-
-  
-    const handleAddToCart = () => {
-    let cartItems = JSON.parse(localStorage.getItem('cart') || '[]');
-    if (isAddedToCart) {
-      cartItems = cartItems.filter(item => item.title !== trip.title);
-      localStorage.setItem('cart', JSON.stringify(cartItems));
-      setIsAddedToCart(false);
-    } else {
-      cartItems.push({
-        id: Date.now(),
-        title: trip.title,
-        duration: trip.durationText || "Package",
-        travellers: travellers,
-        price: trip.numericPrice,
-        total: trip.numericPrice * travellers
-      });
-      localStorage.setItem('cart', JSON.stringify(cartItems));
-      setIsAddedToCart(true);
-    }
-    window.dispatchEvent(new Event('cartUpdated'));
-  }
-
-  const handleBookNow = () => {
-    setIsBookingModalOpen(true)
-  }
-
-  const toggleAccordion = (index) => {
-    setActiveAccordion(activeAccordion === index ? null : index)
-  }
-
-  const handleSendEnquiry = () => {
-    const message = `Hey *TripoMist* I'm interested in *${trip.title}*\nMy Full Name: \nPrefer Travel date: \nDestination: ${trip.title}\nHow Many people travel with me : ${travellers}`;
-    const whatsappUrl = `https://wa.me/919990802608?text=${encodeURIComponent(message)}`;
-    window.open(whatsappUrl, '_blank');
-  }
-
   const strikePrice = trip.numericPrice + 3000
   const totalAmount = trip.numericPrice * travellers
 
@@ -395,7 +175,7 @@ export default function ItinerarySpiti() {
           <div className="absolute inset-0 bg-cover bg-center w-full h-full" style={{ backgroundImage: `url('${trip.bg}')` }}></div>
           <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-black/20 flex flex-col items-start justify-end px-4 md:px-12 lg:px-20 pb-16">
             <h1 className="text-white text-3xl md:text-5xl font-extrabold tracking-tight drop-shadow-xl text-left max-w-4xl">
-              {trip.title} {trip.duration.split(',')[0]}
+              {trip.title} {trip.duration ? trip.duration.split(',')[0] : ''}
             </h1>
           </div>
         </div>
@@ -412,7 +192,7 @@ export default function ItinerarySpiti() {
                 About {trip.title} Trip From Delhi
               </h1>
               <p className="text-gray-700 text-base md:text-lg leading-relaxed mb-2">
-                {isReadMore ? trip.description : `${trip.description.slice(0, 80)}...`}
+                {isReadMore ? trip.description : `${trip.description?.slice(0, 80) || ''}...`}
               </p>
               <button onClick={() => setIsReadMore(!isReadMore)} className="text-[#136b8a] font-bold hover:underline text-sm md:text-base cursor-pointer">
                 {isReadMore ? 'Read Less' : 'Read More'}
@@ -466,8 +246,8 @@ export default function ItinerarySpiti() {
                 </div>
                 
                 <div className="flex flex-col gap-4">
-                  {trip.days.map((day, idx) => (
-                    <div key={day.num} className="bg-[#eff6f9] rounded-2xl overflow-hidden border border-[#b9dae6]">
+                  {trip.days && trip.days.map((day, idx) => (
+                    <div key={day.num || idx} className="bg-[#eff6f9] rounded-2xl overflow-hidden border border-[#b9dae6]">
                       <button 
                         onClick={() => toggleAccordion(idx)}
                         className="w-full px-5 py-4 md:px-6 md:py-5 flex items-center justify-between text-left cursor-pointer hover:bg-[#deedf4] transition-colors"
@@ -488,7 +268,7 @@ export default function ItinerarySpiti() {
                       {activeAccordion === idx && (
                         <div className="px-5 md:px-6 pb-5 pt-1 text-gray-800 text-sm md:text-base">
                           <ul className="space-y-3 list-disc pl-4 marker:text-gray-500">
-                            {day.desc.split('. ').filter(Boolean).map((sentence, sIdx) => (
+                            {day.desc && day.desc.split('. ').filter(Boolean).map((sentence, sIdx) => (
                               <li key={sIdx}>{sentence.trim()}{sentence.endsWith('.') ? '' : '.'}</li>
                             ))}
                           </ul>
@@ -507,42 +287,27 @@ export default function ItinerarySpiti() {
                 
                 <h3 className="text-lg font-bold text-[#136b8a] mb-4">Included</h3>
                 <ul className="space-y-4 text-gray-700 font-medium">
-                  <li className="flex gap-3 items-start">
-                    <span className="material-symbols-outlined text-[#25D366] mt-0.5 text-[20px]">check_circle</span>
-                    Accommodation in hotels, campsites, and lakeside cottages.
-                  </li>
-                  <li className="flex gap-3 items-start">
-                    <span className="material-symbols-outlined text-[#25D366] mt-0.5 text-[20px]">check_circle</span>
-                    Meals {parseInt(trip.duration.split(' ')[0]) - 1 || 4} Dinner & {parseInt(trip.duration.split(' ')[0]) - 1 || 4} Breakfast
-                  </li>
-                  <li className="flex gap-3 items-start">
-                    <span className="material-symbols-outlined text-[#25D366] mt-0.5 text-[20px]">check_circle</span>
-                    Professional team captains, guides, and support staff.
-                  </li>
-                  <li className="flex gap-3 items-start">
-                    <span className="material-symbols-outlined text-[#25D366] mt-0.5 text-[20px]">check_circle</span>
-                    First aid kits, oxygen cylinders, and an oximeter are available.
-                  </li>
-                  <li className="flex gap-3 items-start">
-                    <span className="material-symbols-outlined text-[#25D366] mt-0.5 text-[20px]">check_circle</span>
-                    All sightseeing, permits, and entry fees as per the itinerary.
-                  </li>
-                  <li className="flex gap-3 items-start">
-                    <span className="material-symbols-outlined text-[#25D366] mt-0.5 text-[20px]">check_circle</span>
-                    Adventure medical insurance
-                  </li>
-                  <li className="flex gap-3 items-start">
-                    <span className="material-symbols-outlined text-[#25D366] mt-0.5 text-[20px]">check_circle</span>
-                    Emergency medical support and oxygen cylinders for high altitudes.
-                  </li>
-                  <li className="flex gap-3 items-start">
-                    <span className="material-symbols-outlined text-[#25D366] mt-0.5 text-[20px]">check_circle</span>
-                    Inner Line Permits for restricted areas included.
-                  </li>
-                  <li className="flex gap-3 items-start">
-                    <span className="material-symbols-outlined text-[#25D366] mt-0.5 text-[20px]">check_circle</span>
-                    Delhi to {trip.title.split(' ')[0]} and back via volvo bus & Tempo traveller for the whole journey for local sightseeings.
-                  </li>
+                  {trip.inclusions && trip.inclusions.length > 0 ? trip.inclusions.map((inc, i) => (
+                    <li key={i} className="flex gap-3 items-start">
+                      <span className="material-symbols-outlined text-[#25D366] mt-0.5 text-[20px]">check_circle</span>
+                      {inc}
+                    </li>
+                  )) : (
+                    <>
+                      <li className="flex gap-3 items-start">
+                        <span className="material-symbols-outlined text-[#25D366] mt-0.5 text-[20px]">check_circle</span>
+                        Accommodation in hotels, campsites, and lakeside cottages.
+                      </li>
+                      <li className="flex gap-3 items-start">
+                        <span className="material-symbols-outlined text-[#25D366] mt-0.5 text-[20px]">check_circle</span>
+                        Meals included.
+                      </li>
+                      <li className="flex gap-3 items-start">
+                        <span className="material-symbols-outlined text-[#25D366] mt-0.5 text-[20px]">check_circle</span>
+                        All sightseeing, permits, and entry fees as per the itinerary.
+                      </li>
+                    </>
+                  )}
                 </ul>
               </section>
             )}
@@ -550,16 +315,8 @@ export default function ItinerarySpiti() {
               <section className="bg-white rounded-3xl border border-gray-100 p-6 md:p-8 shadow-sm mb-10">
                 <h2 className="text-2xl font-bold text-gray-900 mb-6">Costing Details</h2>
                 <div className="space-y-4 text-gray-700 font-medium">
-                  <div className="flex justify-between items-center p-4 bg-gray-50 rounded-xl border border-gray-100">
-                    <span className="font-bold">Quad Sharing</span>
-                    <span className="text-[#136b8a] font-bold text-lg">₹{(trip.numericPrice - 2000).toLocaleString()} <span className="text-sm text-gray-500 font-normal">+ 5% GST</span></span>
-                  </div>
-                  <div className="flex justify-between items-center p-4 bg-gray-50 rounded-xl border border-gray-100">
-                    <span className="font-bold">Triple Sharing</span>
-                    <span className="text-[#136b8a] font-bold text-lg">₹{(trip.numericPrice - 1000).toLocaleString()} <span className="text-sm text-gray-500 font-normal">+ 5% GST</span></span>
-                  </div>
                   <div className="flex justify-between items-center p-4 bg-[#eff6f9] rounded-xl border border-[#cde5ef]">
-                    <span className="font-bold">Double Sharing</span>
+                    <span className="font-bold">Per Person</span>
                     <span className="text-[#136b8a] font-bold text-lg">₹{trip.numericPrice.toLocaleString()} <span className="text-sm text-gray-500 font-normal">+ 5% GST</span></span>
                   </div>
                 </div>
@@ -632,9 +389,6 @@ export default function ItinerarySpiti() {
         </div>
       </main>
 
-
-
-      
       <DownloadItineraryModal 
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
@@ -653,4 +407,3 @@ export default function ItinerarySpiti() {
     </div>
   )
 }
-

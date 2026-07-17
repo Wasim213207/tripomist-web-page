@@ -10,8 +10,13 @@ const BookingModal = ({ isOpen, onClose, tripTitle, price, travellers, navigate 
   })
   const [currentMonth, setCurrentMonth] = useState(new Date())
   const [isCalendarOpen, setIsCalendarOpen] = useState(false)
+  const [step, setStep] = useState(1) // 1 for Form, 2 for OTP
+  const [otp, setOtp] = useState('')
 
-  if (!isOpen) return null;
+  if (!isOpen) {
+    if (step === 2) setStep(1); // Reset when closed
+    return null;
+  }
 
   const today = new Date();
   today.setHours(0,0,0,0);
@@ -41,8 +46,14 @@ const BookingModal = ({ isOpen, onClose, tripTitle, price, travellers, navigate 
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!formData.date) return alert("Please select a date (Fridays only)");
-    // Pass data to checkout
-    navigate(`/checkout?trip=${encodeURIComponent(tripTitle)}&price=${price}&date=${formData.date.toISOString()}&name=${encodeURIComponent(formData.fullName)}&email=${encodeURIComponent(formData.email)}&phone=${encodeURIComponent('+91 ' + formData.phone)}&source=${encodeURIComponent(formData.source)}`);
+    setStep(2); // Go to OTP step
+  }
+
+  const handleOtpSubmit = (e) => {
+    e.preventDefault();
+    if (otp.length < 4) return alert("Please enter valid OTP");
+    // Pass data to payment page
+    navigate(`/payment?trip=${encodeURIComponent(tripTitle)}&price=${price}&date=${formData.date.toISOString()}&name=${encodeURIComponent(formData.fullName)}`);
   }
 
   return (
@@ -52,6 +63,7 @@ const BookingModal = ({ isOpen, onClose, tripTitle, price, travellers, navigate 
           <span className="material-symbols-outlined">close</span>
         </button>
         <h2 className="text-2xl font-bold text-gray-900 mb-6">Book Your Trip</h2>
+        {step === 1 ? (
         <form onSubmit={handleSubmit} className="flex flex-col gap-4">
           
           <div>
@@ -130,9 +142,32 @@ const BookingModal = ({ isOpen, onClose, tripTitle, price, travellers, navigate 
           </div>
 
           <button type="submit" className="w-full bg-[#136b8a] hover:bg-[#0f556e] text-white font-bold py-3.5 rounded-xl shadow-md transition-all active:scale-[0.98] mt-4">
-            Proceed to Checkout
+            Proceed to Verify
           </button>
         </form>
+        ) : (
+          <form onSubmit={handleOtpSubmit} className="flex flex-col gap-6 py-4">
+            <div className="text-center">
+              <span className="material-symbols-outlined text-[48px] text-[#136b8a] mb-2">mark_email_read</span>
+              <p className="text-gray-600 text-sm">We've sent an OTP to<br/><strong>+91 {formData.phone}</strong></p>
+            </div>
+            <div>
+              <label className="block text-sm font-semibold text-gray-700 mb-2 text-center">Enter OTP</label>
+              <input 
+                required 
+                type="text" 
+                maxLength={4}
+                value={otp} 
+                onChange={(e) => setOtp(e.target.value)} 
+                className="w-full text-center text-2xl tracking-[0.5em] border border-gray-200 rounded-xl px-4 py-3 focus:ring-2 focus:ring-[#136b8a] outline-none text-gray-700 font-bold" 
+                placeholder="••••" 
+              />
+            </div>
+            <button type="submit" className="w-full bg-[#136b8a] hover:bg-[#0f556e] text-white font-bold py-3.5 rounded-xl shadow-md transition-all active:scale-[0.98]">
+              Verify & Pay
+            </button>
+          </form>
+        )}
       </div>
     </div>
   )
