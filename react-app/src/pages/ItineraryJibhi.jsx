@@ -272,19 +272,24 @@ export default function ItineraryJibhi() {
   }, [trip.title]);
 
   
-  const handleAddToCart = () => {
-    if (isAddedToCart) return;
-    const cartItems = JSON.parse(localStorage.getItem('cart') || '[]');
-    cartItems.push({
-      id: Date.now(),
-      title: trip.title,
-      duration: trip.durationText || "Package",
-      travellers: travellers,
-      price: trip.numericPrice,
-      total: trip.numericPrice * travellers
-    });
-    localStorage.setItem('cart', JSON.stringify(cartItems));
-    setIsAddedToCart(true);
+    const handleAddToCart = () => {
+    let cartItems = JSON.parse(localStorage.getItem('cart') || '[]');
+    if (isAddedToCart) {
+      cartItems = cartItems.filter(item => item.title !== trip.title);
+      localStorage.setItem('cart', JSON.stringify(cartItems));
+      setIsAddedToCart(false);
+    } else {
+      cartItems.push({
+        id: Date.now(),
+        title: trip.title,
+        duration: trip.durationText || "Package",
+        travellers: travellers,
+        price: trip.numericPrice,
+        total: trip.numericPrice * travellers
+      });
+      localStorage.setItem('cart', JSON.stringify(cartItems));
+      setIsAddedToCart(true);
+    }
     window.dispatchEvent(new Event('cartUpdated'));
   }
 

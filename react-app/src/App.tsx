@@ -1,5 +1,10 @@
 import React, { useState, useEffect } from 'react'
 import { Routes, Route, useLocation, useNavigationType } from 'react-router-dom'
+import GroupTrips from './pages/GroupTrips'
+import WeekendTrips from './pages/WeekendTrips'
+import Treks from './pages/Treks'
+import FamilyTours from './pages/FamilyTours'
+import HoneymoonTrips from './pages/HoneymoonTrips'
 import Home from './pages/Home'
 import Domestic from './pages/Domestic'
 import International from './pages/International'
@@ -60,6 +65,11 @@ function App() {
       <div className="pb-36 md:pb-0">
         <Routes>
           <Route path="/" element={<Home />} />
+          <Route path="/group-trips" element={<GroupTrips />} />
+          <Route path="/weekend-trips" element={<WeekendTrips />} />
+          <Route path="/treks" element={<Treks />} />
+          <Route path="/family-tours" element={<FamilyTours />} />
+          <Route path="/honeymoon-trips" element={<HoneymoonTrips />} />
           <Route path="/all-departures" element={<AllDepartures />} />
           <Route path="/upcoming-departures" element={<UpcomingDepartures />} />
           <Route path="/international" element={<International />} />
