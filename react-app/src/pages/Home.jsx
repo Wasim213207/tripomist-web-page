@@ -164,19 +164,19 @@ function Home() {
               <div className="w-32 h-14 rounded-full overflow-hidden border-2 border-transparent group-hover:border-primary transition-all duration-300 shadow-sm group-hover:shadow-md group-hover:-translate-y-1">
                 <img className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105" alt="Group Departures" src="https://images.unsplash.com/photo-1539635278303-d4002c07eae3?q=80&w=600&auto=format&fit=crop" />
               </div>
-              <span className="font-button text-button text-on-surface group-hover:text-primary text-center transition-colors">Group<br/>Departures</span>
+              <span className="font-button text-button text-on-surface group-hover:text-primary text-center transition-colors">Group<br/>Trip</span>
             </Link>
             <Link to="/weekend-trips" className="flex flex-col items-center gap-3 cursor-pointer group min-w-[100px] destination-circle no-underline">
               <div className="w-32 h-14 rounded-full overflow-hidden border-2 border-transparent group-hover:border-primary transition-all duration-300 shadow-sm group-hover:shadow-md group-hover:-translate-y-1">
                 <img className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105" alt="Weekend Departures" src="https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?q=80&w=600&auto=format&fit=crop" />
               </div>
-              <span className="font-button text-button text-on-surface group-hover:text-primary text-center max-w-[100px] leading-tight transition-colors">Weekend<br/>Departures</span>
+              <span className="font-button text-button text-on-surface group-hover:text-primary text-center max-w-[100px] leading-tight transition-colors">Weekend<br/>Trip</span>
             </Link>
             <Link to="/treks" className="flex flex-col items-center gap-3 cursor-pointer group min-w-[100px] destination-circle no-underline">
               <div className="w-32 h-14 rounded-full overflow-hidden border-2 border-transparent group-hover:border-primary transition-all duration-300 shadow-sm group-hover:shadow-md group-hover:-translate-y-1">
                 <img className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105" alt="Trekking Departure" src="https://images.unsplash.com/photo-1551632811-561732d1e306?q=80&w=600&auto=format&fit=crop" />
               </div>
-              <span className="font-button text-button text-on-surface group-hover:text-primary text-center transition-colors">Trekking<br/>Departure</span>
+              <span className="font-button text-button text-on-surface group-hover:text-primary text-center transition-colors">Trekking<br/>Trip</span>
             </Link>
             <Link to="/family-tours" className="flex flex-col items-center gap-3 cursor-pointer group min-w-[100px] destination-circle no-underline">
               <div className="w-32 h-14 rounded-full overflow-hidden border-2 border-transparent group-hover:border-primary transition-all duration-300 shadow-sm group-hover:shadow-md group-hover:-translate-y-1">
