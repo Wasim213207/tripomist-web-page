@@ -478,7 +478,7 @@ export default function ItineraryUdaipurKumbhalgarh() {
               <section className="bg-white rounded-3xl border border-gray-100 p-6 md:p-8 shadow-sm mb-10">
                 <h2 className="text-2xl font-bold text-gray-900 mb-6">Costing Details</h2>
                 <div className="space-y-4 text-gray-700">
-                  <div className="flex justify-between items-center p-4 bg-gray-50 rounded-xl border border-gray-100">
+                  <div className="flex justify-between items-center p-4 bg-[#eff6f9] rounded-xl border border-[#cde5ef]">
                     <span className="font-bold">Quad Sharing</span>
                     <span className="text-[#136b8a] font-bold text-lg">₹{(trip.numericPrice).toLocaleString()} <span className="text-sm text-gray-500 font-normal">+ 5% GST</span></span>
                   </div>
@@ -486,7 +486,7 @@ export default function ItineraryUdaipurKumbhalgarh() {
                     <span className="font-bold">Triple Sharing</span>
                     <span className="text-[#136b8a] font-bold text-lg">₹{(trip.numericPrice + 700).toLocaleString()} <span className="text-sm text-gray-500 font-normal">+ 5% GST</span></span>
                   </div>
-                  <div className="flex justify-between items-center p-4 bg-[#eff6f9] rounded-xl border border-[#cde5ef]">
+                  <div className="flex justify-between items-center p-4 bg-gray-50 rounded-xl border border-gray-100">
                     <span className="font-bold">Double Sharing</span>
                     <span className="text-[#136b8a] font-bold text-lg">₹{(trip.numericPrice + 1000).toLocaleString()} <span className="text-sm text-gray-500 font-normal">+ 5% GST</span></span>
                   </div>
