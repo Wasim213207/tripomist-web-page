@@ -57,9 +57,9 @@ export default function PackageCheckout() {
         ];
       } else {
         options = costings.map(c => ({
-          type: c.type || c.name || c.title || c.sharing_type || '', // Fallback to empty string if missing
+          type: c.type || c.name || c.title || c.sharing_type || c.sharing || '', // also read c.sharing
           pricePerPerson: parsePriceString(c.price),
-          label: c.type || c.name || c.title || c.sharing_type || ''
+          label: c.type || c.name || c.title || c.sharing_type || c.sharing || ''
         }));
       }
       
@@ -136,7 +136,30 @@ export default function PackageCheckout() {
       };
 
       console.log("Retry payment ID:", razorpayPaymentId);
-      console.log("Booking payload:", bookingPayload);
+      console.log("bookingPayload", bookingPayload);
+      // Field-by-field diagnostic log
+      console.log("  customer_name:", bookingPayload.customer_name, '|', typeof bookingPayload.customer_name);
+      console.log("  phone:", bookingPayload.phone, '|', typeof bookingPayload.phone);
+      console.log("  email:", bookingPayload.email, '|', typeof bookingPayload.email);
+      console.log("  travel_date:", bookingPayload.travel_date, '|', typeof bookingPayload.travel_date);
+      console.log("  travellers:", bookingPayload.travellers, '|', typeof bookingPayload.travellers);
+      console.log("  package_id:", bookingPayload.package_id, '|', typeof bookingPayload.package_id);
+      console.log("  package_title:", bookingPayload.package_title, '|', typeof bookingPayload.package_title);
+      console.log("  destination:", bookingPayload.destination, '|', typeof bookingPayload.destination);
+      console.log("  source:", bookingPayload.source, '|', typeof bookingPayload.source);
+      console.log("  special_request:", bookingPayload.special_request, '|', typeof bookingPayload.special_request);
+      console.log("  selected_sharing:", bookingPayload.selected_sharing, '|', typeof bookingPayload.selected_sharing);
+      console.log("  total_amount:", bookingPayload.total_amount, '|', typeof bookingPayload.total_amount);
+      console.log("  final_amount:", bookingPayload.final_amount, '|', typeof bookingPayload.final_amount);
+      console.log("  payment_status:", bookingPayload.payment_status, '|', typeof bookingPayload.payment_status);
+      console.log("  booking_status:", bookingPayload.booking_status, '|', typeof bookingPayload.booking_status);
+      console.log("  razorpay_payment_id:", bookingPayload.razorpay_payment_id, '|', typeof bookingPayload.razorpay_payment_id);
+      // Flag any undefined or NaN fields
+      Object.entries(bookingPayload).forEach(([k, v]) => {
+        if (v === undefined) console.error('  *** UNDEFINED field:', k);
+        if (typeof v === 'number' && isNaN(v)) console.error('  *** NaN field:', k);
+        if (typeof v === 'object' && v !== null) console.warn('  *** OBJECT (non-null) field:', k, v);
+      });
 
       const { error: insertError } = await supabase
         .from('bookings')
