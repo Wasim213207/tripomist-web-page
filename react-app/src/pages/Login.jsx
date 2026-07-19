@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useLocation } from 'react-router-dom'
 import { supabase } from '../supabaseClient';
 import { safeStorage } from '../utils/supabaseClient';
 
@@ -33,6 +33,8 @@ function Login() {
   const [successMsg, setSuccessMsg] = useState('')
   
   const navigate = useNavigate()
+  const location = useLocation()
+  const redirectTo = new URLSearchParams(location.search).get('redirect') || '/'
 
   // 1. Submit Registration Form
   const handleRegisterSubmit = (e) => {
@@ -133,7 +135,7 @@ function Login() {
       }
 
       setSuccessMsg("Sign In Successful! Redirecting...")
-      setTimeout(() => { navigate('/') }, 1000)
+      setTimeout(() => { navigate(redirectTo) }, 1000)
     } catch (err) {
       setLoading(false)
       setErrorMsg(err.message || "An error occurred during login.")

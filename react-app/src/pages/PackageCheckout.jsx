@@ -148,6 +148,7 @@ export default function PackageCheckout() {
       payment_status: 'paid',
       booking_status: 'confirmed',
       special_request: formData.specialRequest || null,
+      user_id: (await supabase.auth.getSession()).data?.session?.user?.id || null,
     };
 
     console.log("Retry payment ID:", razorpayPaymentId);
@@ -199,9 +200,19 @@ export default function PackageCheckout() {
     setStep('success'); // ← last line, nothing can overwrite this
   };
 
-  const handleProceedToPayment = () => {
+  const handleProceedToPayment = async () => {
     if (!selectedSharing) return alert('Please select a sharing option');
-    
+
+    // Check authentication before opening Razorpay
+    const { data: { session } } = await supabase.auth.getSession();
+    if (!session?.user) {
+      setError('Please login to continue your booking and access it later in My Trips.');
+      setTimeout(() => {
+        navigate('/login?redirect=' + encodeURIComponent(window.location.pathname));
+      }, 1500);
+      return;
+    }
+
     setLoading(true);
     setError(null);
 
@@ -222,7 +233,6 @@ export default function PackageCheckout() {
         color: '#136b8a'
       },
       handler: function (response) {
-        // Safe to call async function without awaiting in Razorpay handler
         saveBookingToSupabase(response.razorpay_payment_id);
       },
       modal: {
@@ -247,29 +257,92 @@ export default function PackageCheckout() {
   };
 
   if (step === 'success') {
+    const travelDateDisplay = formData.date
+      ? new Date(formData.date).toLocaleDateString('en-IN', { day: 'numeric', month: 'long', year: 'numeric' })
+      : '—';
     return (
-      <div className="flex flex-col min-h-screen bg-surface-container-lowest font-sans">
+      <div className="flex flex-col min-h-screen bg-gray-50 font-sans">
         <Navbar />
-        <main className="flex-1 w-full max-w-3xl mx-auto px-4 py-16 mt-20 flex flex-col items-center justify-center text-center">
-          <div className="w-24 h-24 bg-green-100 text-green-500 rounded-full flex items-center justify-center mb-6">
-            <span className="material-symbols-outlined text-6xl">check_circle</span>
+        <main className="flex-1 w-full max-w-3xl mx-auto px-4 py-12 mt-20">
+
+          {/* Animated check */}
+          <div className="flex flex-col items-center text-center mb-10">
+            <div className="relative w-28 h-28 mb-6">
+              <div className="absolute inset-0 rounded-full bg-emerald-100 animate-ping opacity-30"></div>
+              <div className="relative w-28 h-28 bg-gradient-to-br from-emerald-400 to-teal-600 rounded-full flex items-center justify-center shadow-lg">
+                <span className="material-symbols-outlined text-white text-6xl">check_circle</span>
+              </div>
+            </div>
+            <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-3">Booking Confirmed!</h1>
+            <p className="text-gray-500 text-lg max-w-md">
+              Your trip is officially booked. Get ready for an unforgettable experience with TripoMist.
+            </p>
           </div>
-          <h2 className="text-3xl font-bold text-gray-900 mb-4">Booking Confirmed!</h2>
-          <p className="text-gray-600 text-lg mb-4">Thank you, {formData.fullName}. Your payment was successful.</p>
-          
-          <div className="bg-white rounded-3xl p-8 shadow-sm border border-gray-100 w-full mb-8">
-            <p className="text-gray-800 font-bold text-xl mb-3">Payment Reference: {paymentId}</p>
-            <div className="w-full h-px bg-gray-100 my-4"></div>
-            <p className="font-semibold text-gray-900">{tripDetails.tripTitle}</p>
-            <p className="text-gray-600">{new Date(formData.date).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })} • {tripDetails.travellers} Traveller(s)</p>
-            <p className="text-[#136b8a] font-bold mt-2">{selectedSharing}</p>
+
+          {/* Confirmation card */}
+          <div className="bg-white rounded-3xl shadow-sm border border-gray-100 overflow-hidden mb-6">
+            {/* Card header */}
+            <div className="bg-gradient-to-r from-[#136b8a] to-teal-600 px-6 py-5 flex items-center gap-4">
+              <div className="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center">
+                <span className="material-symbols-outlined text-white text-2xl">luggage</span>
+              </div>
+              <div>
+                <p className="text-teal-100 text-xs font-semibold uppercase tracking-wide">Booking Confirmation</p>
+                <h2 className="text-white font-bold text-xl leading-tight">{tripDetails.tripTitle}</h2>
+              </div>
+            </div>
+
+            {/* Details grid */}
+            <div className="p-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                {[
+                  { icon: 'receipt_long', label: 'Payment Reference', value: paymentId, mono: true },
+                  { icon: 'location_on', label: 'Destination', value: tripDetails.destination || tripDetails.tripTitle },
+                  { icon: 'calendar_month', label: 'Travel Date', value: travelDateDisplay },
+                  { icon: 'group', label: 'Travellers', value: tripDetails.travellers + ' Traveller(s)' },
+                  { icon: 'hotel', label: 'Room Sharing', value: selectedSharing },
+                  { icon: 'currency_rupee', label: 'Amount Paid', value: `₹${finalPayable.toLocaleString('en-IN')}`, highlight: true },
+                  { icon: 'verified', label: 'Payment Status', value: 'Paid', badge: 'paid' },
+                  { icon: 'task_alt', label: 'Booking Status', value: 'Confirmed', badge: 'confirmed' },
+                ].map(({ icon, label, value, mono, highlight, badge }) => (
+                  <div key={label} className="flex items-start gap-3 p-3 bg-gray-50 rounded-xl">
+                    <div className="w-8 h-8 bg-[#136b8a]/10 rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5">
+                      <span className="material-symbols-outlined text-[#136b8a] text-[18px]">{icon}</span>
+                    </div>
+                    <div className="min-w-0">
+                      <p className="text-xs text-gray-400 font-semibold uppercase tracking-wide mb-0.5">{label}</p>
+                      {badge === 'paid' && <span className="inline-flex items-center gap-1 px-2 py-0.5 bg-emerald-100 text-emerald-700 text-xs font-bold rounded-full border border-emerald-200">✓ Paid</span>}
+                      {badge === 'confirmed' && <span className="inline-flex items-center gap-1 px-2 py-0.5 bg-teal-100 text-teal-700 text-xs font-bold rounded-full border border-teal-200">✓ Confirmed</span>}
+                      {!badge && <p className={`font-semibold ${highlight ? 'text-emerald-700 text-lg' : 'text-gray-900'} ${mono ? 'font-mono text-sm break-all' : ''}`}>{value}</p>}
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              <div className="bg-teal-50 border border-teal-100 rounded-xl px-4 py-3 text-sm text-teal-700 flex items-start gap-2">
+                <span className="material-symbols-outlined text-[18px] mt-0.5">notifications</span>
+                We'll send confirmation details to <strong>{formData.email}</strong> shortly.
+              </div>
+            </div>
           </div>
-          
-          <p className="text-gray-500 mb-8">We'll send confirmation details to your email & WhatsApp shortly.</p>
-          
-          <Link to="/" className="bg-[#136b8a] text-white px-8 py-4 rounded-xl font-bold text-lg hover:bg-[#0f556e] transition-colors shadow-md">
-            Return to Home
-          </Link>
+
+          {/* Action buttons */}
+          <div className="flex flex-col sm:flex-row gap-3">
+            <Link
+              to="/my-trips"
+              className="flex-1 bg-[#136b8a] hover:bg-[#0f556e] text-white font-bold py-4 rounded-xl shadow-md transition-all flex items-center justify-center gap-2"
+            >
+              <span className="material-symbols-outlined text-lg">luggage</span>
+              View My Trips
+            </Link>
+            <Link
+              to="/"
+              className="flex-1 bg-white hover:bg-gray-50 text-gray-700 border border-gray-200 font-bold py-4 rounded-xl transition-all flex items-center justify-center gap-2"
+            >
+              <span className="material-symbols-outlined text-lg">home</span>
+              Back to Home
+            </Link>
+          </div>
         </main>
         <Footer />
       </div>
