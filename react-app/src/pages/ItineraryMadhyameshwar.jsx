@@ -416,10 +416,12 @@ export default function ItineraryMadhyameshwar() {
         price={totalAmount}
         travellers={travellers}
         navigate={navigate}
+        packageId={trip.slug || trip.id || null}
+        destination={trip.destination || trip.title}
       />
 
       <Footer />
     </div>
   )
-}
 
+}  

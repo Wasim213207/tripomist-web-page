@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { supabase, safeStorage } from '../utils/supabaseClient'
+import { supabase } from '../supabaseClient';
+import { safeStorage } from '../utils/supabaseClient';
 
 // Mock Country Codes
 const countryCodes = [

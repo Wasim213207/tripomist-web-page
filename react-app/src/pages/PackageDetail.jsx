@@ -401,6 +401,8 @@ export default function PackageDetail() {
         price={totalAmount}
         travellers={travellers}
         navigate={navigate}
+        packageId={slug}
+        destination={trip.destination || trip.title}
       />
 
       <Footer />

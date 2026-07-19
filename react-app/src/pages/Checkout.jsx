@@ -112,6 +112,8 @@ export default function Checkout() {
         price={billTotal}
         travellers={totalTravellers}
         navigate={navigate}
+        packageId={cartItems.length === 1 ? cartItems[0].slug : null}
+        destination={cartItems.length === 1 ? cartItems[0].destination || cartItems[0].title : "Multiple Destinations"}
       />
       
       <Footer />
