@@ -132,6 +132,7 @@ function Login() {
       })
 
       if (error) {
+        console.error("Login failed:", error)
         setLoading(false)
         setErrorMsg("Invalid Email or Password.")
         return
@@ -173,8 +174,41 @@ function Login() {
       setSuccessMsg("Sign In Successful! Redirecting...")
       setTimeout(() => { navigate(redirectTo) }, 1000)
     } catch (err) {
+      console.error("Login exception:", err)
       setLoading(false)
       setErrorMsg(err.message || "An error occurred during login.")
+    }
+  }
+
+  // 4. Submit Forgot Password — Supabase Reset Password
+  const handleForgotPasswordSubmit = async (e) => {
+    e.preventDefault()
+    if (!email) {
+      setErrorMsg("Please enter your email address.")
+      return
+    }
+    setLoading(true)
+    setErrorMsg('')
+    setSuccessMsg('')
+
+    try {
+      const { error } = await supabase.auth.resetPasswordForEmail(email, {
+        redirectTo: `${window.location.origin}/reset-password`
+      })
+
+      if (error) {
+        console.error("Forgot Password Error:", error)
+        setLoading(false)
+        setErrorMsg(error.message || "Failed to send reset link.")
+        return
+      }
+
+      setLoading(false)
+      setSuccessMsg("Password reset link sent. Please check your email and spam folder.")
+    } catch (err) {
+      console.error("Forgot Password Exception:", err)
+      setLoading(false)
+      setErrorMsg(err.message || "An error occurred. Please try again.")
     }
   }
 
@@ -191,10 +225,16 @@ function Login() {
         <h2 className="mt-6 text-center text-3xl font-extrabold text-white tracking-tight drop-shadow-sm">
           {authMode === 'register' 
             ? (step === 1 ? 'Create an Account' : 'Verify OTP')
+            : authMode === 'forgot'
+            ? 'Reset Password'
             : 'Sign in to TripoMist'}
         </h2>
         <p className="mt-2 text-center text-sm text-teal-100 font-medium">
-          {authMode === 'register' ? 'Join us and start your adventure' : 'Welcome back, traveler!'}
+          {authMode === 'register' 
+            ? 'Join us and start your adventure' 
+            : authMode === 'forgot'
+            ? 'Enter your email to receive a recovery link'
+            : 'Welcome back, traveler!'}
         </p>
       </div>
 
@@ -359,7 +399,20 @@ function Login() {
               </div>
 
               <div>
-                <label className="block text-sm font-bold text-gray-700 mb-1">Password</label>
+                <div className="flex justify-between items-center mb-1">
+                  <label className="block text-sm font-bold text-gray-700">Password</label>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setAuthMode('forgot')
+                      setErrorMsg('')
+                      setSuccessMsg('')
+                    }}
+                    className="text-xs font-bold text-[#136b8a] hover:text-[#0f556e] cursor-pointer"
+                  >
+                    Forgot Password?
+                  </button>
+                </div>
                 <div className="relative">
                   <span className="absolute left-3 top-3 text-gray-400 material-symbols-outlined text-[20px]">lock</span>
                   <input
@@ -385,8 +438,52 @@ function Login() {
             </form>
           )}
 
+          {/* ----- FORGOT PASSWORD FLOW ----- */}
+          {authMode === 'forgot' && (
+            <form className="space-y-6" onSubmit={handleForgotPasswordSubmit}>
+              <div>
+                <label className="block text-sm font-bold text-gray-700 mb-1">Email Address</label>
+                <div className="relative">
+                  <span className="absolute left-3 top-3 text-gray-400 material-symbols-outlined text-[20px]">mail</span>
+                  <input
+                    type="email"
+                    required
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    className="appearance-none block w-full px-10 py-3 border border-gray-300 rounded-xl shadow-sm placeholder-gray-400 focus:outline-none focus:ring-[#136b8a] focus:border-[#136b8a] transition-colors font-medium text-gray-900"
+                    placeholder="you@example.com"
+                  />
+                </div>
+              </div>
+
+              <div className="pt-2">
+                <button
+                  type="submit"
+                  disabled={loading}
+                  className="w-full flex justify-center py-3.5 px-4 border border-transparent rounded-xl shadow-md text-sm font-bold text-white bg-[#136b8a] hover:bg-[#0f556e] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#136b8a] disabled:opacity-70 transition-all active:scale-[0.98] cursor-pointer"
+                >
+                  {loading ? 'Sending link...' : 'Send Reset Link'}
+                </button>
+              </div>
+
+              <div className="text-center">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setAuthMode('login')
+                    setErrorMsg('')
+                    setSuccessMsg('')
+                  }}
+                  className="text-sm font-bold text-gray-500 hover:text-gray-700 cursor-pointer"
+                >
+                  Back to Sign In
+                </button>
+              </div>
+            </form>
+          )}
+
           {/* Toggle Modes */}
-          {step !== 2 && (
+          {step !== 2 && authMode !== 'forgot' && (
             <div className="mt-6 text-center">
               <p className="text-sm text-gray-600 font-medium border-t border-gray-100 pt-6">
                 {authMode === 'register' ? "Already have an account? " : "Don't have an account? "}
