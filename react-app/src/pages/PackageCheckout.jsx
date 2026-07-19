@@ -106,14 +106,64 @@ export default function PackageCheckout() {
     setComputedPrice(option.pricePerPerson * (tripDetails.travellers || 1));
   };
 
+  const saveBookingToSupabase = async (razorpayPaymentId) => {
+    try {
+      setLoading(true);
+      setError(null);
+      
+      const parsedPackageId = parseInt(tripDetails.packageId);
+      const payload = {
+        customer_name: formData.fullName,
+        phone: formData.phone,
+        email: formData.email || null,
+        source: formData.source || null,
+        package_id: isNaN(parsedPackageId) ? null : parsedPackageId,
+        package_title: tripDetails.tripTitle,
+        destination: tripDetails.destination || null,
+        travel_date: formData.date.split('T')[0],
+        travellers: tripDetails.travellers,
+        total_amount: parsePriceString(tripDetails.price),
+        selected_sharing: selectedSharing,
+        final_amount: finalPayable,
+        razorpay_payment_id: razorpayPaymentId,
+        payment_status: 'paid',
+        booking_status: 'confirmed',
+        special_request: formData.specialRequest || null,
+      };
+
+      console.log("Supabase Insert Payload:", payload);
+
+      const { data, error: insertError } = await supabase
+        .from('bookings')
+        .insert([payload])
+        .select('booking_id')
+        .single();
+        
+      if (insertError) {
+        console.error("Booking insert failed:", insertError);
+        throw insertError;
+      }
+      
+      setBookingId(data.booking_id);
+      setPaymentId(razorpayPaymentId);
+      setStep('success');
+      
+      sessionStorage.removeItem('checkoutData');
+      localStorage.removeItem('cart');
+      window.dispatchEvent(new Event('cartUpdated'));
+    } catch (err) {
+      console.error('Booking save error:', err);
+      setError('Payment was successful but booking save failed. Error: ' + (err.message || err.details || 'Unknown error'));
+      setPaymentId(razorpayPaymentId);
+      setStep('failed');
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const handleProceedToPayment = () => {
     if (!selectedSharing) return alert('Please select a sharing option');
     
-    // Total includes GST 5%
-    const subTotal = computedPrice;
-    const gst = Math.round(subTotal * 0.05);
-    const finalPayable = subTotal + gst;
-
     setLoading(true);
     setError(null);
 
@@ -133,51 +183,9 @@ export default function PackageCheckout() {
       theme: {
         color: '#136b8a'
       },
-      handler: async function (response) {
-        try {
-          const { data, error: insertError } = await supabase
-            .from('bookings')
-            .insert([
-              {
-                customer_name: formData.fullName,
-                phone: formData.phone,
-                email: formData.email || null,
-                source: formData.source || null,
-                package_id: tripDetails.packageId || null,
-                package_title: tripDetails.tripTitle,
-                destination: tripDetails.destination || null,
-                travel_date: formData.date.split('T')[0],
-                travellers: tripDetails.travellers,
-                total_amount: tripDetails.price,
-                selected_sharing: selectedSharing,
-                final_amount: finalPayable,
-                razorpay_payment_id: response.razorpay_payment_id,
-                payment_status: 'paid',
-                booking_status: 'confirmed',
-                special_request: formData.specialRequest || null,
-              }
-            ])
-            .select('booking_id')
-            .single();
-            
-          if (insertError) throw insertError;
-          
-          setBookingId(data.booking_id);
-          setPaymentId(response.razorpay_payment_id);
-          setStep('success');
-          
-          // Clear checkoutData
-          sessionStorage.removeItem('checkoutData');
-          // Clear cart
-          localStorage.removeItem('cart');
-          window.dispatchEvent(new Event('cartUpdated'));
-        } catch (err) {
-          console.error('Booking save error:', err);
-          setError('Payment was successful but booking save failed. Please contact support with your payment ID: ' + response.razorpay_payment_id);
-          setStep('failed');
-        } finally {
-          setLoading(false);
-        }
+      handler: function (response) {
+        // Safe to call async function without awaiting in Razorpay handler
+        saveBookingToSupabase(response.razorpay_payment_id);
       },
       modal: {
         ondismiss: function () {
@@ -239,15 +247,27 @@ export default function PackageCheckout() {
           <div className="w-24 h-24 bg-red-100 text-red-500 rounded-full flex items-center justify-center mb-6">
             <span className="material-symbols-outlined text-6xl">error</span>
           </div>
-          <h2 className="text-3xl font-bold text-gray-900 mb-4">Payment Failed</h2>
-          <p className="text-gray-600 text-lg mb-8">{error || 'Your payment could not be processed. No booking has been created.'}</p>
+          <h2 className="text-3xl font-bold text-gray-900 mb-4">Booking Save Failed</h2>
+          <p className="text-gray-600 text-lg mb-8">{error || 'Your payment was successful, but we could not save the booking.'}</p>
           
-          <div className="flex gap-4 w-full max-w-md">
-            <button onClick={() => { setStep('checkout'); setError(null); }} className="flex-1 bg-[#136b8a] hover:bg-[#0f556e] text-white font-bold py-4 rounded-xl shadow-md transition-all">
-              Retry Payment
-            </button>
-            <Link to="/" className="flex-1 bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-4 rounded-xl transition-all">
-              Cancel
+          <div className="flex flex-col gap-4 w-full max-w-md">
+            {paymentId && (
+              <button 
+                onClick={() => saveBookingToSupabase(paymentId)} 
+                disabled={loading}
+                className="w-full bg-[#136b8a] hover:bg-[#0f556e] disabled:bg-gray-400 text-white font-bold py-4 rounded-xl shadow-md transition-all flex items-center justify-center gap-2"
+              >
+                {loading ? 'Retrying...' : 'Retry Saving Booking'}
+                {!loading && <span className="material-symbols-outlined text-lg">refresh</span>}
+              </button>
+            )}
+            {!paymentId && (
+              <button onClick={() => { setStep('checkout'); setError(null); }} className="w-full bg-[#136b8a] hover:bg-[#0f556e] text-white font-bold py-4 rounded-xl shadow-md transition-all">
+                Retry Payment
+              </button>
+            )}
+            <Link to="/" className="w-full bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-4 rounded-xl transition-all block">
+              Contact Support
             </Link>
           </div>
         </main>
