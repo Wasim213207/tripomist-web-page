@@ -8,6 +8,10 @@ const AdminBookings = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState('all');
   const [paymentFilter, setPaymentFilter] = useState('all');
+  // New month filter state
+  const [monthFilter, setMonthFilter] = useState('all'); // all | this | last | custom
+  const [customMonth, setCustomMonth] = useState(''); // format YYYY-MM
+
 
   // Pagination
   const [currentPage, setCurrentPage] = useState(1);
@@ -15,22 +19,42 @@ const AdminBookings = () => {
 
   useEffect(() => {
     fetchBookings();
-  }, []);
+  }, [monthFilter, customMonth]);
 
   const fetchBookings = async () => {
     setLoading(true);
     setError(null);
     try {
-      const { data, error } = await supabase
-        .from('bookings')
-        .select('*')
-        .order('created_at', { ascending: false });
+      // Build base query
+      let query = supabase.from('bookings').select('*').order('created_at', { ascending: false });
+
+      // Apply month filter if not "all"
+      if (monthFilter !== 'all') {
+        const now = new Date();
+        let startDate, endDate;
+        if (monthFilter === 'this') {
+          startDate = new Date(now.getFullYear(), now.getMonth(), 1);
+          endDate = new Date(now.getFullYear(), now.getMonth() + 1, 1);
+        } else if (monthFilter === 'last') {
+          startDate = new Date(now.getFullYear(), now.getMonth() - 1, 1);
+          endDate = new Date(now.getFullYear(), now.getMonth(), 1);
+        } else if (monthFilter === 'custom' && customMonth) {
+          const [year, month] = customMonth.split('-').map(Number);
+          startDate = new Date(year, month - 1, 1);
+          endDate = new Date(year, month, 1);
+        }
+        if (startDate && endDate) {
+          query = query.gte('created_at', startDate.toISOString()).lt('created_at', endDate.toISOString());
+        }
+      }
+
+      const { data, error } = await query;
 
       if (error) throw error;
       setBookings(data || []);
     } catch (err) {
-      console.error("Error fetching bookings:", err);
-      setError("Failed to load bookings. Make sure you are logged in as an admin and the bookings table exists.");
+      console.error('Error fetching bookings:', err);
+      setError('Failed to load bookings. Make sure you are logged in as an admin and the bookings table exists.');
     } finally {
       setLoading(false);
     }
@@ -169,19 +193,41 @@ const AdminBookings = () => {
             <option value="cancelled">Cancelled</option>
           </select>
         </div>
-        <div className="w-full md:w-64">
-          <select 
-            value={paymentFilter}
-            onChange={(e) => { setPaymentFilter(e.target.value); setCurrentPage(1); }}
-            className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#136b8a] transition-all cursor-pointer"
-          >
-            <option value="all">All Payments</option>
-            <option value="pending">Pending</option>
-            <option value="paid">Paid</option>
-            <option value="refunded">Refunded</option>
-            <option value="failed">Failed</option>
-          </select>
-        </div>
+          <div className="w-full md:w-64">
+            <select
+              value={monthFilter}
+              onChange={(e) => { setMonthFilter(e.target.value); setCurrentPage(1); setCustomMonth(''); }}
+              className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#136b8a] transition-all cursor-pointer"
+            >
+              <option value="all">All Bookings</option>
+              <option value="this">This Month</option>
+              <option value="last">Last Month</option>
+              <option value="custom">Custom Month</option>
+            </select>
+          </div>
+          {monthFilter === 'custom' && (
+            <div className="w-full md:w-64">
+              <input
+                type="month"
+                value={customMonth}
+                onChange={(e) => { setCustomMonth(e.target.value); setCurrentPage(1); }}
+                className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#136b8a] transition-all"
+              />
+            </div>
+          )}
+          <div className="w-full md:w-64">
+            <select
+              value={paymentFilter}
+              onChange={(e) => { setPaymentFilter(e.target.value); setCurrentPage(1); }}
+              className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#136b8a] transition-all cursor-pointer"
+            >
+              <option value="all">All Payments</option>
+              <option value="pending">Pending</option>
+              <option value="paid">Paid</option>
+              <option value="refunded">Refunded</option>
+              <option value="failed">Failed</option>
+            </select>
+          </div>
       </div>
 
       {/* Bookings List */}
