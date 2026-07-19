@@ -2,6 +2,8 @@
 
 This guide provides step-by-step instructions to set up **TypeScript**, **Tailwind CSS**, and **shadcn CLI** inside the Vite React application.
 
+<!-- Deployment Trigger: Fresh Vercel deployment with RPC checkout lead fix -->
+
 ---
 
 ## 1. Convert to TypeScript
