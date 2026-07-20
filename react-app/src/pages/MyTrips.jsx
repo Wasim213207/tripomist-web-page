@@ -227,7 +227,7 @@ export default function MyTrips() {
                 >
                   <div className="flex flex-col md:flex-row">
                     {/* Left: package image */}
-                    <div className="md:w-56 md:flex-shrink-0 relative min-h-[140px] md:min-h-0">
+                    <div className="md:w-48 md:flex-shrink-0 relative min-h-[120px] md:min-h-0">
                       {tripImg ? (
                         <>
                           <img
@@ -239,7 +239,7 @@ export default function MyTrips() {
                         </>
                       ) : (
                         <div className="absolute inset-0 bg-gradient-to-br from-[#136b8a] to-teal-600 flex items-center justify-center">
-                          <span className="material-symbols-outlined text-5xl text-white/80">luggage</span>
+                          <span className="material-symbols-outlined text-4xl text-white/80">luggage</span>
                         </div>
                       )}
                       
@@ -251,34 +251,34 @@ export default function MyTrips() {
                     </div>
 
                     {/* Content */}
-                    <div className="flex-1 p-5 md:p-6">
+                    <div className="flex-1 p-4 md:py-4 md:px-5">
                       {/* Top row */}
-                      <div className="flex flex-wrap items-start justify-between gap-3 mb-4">
+                      <div className="flex flex-wrap items-start justify-between gap-3 mb-2">
                         <div>
                           <h3 className="text-lg font-bold text-gray-900 leading-tight mb-0.5">
                             {booking.package_title || booking.destination || 'Trip'}
                           </h3>
                           {booking.destination && (
-                            <p className="text-sm text-gray-500 flex items-center gap-1">
-                              <span className="material-symbols-outlined text-[14px]">location_on</span>
+                            <p className="text-xs text-gray-500 flex items-center gap-1">
+                              <span className="material-symbols-outlined text-[13px]">location_on</span>
                               {booking.destination}
                             </p>
                           )}
                         </div>
-                        <div className="flex flex-wrap gap-2">
+                        <div className="flex flex-wrap gap-1.5">
                           <StatusBadge status={booking.booking_status} colorMap={statusColors} />
                           <StatusBadge status={booking.payment_status} colorMap={paymentColors} />
                         </div>
                       </div>
 
                       {/* Details grid */}
-                      <div className="grid grid-cols-2 md:grid-cols-3 gap-3 text-sm mb-4">
+                      <div className="grid grid-cols-2 md:grid-cols-3 gap-y-1.5 gap-x-4 text-xs md:text-sm mb-3">
                         <div className="flex flex-col">
-                          <span className="text-gray-400 text-xs font-semibold uppercase tracking-wide mb-0.5">Booking ID</span>
+                          <span className="text-gray-400 text-[10px] md:text-xs font-semibold uppercase tracking-wide mb-0.5">Booking ID</span>
                           <span className="font-bold text-[#136b8a]">{booking.booking_id || '—'}</span>
                         </div>
                         <div className="flex flex-col">
-                          <span className="text-gray-400 text-xs font-semibold uppercase tracking-wide mb-0.5">Travel Date</span>
+                          <span className="text-gray-400 text-[10px] md:text-xs font-semibold uppercase tracking-wide mb-0.5">Travel Date</span>
                           <span className="font-semibold text-gray-800">
                             {booking.travel_date ? (() => {
                               const parts = booking.travel_date.split('-');
@@ -289,23 +289,23 @@ export default function MyTrips() {
                           </span>
                         </div>
                         <div className="flex flex-col">
-                          <span className="text-gray-400 text-xs font-semibold uppercase tracking-wide mb-0.5">Duration</span>
+                          <span className="text-gray-400 text-[10px] md:text-xs font-semibold uppercase tracking-wide mb-0.5">Duration</span>
                           <span className="font-semibold text-gray-800">
                             {getPackageDuration(booking.destination, booking.package_title)}
                           </span>
                         </div>
                         <div className="flex flex-col">
-                          <span className="text-gray-400 text-xs font-semibold uppercase tracking-wide mb-0.5">Sharing</span>
+                          <span className="text-gray-400 text-[10px] md:text-xs font-semibold uppercase tracking-wide mb-0.5">Sharing</span>
                           <span className="font-semibold text-gray-800">{booking.selected_sharing || '—'}</span>
                         </div>
                         <div className="flex flex-col">
-                          <span className="text-gray-400 text-xs font-semibold uppercase tracking-wide mb-0.5">Amount Paid</span>
-                          <span className="font-bold text-emerald-700 text-base">
+                          <span className="text-gray-400 text-[10px] md:text-xs font-semibold uppercase tracking-wide mb-0.5">Amount Paid</span>
+                          <span className="font-bold text-emerald-700 text-sm md:text-base">
                             {booking.final_amount ? `₹${Number(booking.final_amount).toLocaleString('en-IN')}` : '—'}
                           </span>
                         </div>
                         <div className="flex flex-col">
-                          <span className="text-gray-400 text-xs font-semibold uppercase tracking-wide mb-0.5">Booked On</span>
+                          <span className="text-gray-400 text-[10px] md:text-xs font-semibold uppercase tracking-wide mb-0.5">Booked On</span>
                           <span className="font-semibold text-gray-800">
                             {booking.created_at ? new Date(booking.created_at).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' }) : '—'}
                           </span>
@@ -314,16 +314,16 @@ export default function MyTrips() {
 
                       {/* Payment reference */}
                       {booking.razorpay_payment_id && (
-                        <div className="flex items-center gap-1.5 text-xs text-gray-400 font-mono bg-gray-50 rounded-lg px-3 py-1.5 w-fit border border-gray-100">
-                          <span className="material-symbols-outlined text-[13px]">receipt_long</span>
+                        <div className="flex items-center gap-1.5 text-[10px] md:text-xs text-gray-400 font-mono bg-gray-50 rounded-lg px-2.5 py-1 w-fit border border-gray-100">
+                          <span className="material-symbols-outlined text-[12px]">receipt_long</span>
                           Payment Ref: {booking.razorpay_payment_id}
                         </div>
                       )}
                       {/* Action Buttons */}
-                      <div className="mt-5 pt-4 border-t border-gray-100 flex flex-wrap gap-3">
+                      <div className="mt-4 pt-3 border-t border-gray-100 flex flex-wrap gap-3">
                         <Link 
                           to={`/my-trip/${booking.id}`}
-                          className="bg-[#136b8a] text-white px-5 py-2 rounded-lg text-sm font-bold hover:bg-[#0f556e] transition-colors"
+                          className="bg-[#136b8a] text-white px-4 py-1.5 rounded-lg text-xs md:text-sm font-bold hover:bg-[#0f556e] transition-colors"
                         >
                           View Details
                         </Link>
