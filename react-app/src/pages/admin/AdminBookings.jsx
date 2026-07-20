@@ -4,7 +4,7 @@ import { generatePDFVoucher } from '../../utils/pdfGenerator';
 import { 
   X, Check, XCircle, Copy, Download, Search, 
   Calendar, CreditCard, ChevronLeft, ChevronRight, User, Package, Clock,
-  MoreVertical
+  MoreVertical, Phone, MessageCircle
 } from 'lucide-react';
 
 const AdminBookings = () => {
@@ -500,10 +500,16 @@ const AdminBookings = () => {
               <div className="bg-white border border-gray-200 rounded-lg p-3">
                 <h3 className="text-[10px] uppercase font-bold text-gray-400 mb-2 flex items-center gap-1"><User size={12}/> Customer</h3>
                 <div className="font-semibold text-gray-900">{selectedBooking.customer_name}</div>
+                
                 <div className="mt-2 text-xs flex justify-between items-center">
                   <span className="text-gray-600">{selectedBooking.phone}</span>
-                  <button onClick={() => handleQuickAction(selectedBooking, 'copyPhone')} className="text-gray-400 hover:text-[#136b8a]"><Copy size={14} /></button>
+                  <div className="flex gap-2">
+                    <a href={`tel:+${selectedBooking.phone ? (selectedBooking.phone.replace(/\D/g, '').startsWith('91') ? selectedBooking.phone.replace(/\D/g, '') : `91${selectedBooking.phone.replace(/\D/g, '')}`) : ''}`} className="text-gray-400 hover:text-blue-600"><Phone size={14} /></a>
+                    <a href={`https://wa.me/${selectedBooking.phone ? (selectedBooking.phone.replace(/\D/g, '').startsWith('91') ? selectedBooking.phone.replace(/\D/g, '') : `91${selectedBooking.phone.replace(/\D/g, '')}`) : ''}?text=${encodeURIComponent(`Hi ${selectedBooking.customer_name}, this is TripoMist. Regarding your booking for ${selectedBooking.package_title}...`)}`} target="_blank" rel="noreferrer" className="text-gray-400 hover:text-green-600"><MessageCircle size={14} /></a>
+                    <button onClick={() => handleQuickAction(selectedBooking, 'copyPhone')} className="text-gray-400 hover:text-[#136b8a]"><Copy size={14} /></button>
+                  </div>
                 </div>
+                
                 {selectedBooking.email && (
                   <div className="mt-2 text-xs flex justify-between items-center">
                     <span className="text-gray-600 truncate">{selectedBooking.email}</span>
