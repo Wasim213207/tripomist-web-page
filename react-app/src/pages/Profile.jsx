@@ -7,6 +7,7 @@ import Footer from '../components/Footer';
 export default function Profile() {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [bookings, setBookings] = useState([]);
   
   // Edit States
   const [editName, setEditName] = useState('');
@@ -40,6 +41,41 @@ export default function Profile() {
       setEditGender(currentUser.user_metadata?.gender || '');
       setEditCity(currentUser.user_metadata?.city || currentUser.user_metadata?.address || '');
       setEditPhoto(currentUser.user_metadata?.avatar_url || '');
+
+      // Fetch bookings for the user to display on the profile page
+      const { data: bookingsData } = await supabase
+        .from('bookings')
+        .select('*')
+        .eq('user_id', currentUser.id)
+        .order('travel_date', { ascending: true });
+
+      if (bookingsData) {
+        const packageIds = [...new Set(bookingsData.map(b => b.package_id).filter(Boolean))];
+        let packageMap = {};
+        if (packageIds.length > 0) {
+          const { data: packagesData } = await supabase
+            .from('Pakage')
+            .select('id, banner_image, image_url')
+            .in('id', packageIds);
+          if (packagesData) {
+            packagesData.forEach(p => {
+              packageMap[p.id] = p;
+            });
+          }
+        }
+
+        const bookingsWithImages = bookingsData.map(b => {
+          const pkg = b.package_id ? packageMap[b.package_id] : null;
+          return {
+            ...b,
+            banner_image: pkg?.banner_image || null,
+            image_url: pkg?.image_url || null
+          };
+        });
+
+        setBookings(bookingsWithImages);
+      }
+
       setLoading(false);
     }
     loadProfile();
@@ -360,8 +396,55 @@ export default function Profile() {
               </button>
             </div>
           </form>
-
         </div>
+
+        {/* Booked Trips Section */}
+        {bookings.length > 0 && (
+          <div className="mt-8 bg-white rounded-3xl p-6 md:p-8 shadow-xl border border-gray-100">
+            <h3 className="text-xl font-bold text-gray-900 mb-6 flex items-center gap-2">
+              <span className="material-symbols-outlined text-[#136b8a]">luggage</span>
+              My Booked Trips
+            </h3>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              {bookings.map((booking) => {
+                const tripImg = booking.banner_image || booking.image_url;
+                return (
+                  <div key={booking.id} className="border border-gray-100 rounded-2xl overflow-hidden shadow-sm flex flex-col hover:shadow-md transition-all">
+                    {/* Package Image */}
+                    <div className="h-32 w-full relative bg-gray-100">
+                      {tripImg ? (
+                        <img src={tripImg} alt={booking.package_title} className="w-full h-full object-cover" />
+                      ) : (
+                        <div className="w-full h-full bg-gradient-to-br from-[#136b8a] to-teal-600 flex items-center justify-center">
+                          <span className="material-symbols-outlined text-4xl text-white/80">luggage</span>
+                        </div>
+                      )}
+                      <div className="absolute top-3 right-3 bg-white/95 backdrop-blur-sm border border-gray-100 px-2 py-0.5 rounded-full text-[10px] font-bold text-gray-700 capitalize shadow-sm">
+                        {booking.booking_status}
+                      </div>
+                    </div>
+                    {/* Package Details */}
+                    <div className="p-4 flex-1 flex flex-col justify-between">
+                      <div>
+                        <h4 className="font-bold text-gray-950 text-sm leading-snug line-clamp-1 mb-1">{booking.package_title}</h4>
+                        <p className="text-xs text-gray-400 font-mono mb-2">Booking ID: {booking.booking_id || '—'}</p>
+                      </div>
+                      <div className="flex justify-between items-center text-xs border-t border-gray-50 pt-2.5 mt-2">
+                        <span className="text-gray-500 font-semibold flex items-center gap-1">
+                          <span className="material-symbols-outlined text-[14px]">calendar_today</span>
+                          {booking.travel_date ? new Date(booking.travel_date).toLocaleDateString('en-IN', { day: 'numeric', month: 'short' }) : '—'}
+                        </span>
+                        <Link to={`/my-trip/${booking.id}`} className="text-[#136b8a] font-bold hover:underline">
+                          View details
+                        </Link>
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        )}
       </main>
 
       <Footer />

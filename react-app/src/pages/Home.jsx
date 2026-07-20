@@ -331,9 +331,10 @@ function Home() {
         )}
 
         {/* Promo Autoplay Banner Slider (Autoplay every 4 seconds) */}
-        <section className="w-full py-8 px-4 md:px-12 lg:px-20 bg-surface-container-lowest overflow-hidden border-t border-gray-50">
+        <section className="w-full py-8 px-0 overflow-hidden border-t border-gray-50 bg-surface-container-lowest">
           <Swiper
-            spaceBetween={30}
+            spaceBetween={16}
+            slidesPerView={1.15}
             centeredSlides={true}
             autoplay={{
               delay: 4000,
@@ -341,70 +342,52 @@ function Home() {
             }}
             loop={true}
             modules={[Autoplay]}
-            className="w-full rounded-3xl overflow-hidden shadow-lg"
+            className="w-full overflow-visible"
           >
-            <SwiperSlide>
-              <div className="relative w-full h-[220px] md:h-[280px] bg-slate-900 flex items-center justify-between px-6 md:px-16 overflow-hidden">
+            <SwiperSlide className="overflow-visible">
+              <Link to="/itinerary/Spiti Valley" className="block relative w-full h-[220px] md:h-[280px] bg-slate-900 rounded-3xl overflow-hidden shadow-lg active:scale-[0.99] transition-transform">
                 <img 
                   src="https://images.unsplash.com/photo-1589308078059-be1415eab4c3?w=1200&q=80" 
                   alt="Chandrataal" 
                   className="absolute inset-0 w-full h-full object-cover opacity-60"
                 />
-                <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/45 to-transparent"></div>
-                <div className="relative z-10 text-white max-w-xl">
-                  <span className="text-[10px] md:text-xs font-bold uppercase tracking-widest bg-amber-500 text-black px-2.5 py-1 rounded-full mb-3 inline-block">Special Summer Offer</span>
+                <div className="absolute inset-0 bg-gradient-to-r from-black/85 via-black/45 to-transparent"></div>
+                <div className="relative z-10 text-white max-w-xl h-full flex flex-col justify-center px-6 md:px-16">
+                  <span className="text-[10px] md:text-xs font-bold uppercase tracking-widest bg-amber-500 text-black px-2.5 py-1 rounded-full mb-3 self-start">Special Summer Offer</span>
                   <h3 className="text-xl md:text-3xl font-extrabold tracking-tight leading-tight mb-2">BURNT OUT? <span className="text-yellow-400">ESCAPE TO CHANDRATAAL</span></h3>
                   <p className="text-xs md:text-sm text-gray-300 font-semibold uppercase tracking-wider">THIS SUMMER • Trips starting at <span className="text-emerald-400 font-extrabold text-sm md:text-lg">Rs 17,999</span></p>
                 </div>
-                <div className="relative z-10 hidden sm:block">
-                  <Link to="/itinerary/Spiti Valley" className="bg-[#136b8a] hover:bg-[#0f556e] text-white font-bold px-6 py-3 rounded-xl transition-all shadow-md inline-flex items-center gap-2">
-                    Book Now
-                    <span className="material-symbols-outlined text-[18px]">arrow_forward</span>
-                  </Link>
-                </div>
-              </div>
+              </Link>
             </SwiperSlide>
-            <SwiperSlide>
-              <div className="relative w-full h-[220px] md:h-[280px] bg-slate-900 flex items-center justify-between px-6 md:px-16 overflow-hidden">
+            <SwiperSlide className="overflow-visible">
+              <Link to="/itinerary/Spiti Valley" className="block relative w-full h-[220px] md:h-[280px] bg-slate-900 rounded-3xl overflow-hidden shadow-lg active:scale-[0.99] transition-transform">
                 <img 
                   src="https://images.unsplash.com/photo-1549257850-25e24bcf0e13?w=1200&q=80" 
                   alt="Spiti Valley" 
                   className="absolute inset-0 w-full h-full object-cover opacity-60"
                 />
-                <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/45 to-transparent"></div>
-                <div className="relative z-10 text-white max-w-xl">
-                  <span className="text-[10px] md:text-xs font-bold uppercase tracking-widest bg-[#136b8a] text-white px-2.5 py-1 rounded-full mb-3 inline-block">Best Seller</span>
+                <div className="absolute inset-0 bg-gradient-to-r from-black/85 via-black/45 to-transparent"></div>
+                <div className="relative z-10 text-white max-w-xl h-full flex flex-col justify-center px-6 md:px-16">
+                  <span className="text-[10px] md:text-xs font-bold uppercase tracking-widest bg-[#136b8a] text-white px-2.5 py-1 rounded-full mb-3 self-start">Best Seller</span>
                   <h3 className="text-xl md:text-3xl font-extrabold tracking-tight leading-tight mb-2">EXPLORE THE MIDDLE LAND: <span className="text-cyan-400">SPITI VALLEY</span></h3>
                   <p className="text-xs md:text-sm text-gray-300 font-semibold uppercase tracking-wider">WINTER EXPEDITION • starting at <span className="text-emerald-400 font-extrabold text-sm md:text-lg">Rs 16,999</span></p>
                 </div>
-                <div className="relative z-10 hidden sm:block">
-                  <Link to="/itinerary/Spiti Valley" className="bg-[#136b8a] hover:bg-[#0f556e] text-white font-bold px-6 py-3 rounded-xl transition-all shadow-md inline-flex items-center gap-2">
-                    Book Now
-                    <span className="material-symbols-outlined text-[18px]">arrow_forward</span>
-                  </Link>
-                </div>
-              </div>
+              </Link>
             </SwiperSlide>
-            <SwiperSlide>
-              <div className="relative w-full h-[220px] md:h-[280px] bg-slate-900 flex items-center justify-between px-6 md:px-16 overflow-hidden">
+            <SwiperSlide className="overflow-visible">
+              <Link to="/itinerary/Ladakh" className="block relative w-full h-[220px] md:h-[280px] bg-slate-900 rounded-3xl overflow-hidden shadow-lg active:scale-[0.99] transition-transform">
                 <img 
                   src="https://images.unsplash.com/photo-1581793746485-04698e79a4e8?w=1200&q=80" 
                   alt="Ladakh" 
                   className="absolute inset-0 w-full h-full object-cover opacity-60"
                 />
-                <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/45 to-transparent"></div>
-                <div className="relative z-10 text-white max-w-xl">
-                  <span className="text-[10px] md:text-xs font-bold uppercase tracking-widest bg-emerald-500 text-black px-2.5 py-1 rounded-full mb-3 inline-block">Adventure Guide</span>
+                <div className="absolute inset-0 bg-gradient-to-r from-black/85 via-black/45 to-transparent"></div>
+                <div className="relative z-10 text-white max-w-xl h-full flex flex-col justify-center px-6 md:px-16">
+                  <span className="text-[10px] md:text-xs font-bold uppercase tracking-widest bg-emerald-500 text-black px-2.5 py-1 rounded-full mb-3 self-start">Adventure Guide</span>
                   <h3 className="text-xl md:text-3xl font-extrabold tracking-tight leading-tight mb-2">LADAKH: <span className="text-emerald-300">LAND OF HIGH PASSES</span></h3>
                   <p className="text-xs md:text-sm text-gray-300 font-semibold uppercase tracking-wider">ROAD TRIP OF A LIFETIME • starting at <span className="text-emerald-400 font-extrabold text-sm md:text-lg">Rs 21,999</span></p>
                 </div>
-                <div className="relative z-10 hidden sm:block">
-                  <Link to="/itinerary/Ladakh" className="bg-[#136b8a] hover:bg-[#0f556e] text-white font-bold px-6 py-3 rounded-xl transition-all shadow-md inline-flex items-center gap-2">
-                    Book Now
-                    <span className="material-symbols-outlined text-[18px]">arrow_forward</span>
-                  </Link>
-                </div>
-              </div>
+              </Link>
             </SwiperSlide>
           </Swiper>
         </section>

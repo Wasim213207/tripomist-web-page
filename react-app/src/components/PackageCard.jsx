@@ -59,10 +59,7 @@ const PackageCard = ({
           </div>
         </div>
 
-        {/* Wishlist Button - must be clickable so pointer-events-auto */}
-        <div className="absolute top-4 right-4 z-20">
-          <WishlistButton packageSlug={link?.replace('/itinerary/', '')} className="!static" />
-        </div>
+
       </div>
 
       {/* Bottom Content Section */}
