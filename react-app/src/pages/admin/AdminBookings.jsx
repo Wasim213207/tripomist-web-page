@@ -1,22 +1,25 @@
 import React, { useState, useEffect } from 'react';
 import { supabase } from '../../supabaseClient';
 import { generatePDFVoucher } from '../../utils/pdfGenerator';
+import { 
+  X, Check, XCircle, Copy, Download, Search, 
+  Calendar, CreditCard, ChevronLeft, ChevronRight, User, Package, Clock
+} from 'lucide-react';
 
 const AdminBookings = () => {
   const [bookings, setBookings] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState('all');
   const [paymentFilter, setPaymentFilter] = useState('all');
-  // New month filter state
   const [monthFilter, setMonthFilter] = useState('all'); // all | this | last | custom
   const [customMonth, setCustomMonth] = useState(''); // format YYYY-MM
-
-
-  const downloadVoucher = (booking) => {
-    generatePDFVoucher(booking, 'download');
-  };
+  const [packageFilter, setPackageFilter] = useState('all');
+  
+  // Drawer state
+  const [selectedBooking, setSelectedBooking] = useState(null);
 
   // Pagination
   const [currentPage, setCurrentPage] = useState(1);
@@ -30,10 +33,8 @@ const AdminBookings = () => {
     setLoading(true);
     setError(null);
     try {
-      // Build base query
       let query = supabase.from('bookings').select('*').order('created_at', { ascending: false });
 
-      // Apply month filter if not "all"
       if (monthFilter !== 'all') {
         const now = new Date();
         let startDate, endDate;
@@ -54,12 +55,11 @@ const AdminBookings = () => {
       }
 
       const { data, error } = await query;
-
       if (error) throw error;
       setBookings(data || []);
     } catch (err) {
       console.error('Error fetching bookings:', err);
-      setError('Failed to load bookings. Make sure you are logged in as an admin and the bookings table exists.');
+      setError('Failed to load bookings.');
     } finally {
       setLoading(false);
     }
@@ -71,50 +71,101 @@ const AdminBookings = () => {
         .from('bookings')
         .update({ [field]: newValue })
         .eq('id', id);
-
       if (error) throw error;
 
-      // Optimistic update
       setBookings(bookings.map(b => 
         b.id === id ? { ...b, [field]: newValue } : b
       ));
+      
+      if (selectedBooking?.id === id) {
+        setSelectedBooking(prev => ({ ...prev, [field]: newValue }));
+      }
     } catch (err) {
       console.error(`Error updating ${field}:`, err);
       alert(`Failed to update ${field}.`);
     }
   };
 
-  const handleDelete = async (id, bookingId) => {
-    if (!window.confirm(`Are you sure you want to delete booking ${bookingId}?`)) return;
-
-    try {
-      const { error } = await supabase
-        .from('bookings')
-        .delete()
-        .eq('id', id);
-
-      if (error) throw error;
-
-      setBookings(bookings.filter(b => b.id !== id));
-    } catch (err) {
-      console.error("Error deleting booking:", err);
-      alert("Failed to delete booking.");
+  const handleQuickAction = async (booking, actionType) => {
+    switch (actionType) {
+      case 'confirm':
+        await handleStatusUpdate(booking.id, 'booking_status', 'confirmed');
+        break;
+      case 'cancel':
+        if (window.confirm('Are you sure you want to cancel this booking?')) {
+          await handleStatusUpdate(booking.id, 'booking_status', 'cancelled');
+        }
+        break;
+      case 'markPaid':
+        await handleStatusUpdate(booking.id, 'payment_status', 'paid');
+        break;
+      case 'copyPhone':
+        navigator.clipboard.writeText(booking.phone);
+        alert('Phone number copied!');
+        break;
+      case 'copyEmail':
+        navigator.clipboard.writeText(booking.email || '');
+        alert('Email copied!');
+        break;
+      default:
+        break;
     }
   };
 
+  const exportToCSV = () => {
+    if (filteredBookings.length === 0) return;
+    const headers = ['Booking ID', 'Booking Date', 'Customer', 'Phone', 'Email', 'Package', 'Travel Date', 'Travellers', 'Amount', 'Payment Status', 'Booking Status', 'Razorpay ID'];
+    const rows = filteredBookings.map(b => [
+      b.booking_id,
+      new Date(b.created_at).toLocaleDateString(),
+      b.customer_name,
+      b.phone,
+      b.email || '',
+      b.package_title,
+      b.travel_date ? new Date(b.travel_date).toLocaleDateString() : '',
+      b.travellers || 1,
+      b.final_amount || b.total_amount || 0,
+      b.payment_status,
+      b.booking_status,
+      b.razorpay_payment_id || ''
+    ]);
+
+    const csvContent = [
+      headers.join(','),
+      ...rows.map(e => e.map(field => `"${String(field).replace(/"/g, '""')}"`).join(','))
+    ].join('\n');
+
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+    link.setAttribute('download', `bookings_export_${new Date().toISOString().split('T')[0]}.csv`);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
+  const downloadVoucher = (booking) => {
+    generatePDFVoucher(booking, 'download');
+  };
+
+  // Derive unique packages for filter
+  const uniquePackages = Array.from(new Set(bookings.map(b => b.package_title))).filter(Boolean);
+
   // Filtering
   const filteredBookings = bookings.filter(b => {
+    const term = searchTerm.toLowerCase();
     const matchesSearch = 
-      (b.booking_id?.toLowerCase() || '').includes(searchTerm.toLowerCase()) ||
-      (b.customer_name?.toLowerCase() || '').includes(searchTerm.toLowerCase()) ||
-      (b.phone || '').includes(searchTerm) ||
-      (b.package_title?.toLowerCase() || '').includes(searchTerm.toLowerCase()) ||
-      (b.destination?.toLowerCase() || '').includes(searchTerm.toLowerCase());
+      (b.booking_id?.toLowerCase() || '').includes(term) ||
+      (b.customer_name?.toLowerCase() || '').includes(term) ||
+      (b.phone || '').includes(term) ||
+      (b.package_title?.toLowerCase() || '').includes(term) ||
+      (b.destination?.toLowerCase() || '').includes(term);
       
     const matchesStatus = statusFilter === 'all' || b.booking_status === statusFilter;
     const matchesPayment = paymentFilter === 'all' || b.payment_status === paymentFilter;
+    const matchesPackage = packageFilter === 'all' || b.package_title === packageFilter;
     
-    return matchesSearch && matchesStatus && matchesPayment;
+    return matchesSearch && matchesStatus && matchesPayment && matchesPackage;
   });
 
   // Pagination Logic
@@ -144,112 +195,100 @@ const AdminBookings = () => {
   };
 
   return (
-    <div className="space-y-6 animate-fade-in pb-12">
+    <div className="space-y-6 animate-fade-in pb-12 relative">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
+      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
         <div>
           <h1 className="text-2xl font-bold text-gray-900">Bookings</h1>
-          <p className="text-gray-500 mt-1">Manage customer booking enquiries and payments.</p>
+          <p className="text-gray-500 mt-1">Manage operations, confirm trips, and track payments.</p>
         </div>
-        <button 
-          onClick={fetchBookings}
-          className="flex items-center gap-2 bg-white border border-gray-200 text-gray-700 px-4 py-2 rounded-xl hover:bg-gray-50 transition-colors shadow-sm font-medium"
-        >
-          <span className="material-symbols-outlined text-[20px]">refresh</span>
-          Refresh
-        </button>
+        <div className="flex gap-2">
+          <button 
+            onClick={exportToCSV}
+            className="flex items-center gap-2 bg-[#136b8a] text-white px-4 py-2 rounded-xl hover:bg-[#0f556e] transition-colors shadow-sm font-medium"
+          >
+            <Download size={18} />
+            Export CSV
+          </button>
+          <button 
+            onClick={fetchBookings}
+            className="flex items-center gap-2 bg-white border border-gray-200 text-gray-700 px-4 py-2 rounded-xl hover:bg-gray-50 transition-colors shadow-sm font-medium"
+          >
+            Refresh
+          </button>
+        </div>
       </div>
 
       {error && (
         <div className="bg-red-50 border border-red-200 text-red-700 p-4 rounded-xl flex items-start gap-3">
-          <span className="material-symbols-outlined">error</span>
           <div className="flex-1">
-            <h3 className="font-bold">Error loading bookings</h3>
+            <h3 className="font-bold">Error</h3>
             <p className="text-sm">{error}</p>
           </div>
           <button onClick={() => setError(null)} className="text-red-400 hover:text-red-700">
-            <span className="material-symbols-outlined">close</span>
+            <X size={20} />
           </button>
         </div>
       )}
 
-      {/* Filters */}
-      <div className="bg-white p-4 rounded-2xl shadow-sm border border-gray-100 flex flex-col md:flex-row gap-4">
-        <div className="flex-1 relative">
-          <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">search</span>
+      {/* Filters Grid */}
+      <div className="bg-white p-4 rounded-2xl shadow-sm border border-gray-100 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
+        <div className="relative lg:col-span-2">
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
           <input 
             type="text" 
             placeholder="Search by ID, name, phone, or package..." 
             value={searchTerm}
             onChange={(e) => { setSearchTerm(e.target.value); setCurrentPage(1); }}
-            className="w-full pl-10 pr-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#136b8a] transition-all"
+            className="w-full pl-10 pr-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#136b8a] transition-all text-sm"
           />
         </div>
-        <div className="w-full md:w-64">
-          <select 
-            value={statusFilter}
-            onChange={(e) => { setStatusFilter(e.target.value); setCurrentPage(1); }}
-            className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#136b8a] transition-all cursor-pointer"
-          >
-            <option value="all">All Statuses</option>
-            <option value="new">New</option>
-            <option value="confirmed">Confirmed</option>
-            <option value="completed">Completed</option>
-            <option value="cancelled">Cancelled</option>
-          </select>
-        </div>
-          <div className="w-full md:w-64">
-            <select
-              value={monthFilter}
-              onChange={(e) => { setMonthFilter(e.target.value); setCurrentPage(1); setCustomMonth(''); }}
-              className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#136b8a] transition-all cursor-pointer"
-            >
-              <option value="all">All Bookings</option>
-              <option value="this">This Month</option>
-              <option value="last">Last Month</option>
-              <option value="custom">Custom Month</option>
-            </select>
-          </div>
-          {monthFilter === 'custom' && (
-            <div className="w-full md:w-64">
-              <input
-                type="month"
-                value={customMonth}
-                onChange={(e) => { setCustomMonth(e.target.value); setCurrentPage(1); }}
-                className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#136b8a] transition-all"
-              />
-            </div>
-          )}
-          <div className="w-full md:w-64">
-            <select
-              value={paymentFilter}
-              onChange={(e) => { setPaymentFilter(e.target.value); setCurrentPage(1); }}
-              className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#136b8a] transition-all cursor-pointer"
-            >
-              <option value="all">All Payments</option>
-              <option value="pending">Pending</option>
-              <option value="paid">Paid</option>
-              <option value="refunded">Refunded</option>
-              <option value="failed">Failed</option>
-            </select>
-          </div>
+        
+        <select 
+          value={packageFilter}
+          onChange={(e) => { setPackageFilter(e.target.value); setCurrentPage(1); }}
+          className="w-full px-3 py-2.5 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#136b8a] transition-all cursor-pointer text-sm"
+        >
+          <option value="all">All Packages</option>
+          {uniquePackages.map((pkg, idx) => (
+            <option key={idx} value={pkg}>{pkg}</option>
+          ))}
+        </select>
+
+        <select 
+          value={statusFilter}
+          onChange={(e) => { setStatusFilter(e.target.value); setCurrentPage(1); }}
+          className="w-full px-3 py-2.5 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#136b8a] transition-all cursor-pointer text-sm"
+        >
+          <option value="all">All Statuses</option>
+          <option value="new">New</option>
+          <option value="confirmed">Confirmed</option>
+          <option value="completed">Completed</option>
+          <option value="cancelled">Cancelled</option>
+        </select>
+        
+        <select
+          value={paymentFilter}
+          onChange={(e) => { setPaymentFilter(e.target.value); setCurrentPage(1); }}
+          className="w-full px-3 py-2.5 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#136b8a] transition-all cursor-pointer text-sm"
+        >
+          <option value="all">All Payments</option>
+          <option value="pending">Pending</option>
+          <option value="paid">Paid</option>
+          <option value="refunded">Refunded</option>
+          <option value="failed">Failed</option>
+        </select>
       </div>
 
       {/* Bookings List */}
       <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
         {loading ? (
-          <div className="flex flex-col items-center justify-center py-20 text-gray-500">
-            <svg className="animate-spin h-10 w-10 text-[#136b8a] mb-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-              <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-              <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-            </svg>
-            <p className="font-medium">Loading bookings...</p>
+          <div className="flex flex-col items-center justify-center py-20 text-[#136b8a]">
+             <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#136b8a] mb-4"></div>
+             <p className="font-medium text-gray-500">Loading bookings...</p>
           </div>
         ) : filteredBookings.length === 0 ? (
           <div className="text-center py-20">
-            <div className="w-20 h-20 bg-gray-50 rounded-full flex items-center justify-center mx-auto mb-4">
-              <span className="material-symbols-outlined text-4xl text-gray-400">event_busy</span>
-            </div>
             <h3 className="text-lg font-bold text-gray-900 mb-1">No bookings found</h3>
             <p className="text-gray-500">We couldn't find any bookings matching your criteria.</p>
           </div>
@@ -258,75 +297,46 @@ const AdminBookings = () => {
             <table className="w-full text-left border-collapse min-w-[1000px]">
               <thead>
                 <tr className="bg-gray-50 border-b border-gray-100">
-                  <th className="py-2.5 px-6 font-semibold text-gray-600 text-sm">Booking ID & Date</th>
-                  <th className="py-2.5 px-6 font-semibold text-gray-600 text-sm">Customer</th>
-                  <th className="py-2.5 px-6 font-semibold text-gray-600 text-sm">Trip Details</th>
-                  <th className="py-2.5 px-6 font-semibold text-gray-600 text-sm">Booking Status</th>
-                  <th className="py-2.5 px-6 font-semibold text-gray-600 text-sm">Payment Status</th>
-                  <th className="py-2.5 px-6 font-semibold text-gray-600 text-sm text-right">Actions</th>
+                  <th className="py-3 px-6 font-semibold text-gray-600 text-xs uppercase tracking-wider">Booking ID & Date</th>
+                  <th className="py-3 px-6 font-semibold text-gray-600 text-xs uppercase tracking-wider">Customer</th>
+                  <th className="py-3 px-6 font-semibold text-gray-600 text-xs uppercase tracking-wider">Trip Details</th>
+                  <th className="py-3 px-6 font-semibold text-gray-600 text-xs uppercase tracking-wider">Booking Status</th>
+                  <th className="py-3 px-6 font-semibold text-gray-600 text-xs uppercase tracking-wider">Payment Status</th>
+                  <th className="py-3 px-6 font-semibold text-gray-600 text-xs uppercase tracking-wider text-right">Action</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-100">
                 {currentBookings.map((booking) => (
-                  <tr key={booking.id} className="hover:bg-gray-50/50 transition-colors group">
+                  <tr key={booking.id} className="hover:bg-gray-50/70 transition-colors">
                     
-                    <td className="py-2 px-6">
+                    <td className="py-3 px-6">
                       <div className="font-bold text-[#136b8a]">{booking.booking_id}</div>
                       <div className="text-xs text-gray-500 mt-0.5">
                         {new Date(booking.created_at).toLocaleDateString('en-IN', {
-                          day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit'
+                          day: 'numeric', month: 'short', year: 'numeric'
                         })}
                       </div>
-                      {booking.source && (
-                        <div className="text-[10px] uppercase font-bold text-gray-400 mt-1">Via {booking.source}</div>
-                      )}
                     </td>
  
-                    <td className="py-2 px-6">
+                    <td className="py-3 px-6">
                       <div className="font-semibold text-gray-900">{booking.customer_name}</div>
-                      <div className="text-sm text-gray-600 mt-0.5 flex items-center gap-1">
-                        <span className="material-symbols-outlined text-[14px]">call</span>
-                        {booking.phone}
-                      </div>
-                      {booking.email && (
-                        <div className="text-sm text-gray-500 mt-0.5 flex items-center gap-1">
-                          <span className="material-symbols-outlined text-[14px]">mail</span>
-                          {booking.email}
-                        </div>
-                      )}
+                      <div className="text-xs text-gray-600 mt-0.5">{booking.phone}</div>
                     </td>
  
-                    <td className="py-2 px-6">
-                      <div className="font-semibold text-gray-900">{booking.package_title}</div>
-                      <div className="text-sm text-gray-600 mt-0.5 flex gap-3">
-                        <span className="flex items-center gap-1"><span className="material-symbols-outlined text-[14px]">calendar_month</span> {new Date(booking.travel_date).toLocaleDateString()}</span>
-                        <span className="flex items-center gap-1"><span className="material-symbols-outlined text-[14px]">group</span> {booking.travellers}</span>
+                    <td className="py-3 px-6">
+                      <div className="font-semibold text-gray-900 text-sm truncate max-w-[200px]" title={booking.package_title}>{booking.package_title}</div>
+                      <div className="text-xs text-gray-600 mt-0.5 flex items-center gap-2">
+                        <span>{new Date(booking.travel_date).toLocaleDateString()}</span>
+                        <span className="w-1 h-1 bg-gray-300 rounded-full"></span>
+                        <span>{booking.travellers} Pax</span>
                       </div>
-                      <div className="font-bold text-[#136b8a] mt-1">
-                        {booking.final_amount ? `₹${booking.final_amount?.toLocaleString()}` : `₹${booking.total_amount?.toLocaleString()}`}
-                      </div>
-                      {booking.selected_sharing && (
-                        <div className="text-xs font-semibold text-purple-700 bg-purple-50 px-2 py-0.5 rounded mt-0.5 inline-block">
-                          {booking.selected_sharing}
-                        </div>
-                      )}
-                      {booking.razorpay_payment_id && (
-                        <div className="text-[10px] text-gray-400 mt-0.5 font-mono truncate max-w-[180px]" title={booking.razorpay_payment_id}>
-                          RZP: {booking.razorpay_payment_id}
-                        </div>
-                      )}
-                      {booking.special_request && (
-                        <div className="text-xs text-orange-600 bg-orange-50 px-2 py-0.5 rounded mt-1 inline-block max-w-full truncate" title={booking.special_request}>
-                          Note: {booking.special_request}
-                        </div>
-                      )}
                     </td>
  
-                    <td className="py-2 px-6">
+                    <td className="py-3 px-6">
                       <select
                         value={booking.booking_status}
                         onChange={(e) => handleStatusUpdate(booking.id, 'booking_status', e.target.value)}
-                        className={`text-sm font-semibold px-3 py-1 rounded border appearance-none cursor-pointer outline-none ${getStatusColor(booking.booking_status)}`}
+                        className={`text-xs font-semibold px-2.5 py-1 rounded-full border appearance-none cursor-pointer outline-none ${getStatusColor(booking.booking_status)}`}
                       >
                         <option value="new">New</option>
                         <option value="confirmed">Confirmed</option>
@@ -335,11 +345,11 @@ const AdminBookings = () => {
                       </select>
                     </td>
  
-                    <td className="py-2 px-6">
+                    <td className="py-3 px-6">
                       <select
                         value={booking.payment_status}
                         onChange={(e) => handleStatusUpdate(booking.id, 'payment_status', e.target.value)}
-                        className={`text-sm font-semibold px-3 py-1 rounded border appearance-none cursor-pointer outline-none ${getPaymentStatusColor(booking.payment_status)}`}
+                        className={`text-xs font-semibold px-2.5 py-1 rounded-full border appearance-none cursor-pointer outline-none ${getPaymentStatusColor(booking.payment_status)}`}
                       >
                         <option value="pending">Pending</option>
                         <option value="paid">Paid</option>
@@ -348,28 +358,13 @@ const AdminBookings = () => {
                       </select>
                     </td>
  
-                    <td className="py-2 px-6 text-right flex items-center justify-end gap-2">
+                    <td className="py-3 px-6 text-right">
                        <button 
-                         onClick={() => alert(`Resending voucher email for Booking ${booking.booking_id} to ${booking.email || 'customer'}`)}
-                         className="p-1.5 text-gray-400 hover:text-orange-600 hover:bg-orange-50 rounded-lg transition-colors"
-                         title="Email Voucher Again"
+                         onClick={() => setSelectedBooking(booking)}
+                         className="text-[#136b8a] hover:bg-slate-100 px-3 py-1.5 rounded-lg text-sm font-semibold transition-colors border border-transparent hover:border-slate-200"
                        >
-                         <span className="material-symbols-outlined text-[20px]">mail</span>
+                         View Details
                        </button>
-                       <button 
-                         onClick={() => downloadVoucher(booking)}
-                         className="p-1.5 text-gray-400 hover:text-[#136b8a] hover:bg-slate-100 rounded-lg transition-colors"
-                         title="Download Voucher"
-                       >
-                         <span className="material-symbols-outlined text-[20px]">download</span>
-                       </button>
-                      <button 
-                        onClick={() => handleDelete(booking.id, booking.booking_id)}
-                        className="p-1.5 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors"
-                        title="Delete Booking"
-                      >
-                        <span className="material-symbols-outlined text-[20px]">delete</span>
-                      </button>
                     </td>
 
                   </tr>
@@ -391,7 +386,7 @@ const AdminBookings = () => {
                 disabled={currentPage === 1}
                 className="p-1 rounded-lg border border-gray-200 bg-white text-gray-500 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                <span className="material-symbols-outlined text-[20px]">chevron_left</span>
+                <ChevronLeft size={18} />
               </button>
               {Array.from({ length: totalPages }, (_, i) => i + 1).map(page => (
                 <button
@@ -407,12 +402,167 @@ const AdminBookings = () => {
                 disabled={currentPage === totalPages}
                 className="p-1 rounded-lg border border-gray-200 bg-white text-gray-500 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                <span className="material-symbols-outlined text-[20px]">chevron_right</span>
+                <ChevronRight size={18} />
               </button>
             </div>
           </div>
         )}
       </div>
+
+      {/* Booking Details Drawer (Slide over) */}
+      {selectedBooking && (
+        <>
+          <div 
+            className="fixed inset-0 bg-black/40 z-40 transition-opacity" 
+            onClick={() => setSelectedBooking(null)} 
+          />
+          <div className="fixed inset-y-0 right-0 w-full max-w-md bg-white shadow-2xl z-50 overflow-y-auto transform transition-transform duration-300 ease-in-out border-l border-gray-200">
+            <div className="p-6">
+              <div className="flex justify-between items-center mb-6">
+                <div>
+                  <h2 className="text-xl font-bold text-gray-900">Booking Details</h2>
+                  <p className="text-[#136b8a] font-mono text-sm font-bold mt-1">{selectedBooking.booking_id}</p>
+                </div>
+                <button onClick={() => setSelectedBooking(null)} className="p-2 bg-gray-100 hover:bg-gray-200 rounded-full transition-colors text-gray-600">
+                  <X size={20} />
+                </button>
+              </div>
+
+              <div className="space-y-6">
+                
+                {/* Timeline status */}
+                <div className="bg-gray-50 p-4 rounded-xl border border-gray-100">
+                  <div className="flex justify-between text-sm mb-3">
+                    <span className="text-gray-500 font-medium">Status</span>
+                    <span className={`px-2 py-0.5 rounded-full font-bold text-[10px] uppercase tracking-wider ${getStatusColor(selectedBooking.booking_status)}`}>
+                      {selectedBooking.booking_status}
+                    </span>
+                  </div>
+                  <div className="flex justify-between text-sm">
+                    <span className="text-gray-500 font-medium">Payment</span>
+                    <span className={`px-2 py-0.5 rounded-full font-bold text-[10px] uppercase tracking-wider ${getPaymentStatusColor(selectedBooking.payment_status)}`}>
+                      {selectedBooking.payment_status}
+                    </span>
+                  </div>
+                </div>
+
+                {/* Quick Actions */}
+                <div className="flex flex-wrap gap-2">
+                  <button onClick={() => handleQuickAction(selectedBooking, 'confirm')} className="flex-1 bg-green-50 text-green-700 hover:bg-green-100 px-3 py-2 rounded-xl text-sm font-semibold flex items-center justify-center gap-1.5 transition-colors border border-green-200">
+                    <Check size={16} /> Confirm
+                  </button>
+                  <button onClick={() => handleQuickAction(selectedBooking, 'cancel')} className="flex-1 bg-red-50 text-red-700 hover:bg-red-100 px-3 py-2 rounded-xl text-sm font-semibold flex items-center justify-center gap-1.5 transition-colors border border-red-200">
+                    <XCircle size={16} /> Cancel
+                  </button>
+                  <button onClick={() => handleQuickAction(selectedBooking, 'markPaid')} className="flex-1 bg-[#136b8a]/10 text-[#136b8a] hover:bg-[#136b8a]/20 px-3 py-2 rounded-xl text-sm font-semibold flex items-center justify-center gap-1.5 transition-colors border border-[#136b8a]/20">
+                    <CreditCard size={16} /> Mark Paid
+                  </button>
+                </div>
+
+                {/* Customer Details */}
+                <div>
+                  <h3 className="text-xs uppercase font-bold text-gray-400 tracking-wider mb-3 flex items-center gap-1"><User size={14} /> Customer</h3>
+                  <div className="bg-white border border-gray-200 rounded-xl p-4 space-y-3">
+                    <div>
+                      <div className="text-xs text-gray-500">Name</div>
+                      <div className="font-semibold text-gray-900">{selectedBooking.customer_name}</div>
+                    </div>
+                    <div className="flex justify-between items-center">
+                      <div>
+                        <div className="text-xs text-gray-500">Phone</div>
+                        <div className="font-semibold text-gray-900">{selectedBooking.phone}</div>
+                      </div>
+                      <button onClick={() => handleQuickAction(selectedBooking, 'copyPhone')} className="text-gray-400 hover:text-[#136b8a]"><Copy size={16} /></button>
+                    </div>
+                    {selectedBooking.email && (
+                      <div className="flex justify-between items-center">
+                        <div>
+                          <div className="text-xs text-gray-500">Email</div>
+                          <div className="font-semibold text-gray-900">{selectedBooking.email}</div>
+                        </div>
+                        <button onClick={() => handleQuickAction(selectedBooking, 'copyEmail')} className="text-gray-400 hover:text-[#136b8a]"><Copy size={16} /></button>
+                      </div>
+                    )}
+                  </div>
+                </div>
+
+                {/* Trip Details */}
+                <div>
+                  <h3 className="text-xs uppercase font-bold text-gray-400 tracking-wider mb-3 flex items-center gap-1"><Package size={14} /> Package Details</h3>
+                  <div className="bg-white border border-gray-200 rounded-xl p-4 space-y-3">
+                    <div>
+                      <div className="text-xs text-gray-500">Package</div>
+                      <div className="font-semibold text-[#136b8a]">{selectedBooking.package_title}</div>
+                    </div>
+                    <div className="grid grid-cols-2 gap-3">
+                      <div>
+                        <div className="text-xs text-gray-500">Travel Date</div>
+                        <div className="font-semibold text-gray-900">{selectedBooking.travel_date ? new Date(selectedBooking.travel_date).toLocaleDateString() : 'N/A'}</div>
+                      </div>
+                      <div>
+                        <div className="text-xs text-gray-500">Travellers</div>
+                        <div className="font-semibold text-gray-900">{selectedBooking.travellers} Person(s)</div>
+                      </div>
+                      <div>
+                        <div className="text-xs text-gray-500">Sharing</div>
+                        <div className="font-semibold text-gray-900 capitalize">{selectedBooking.selected_sharing || 'N/A'}</div>
+                      </div>
+                    </div>
+                    {selectedBooking.special_request && (
+                      <div>
+                         <div className="text-xs text-gray-500">Special Request</div>
+                         <div className="text-sm bg-orange-50 text-orange-800 p-2 rounded border border-orange-100 mt-1">{selectedBooking.special_request}</div>
+                      </div>
+                    )}
+                  </div>
+                </div>
+
+                {/* Billing Details */}
+                <div>
+                  <h3 className="text-xs uppercase font-bold text-gray-400 tracking-wider mb-3 flex items-center gap-1"><CreditCard size={14} /> Payment & Billing</h3>
+                  <div className="bg-white border border-gray-200 rounded-xl p-4 space-y-3">
+                    <div className="flex justify-between items-center bg-gray-50 p-3 rounded-lg border border-gray-100">
+                      <div className="text-sm font-semibold text-gray-700">Total Amount</div>
+                      <div className="text-lg font-black text-[#136b8a]">₹{Number(selectedBooking.final_amount || selectedBooking.total_amount || 0).toLocaleString()}</div>
+                    </div>
+                    {selectedBooking.razorpay_payment_id && (
+                       <div>
+                         <div className="text-xs text-gray-500">Razorpay ID</div>
+                         <div className="font-mono text-sm text-gray-800 break-all bg-gray-50 p-1.5 rounded border border-gray-100 mt-1">{selectedBooking.razorpay_payment_id}</div>
+                       </div>
+                    )}
+                  </div>
+                </div>
+
+                {/* Timeline */}
+                <div>
+                  <h3 className="text-xs uppercase font-bold text-gray-400 tracking-wider mb-3 flex items-center gap-1"><Clock size={14} /> Timeline</h3>
+                  <div className="bg-white border border-gray-200 rounded-xl p-4">
+                    <div className="text-sm flex items-start gap-3">
+                      <div className="w-2 h-2 rounded-full bg-[#136b8a] mt-1.5"></div>
+                      <div>
+                        <div className="font-medium text-gray-900">Booking Created</div>
+                        <div className="text-xs text-gray-500">{new Date(selectedBooking.created_at).toLocaleString('en-IN')}</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Actions Footer */}
+                <div className="pt-4 pb-12 flex gap-3">
+                  <button 
+                    onClick={() => downloadVoucher(selectedBooking)}
+                    className="flex-1 bg-white border border-gray-200 hover:bg-gray-50 text-gray-800 px-4 py-2.5 rounded-xl font-bold flex items-center justify-center gap-2 transition-colors"
+                  >
+                    <Download size={18} /> Download Voucher
+                  </button>
+                </div>
+
+              </div>
+            </div>
+          </div>
+        </>
+      )}
 
     </div>
   );
