@@ -17,7 +17,7 @@ const accountNavItems = [
   { icon: Briefcase,    label: 'My Trips',      path: '/my-trips' },
   { icon: Receipt,      label: 'Bookings',      path: '/my-trips' },
   { icon: User,         label: 'Profile',       path: '/profile' },
-  { icon: HelpCircle,   label: 'Support',       path: '/support' },
+  { icon: ShoppingCart, label: 'Cart',          path: '/cart' },
 ]
 
 interface BottomDockProps {

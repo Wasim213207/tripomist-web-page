@@ -280,7 +280,12 @@ export default function MyTrips() {
                         <div className="flex flex-col">
                           <span className="text-gray-400 text-xs font-semibold uppercase tracking-wide mb-0.5">Travel Date</span>
                           <span className="font-semibold text-gray-800">
-                            {booking.travel_date ? new Date(booking.travel_date).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' }) : '—'}
+                            {booking.travel_date ? (() => {
+                              const parts = booking.travel_date.split('-');
+                              if (parts.length !== 3) return booking.travel_date;
+                              const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+                              return `${parseInt(parts[2], 10)} ${monthNames[parseInt(parts[1], 10) - 1]} ${parts[0]}`;
+                            })() : '—'}
                           </span>
                         </div>
                         <div className="flex flex-col">

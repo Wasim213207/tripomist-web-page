@@ -279,7 +279,15 @@ export default function PackageCheckout() {
 
   if (step === 'success') {
     const travelDateDisplay = formData.date
-      ? new Date(formData.date).toLocaleDateString('en-IN', { day: 'numeric', month: 'long', year: 'numeric' })
+      ? (() => {
+          const parts = formData.date.split('T')[0].split('-');
+          if (parts.length !== 3) return formData.date;
+          const monthNames = [
+            "January", "February", "March", "April", "May", "June",
+            "July", "August", "September", "October", "November", "December"
+          ];
+          return `${parseInt(parts[2], 10)} ${monthNames[parseInt(parts[1], 10) - 1]} ${parts[0]}`;
+        })()
       : '—';
     return (
       <div className="flex flex-col min-h-screen bg-gray-50 font-sans">
@@ -505,9 +513,8 @@ export default function PackageCheckout() {
                     type="date" 
                     value={formData.date ? formData.date.split('T')[0] : ''} 
                     onChange={(e) => {
-                      const newDate = new Date(e.target.value);
-                      if (!isNaN(newDate.getTime())) {
-                        setFormData({...formData, date: newDate.toISOString()});
+                      if (e.target.value) {
+                        setFormData({...formData, date: e.target.value});
                       }
                     }}
                     className="w-full border border-gray-200 rounded-xl px-4 py-3 focus:ring-2 focus:ring-[#136b8a] outline-none text-gray-700 bg-gray-50 focus:bg-white transition-colors"

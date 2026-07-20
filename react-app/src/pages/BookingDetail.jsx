@@ -225,7 +225,15 @@ export default function BookingDetail() {
                 <div>
                   <p className="text-xs text-gray-400 font-bold uppercase tracking-wider">Departure Date</p>
                   <p className="font-semibold text-gray-800 mt-1">
-                    {booking.travel_date ? new Date(booking.travel_date).toLocaleDateString('en-IN', { day: 'numeric', month: 'long', year: 'numeric' }) : '—'}
+                    {booking.travel_date ? (() => {
+                      const parts = booking.travel_date.split('-');
+                      if (parts.length !== 3) return booking.travel_date;
+                      const monthNames = [
+                        "January", "February", "March", "April", "May", "June",
+                        "July", "August", "September", "October", "November", "December"
+                      ];
+                      return `${parseInt(parts[2], 10)} ${monthNames[parseInt(parts[1], 10) - 1]} ${parts[0]}`;
+                    })() : '—'}
                   </p>
                 </div>
                 <div>

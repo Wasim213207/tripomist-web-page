@@ -65,7 +65,7 @@ function Cart() {
             className="text-primary font-bold hover:underline flex items-center gap-1"
           >
             <span className="material-symbols-outlined">{viewHistory ? 'shopping_cart' : 'history'}</span>
-            {viewHistory ? 'View Cart' : 'Your Past Purchases'}
+            {viewHistory ? 'View Cart' : ''}
           </button>
         </div>
 

@@ -131,7 +131,8 @@ export default function Profile() {
 
   if (!user) return null;
 
-  const joinedDate = new Date(user.created_at).toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+  const dateObj = new Date(user.created_at);
+  const joinedDate = `${dateObj.getDate()} ${dateObj.toLocaleDateString('en-US', { month: 'long' })} ${dateObj.getFullYear()}`;
   const initial = editName ? editName.charAt(0).toUpperCase() : 'U';
 
   return (
@@ -166,7 +167,7 @@ export default function Profile() {
             </div>
             <div>
               <h2 className="text-lg font-bold text-gray-900 leading-tight">{editName || 'Traveler'}</h2>
-              <p className="text-gray-400 text-xs font-semibold uppercase tracking-wider mt-0.5">Member since {joinedDate}</p>
+              <p className="text-gray-400 text-xs font-semibold uppercase tracking-wider mt-0.5">Member since • {joinedDate}</p>
             </div>
           </div>
           <div className="bg-blue-50/50 border border-blue-100 rounded-2xl px-5 py-2.5 flex items-center gap-3">

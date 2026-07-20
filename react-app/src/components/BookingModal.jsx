@@ -37,7 +37,7 @@ const BookingModal = ({ isOpen, onClose, tripTitle, price, travellers, destinati
   };
 
   // Save or create checkout lead via secure RPC (no direct table access needed)
-  const saveCheckoutLead = async () => {
+  const saveCheckoutLead = async (formattedDate) => {
     const parsedPackageId = parseInt(packageId);
 
     // Check for existing lead in this session — try to update it first
@@ -70,7 +70,7 @@ const BookingModal = ({ isOpen, onClose, tripTitle, price, travellers, destinati
       p_package_id: isNaN(parsedPackageId) ? null : parsedPackageId,
       p_package_title: tripTitle || null,
       p_destination: destination || tripTitle || null,
-      p_travel_date: formData.date ? formData.date.toISOString().split('T')[0] : null,
+      p_travel_date: formattedDate,
       p_travellers: travellers || 1,
       p_estimated_amount: price || 0,
       p_source: formData.source || null,
@@ -108,8 +108,13 @@ const BookingModal = ({ isOpen, onClose, tripTitle, price, travellers, destinati
     setSaving(true);
 
     try {
+      const year = formData.date.getFullYear();
+      const month = String(formData.date.getMonth() + 1).padStart(2, '0');
+      const day = String(formData.date.getDate()).padStart(2, '0');
+      const yyyymmdd = `${year}-${month}-${day}`;
+
       // Save checkout lead to Supabase
-      const leadRef = await saveCheckoutLead();
+      const leadRef = await saveCheckoutLead(yyyymmdd);
       
       // Store lead reference in sessionStorage (id + token for later RPC updates)
       sessionStorage.setItem('tripomist_checkout_lead', JSON.stringify(leadRef));
@@ -118,7 +123,7 @@ const BookingModal = ({ isOpen, onClose, tripTitle, price, travellers, destinati
       const checkoutData = {
         formData: {
           ...formData,
-          date: formData.date.toISOString(),
+          date: yyyymmdd,
         },
         tripDetails: {
           tripTitle,

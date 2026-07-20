@@ -114,7 +114,8 @@ export default function MyAccount() {
   const firstName = name.split(' ')[0];
   const email = user.email;
   const initial = name.charAt(0).toUpperCase();
-  const joinedDate = new Date(user.created_at).toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+  const dateObj = new Date(user.created_at);
+  const joinedDate = `${dateObj.getDate()} ${dateObj.toLocaleDateString('en-US', { month: 'long' })} ${dateObj.getFullYear()}`;
   const photoUrl = user.user_metadata?.avatar_url;
 
   // Calculate statistics
@@ -187,7 +188,7 @@ export default function MyAccount() {
               <div className="flex flex-wrap justify-center md:justify-start gap-3 mt-3">
                 <span className="text-white/80 text-xs bg-black/20 px-3 py-1.5 rounded-full inline-flex items-center gap-1.5 font-medium">
                   <span className="material-symbols-outlined text-[14px]">calendar_today</span>
-                  Member since {joinedDate}
+                  Member since • {joinedDate}
                 </span>
                 <span className="text-white text-xs bg-[#0f556e] px-3 py-1.5 rounded-full inline-flex items-center gap-1.5 font-bold shadow-sm">
                   <span className="material-symbols-outlined text-[14px]">explore</span>
@@ -311,7 +312,12 @@ export default function MyAccount() {
                       <div>
                         <span className="text-gray-400 text-xs font-bold uppercase tracking-wider block">Departure Date</span>
                         <span className="font-bold text-gray-800 mt-1 block">
-                          {new Date(nextUpcomingTrip.travel_date).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })}
+                          {(() => {
+                            const parts = nextUpcomingTrip.travel_date.split('-');
+                            if (parts.length !== 3) return nextUpcomingTrip.travel_date;
+                            const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+                            return `${parseInt(parts[2], 10)} ${monthNames[parseInt(parts[1], 10) - 1]} ${parts[0]}`;
+                          })()}
                         </span>
                       </div>
                       <div>
