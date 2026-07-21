@@ -2,6 +2,16 @@
 -- Supabase Schema Updates for Tripomist
 -- ==========================================
 
+-- Admin check function
+CREATE OR REPLACE FUNCTION public.is_admin()
+RETURNS BOOLEAN AS $$
+BEGIN
+  -- We assume authenticated users accessing the admin portal have admin rights.
+  -- You can add a dedicated admins table check here if needed.
+  RETURN (auth.role() = 'authenticated');
+END;
+$$ LANGUAGE plpgsql SECURITY DEFINER;
+
 -- 1. PROMOTIONAL BANNERS
 CREATE TABLE IF NOT EXISTS public.promotional_banners (
     id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
@@ -18,16 +28,9 @@ CREATE TABLE IF NOT EXISTS public.promotional_banners (
     is_active BOOLEAN DEFAULT true,
     start_date TIMESTAMPTZ,
     end_date TIMESTAMPTZ,
-    created_at TIMESTAMPTZ DEFAULT now()
+    created_at TIMESTAMPTZ DEFAULT now(),
+    updated_at TIMESTAMPTZ DEFAULT now()
 );
-
--- Example Insert for Banners
-INSERT INTO public.promotional_banners (label, title, highlighted_text, subtitle, price_text, desktop_image, button_text, button_link)
-VALUES 
-('Special Summer Offer', 'BURNT OUT?', 'ESCAPE TO CHANDRATAAL', 'THIS SUMMER', 'Trips starting at Rs 17,999', 'https://images.unsplash.com/photo-1589308078059-be1415eab4c3?w=1200&q=80', 'Explore Now', '/itinerary/spiti-valley'),
-('Best Seller', 'EXPLORE THE MIDDLE LAND:', 'SPITI VALLEY', 'WINTER EXPEDITION', 'starting at Rs 16,999', 'https://images.unsplash.com/photo-1549257850-25e24bcf0e13?w=1200&q=80', 'Explore Now', '/itinerary/spiti-valley'),
-('Adventure Guide', 'LADAKH:', 'LAND OF HIGH PASSES', 'ROAD TRIP OF A LIFETIME', 'starting at Rs 21,999', 'https://images.unsplash.com/photo-1581793746485-04698e79a4e8?w=1200&q=80', 'Explore Now', '/itinerary/ladakh');
-
 
 -- 2. DESTINATIONS
 CREATE TABLE IF NOT EXISTS public.destinations (
@@ -38,10 +41,10 @@ CREATE TABLE IF NOT EXISTS public.destinations (
     region TEXT,
     display_order INTEGER DEFAULT 0,
     is_active BOOLEAN DEFAULT true,
-    created_at TIMESTAMPTZ DEFAULT now()
+    created_at TIMESTAMPTZ DEFAULT now(),
+    updated_at TIMESTAMPTZ DEFAULT now()
 );
 
--- Example Insert for Destinations
 INSERT INTO public.destinations (name, slug, image_url, display_order)
 VALUES 
 ('Ladakh', 'ladakh', 'https://images.unsplash.com/photo-1581793746485-04698e79a4e8?q=80&w=600&auto=format&fit=crop', 1),
@@ -52,8 +55,8 @@ VALUES
 ('Rajasthan', 'rajasthan', 'https://images.unsplash.com/photo-1477587458883-47145ed94245?w=600&q=80', 6),
 ('Kerala', 'kerala', 'https://images.unsplash.com/photo-1602216056096-3b40cc0c9944?w=600&q=80', 7),
 ('Meghalaya', 'meghalaya', 'https://images.unsplash.com/photo-1518105779142-d975f22f1b0a?w=1600&q=80', 8),
-('Goa', 'goa', 'https://images.unsplash.com/photo-1512343879784-a960bf40e7f2?w=600&q=80', 9);
-
+('Goa', 'goa', 'https://images.unsplash.com/photo-1512343879784-a960bf40e7f2?w=600&q=80', 9)
+ON CONFLICT (slug) DO NOTHING;
 
 -- 3. INTEREST CATEGORIES
 CREATE TABLE IF NOT EXISTS public.interest_categories (
@@ -64,17 +67,18 @@ CREATE TABLE IF NOT EXISTS public.interest_categories (
     route TEXT NOT NULL,
     display_order INTEGER DEFAULT 0,
     is_active BOOLEAN DEFAULT true,
-    created_at TIMESTAMPTZ DEFAULT now()
+    created_at TIMESTAMPTZ DEFAULT now(),
+    updated_at TIMESTAMPTZ DEFAULT now()
 );
 
--- Example Insert for Interests
 INSERT INTO public.interest_categories (name, slug, route, image_url, display_order)
 VALUES 
 ('Only Trek', 'trek', '/trips/trek', 'https://images.unsplash.com/photo-1539635278303-d4002c07eae3?q=80&w=600&auto=format&fit=crop', 1),
 ('Group Departures', 'group-departures', '/trips/group-departures', 'https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?q=80&w=600&auto=format&fit=crop', 2),
 ('Weekend Departures', 'weekend-departures', '/trips/weekend-departures', 'https://images.unsplash.com/photo-1551632811-561732d1e306?q=80&w=600&auto=format&fit=crop', 3),
 ('Family Destination', 'family-trips', '/trips/family-trips', 'https://images.unsplash.com/photo-1511895426328-dc8714191300?q=80&w=600&auto=format&fit=crop', 4),
-('Honeymoon Trips', 'honeymoon-trips', '/trips/honeymoon-trips', 'https://images.unsplash.com/photo-1510414842594-a61c69b5ae57?w=600&q=80', 5);
+('Honeymoon Trips', 'honeymoon-trips', '/trips/honeymoon-trips', 'https://images.unsplash.com/photo-1510414842594-a61c69b5ae57?w=600&q=80', 5)
+ON CONFLICT (slug) DO NOTHING;
 
 
 -- 4. HOMEPAGE SECTIONS
@@ -89,10 +93,10 @@ CREATE TABLE IF NOT EXISTS public.homepage_sections (
     is_active BOOLEAN DEFAULT true,
     display_order INTEGER DEFAULT 0,
     max_cards INTEGER DEFAULT 10,
-    created_at TIMESTAMPTZ DEFAULT now()
+    created_at TIMESTAMPTZ DEFAULT now(),
+    updated_at TIMESTAMPTZ DEFAULT now()
 );
 
--- Example Insert for Sections
 INSERT INTO public.homepage_sections (section_key, title, subtitle, icon, view_all_text, view_all_route, display_order)
 VALUES
 ('destinations', 'Destinations', '', '', '', '', 1),
@@ -100,26 +104,63 @@ VALUES
 ('recommended', 'Recommended Packages', 'Hot Selling', 'local_fire_department', 'View All Packages', '/trips/recommended', 3),
 ('best_seller', 'Best Seller', 'Top Choice', 'award_star', 'View All Sellers', '/trips/best-seller', 4),
 ('upcoming', 'Upcoming Trips', 'Plan Ahead', 'event_upcoming', 'View All', '/trips/upcoming-trips', 5),
-('international', 'Soon you can plan abroad trips with us', 'International', 'flight_takeoff', 'View All Destinations', '/trips/international', 6);
+('international', 'Soon you can plan abroad trips with us', 'International', 'flight_takeoff', 'View All Destinations', '/trips/international', 6)
+ON CONFLICT (section_key) DO NOTHING;
 
--- Allow public read access to all these tables
-ALTER TABLE public.promotional_banners ENABLE ROW LEVEL SECURITY;
-CREATE POLICY "Allow public read-only access." ON public.promotional_banners FOR SELECT USING (true);
-CREATE POLICY "Allow authenticated full access." ON public.promotional_banners FOR ALL USING (auth.role() = 'authenticated');
 
-ALTER TABLE public.destinations ENABLE ROW LEVEL SECURITY;
-CREATE POLICY "Allow public read-only access." ON public.destinations FOR SELECT USING (true);
-CREATE POLICY "Allow authenticated full access." ON public.destinations FOR ALL USING (auth.role() = 'authenticated');
+-- 5. WEBSITE PAGES
+CREATE TABLE IF NOT EXISTS public.website_pages (
+    id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+    page_key TEXT NOT NULL UNIQUE,
+    title TEXT,
+    subtitle TEXT,
+    content JSONB DEFAULT '{}'::jsonb,
+    hero_image_url TEXT,
+    seo_title TEXT,
+    seo_description TEXT,
+    is_active BOOLEAN DEFAULT true,
+    created_at TIMESTAMPTZ DEFAULT now(),
+    updated_at TIMESTAMPTZ DEFAULT now()
+);
 
-ALTER TABLE public.interest_categories ENABLE ROW LEVEL SECURITY;
-CREATE POLICY "Allow public read-only access." ON public.interest_categories FOR SELECT USING (true);
-CREATE POLICY "Allow authenticated full access." ON public.interest_categories FOR ALL USING (auth.role() = 'authenticated');
+INSERT INTO public.website_pages (page_key, title, subtitle, content)
+VALUES
+('about-us', 'About Us', 'Learn more about TripoMist', '{"paragraphs": ["Welcome to TripoMist, your ultimate travel partner.", "We provide the best curated packages."]}'::jsonb),
+('cancellation-refund', 'Cancellation & Refund', 'Our refund policies', '{"paragraphs": ["Refunds are subject to terms and conditions.", "Please contact support for detailed information."]}'::jsonb),
+('terms-conditions', 'Terms & Conditions', 'Our terms of service', '{"paragraphs": ["By using this site, you agree to our terms of service.", "Please read carefully before booking."]}'::jsonb),
+('privacy-policy', 'Privacy Policy', 'How we protect your data', '{"paragraphs": ["Your privacy is our priority.", "We do not share your data with third parties."]}'::jsonb),
+('contact-us', 'Contact Us', 'Get in touch with us', '{"paragraphs": ["Email: support@tripomist.com", "Phone: +91 9999999999"]}'::jsonb)
+ON CONFLICT (page_key) DO NOTHING;
 
-ALTER TABLE public.homepage_sections ENABLE ROW LEVEL SECURITY;
-CREATE POLICY "Allow public read-only access." ON public.homepage_sections FOR SELECT USING (true);
-CREATE POLICY "Allow authenticated full access." ON public.homepage_sections FOR ALL USING (auth.role() = 'authenticated');
 
--- 5. SITE SETTINGS
+-- 6. BOOKINGS
+CREATE TABLE IF NOT EXISTS public.bookings (
+    id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+    booking_reference TEXT UNIQUE NOT NULL,
+    booking_source TEXT DEFAULT 'manual',
+    user_id UUID,
+    package_id UUID,
+    package_title TEXT,
+    customer_name TEXT NOT NULL,
+    customer_email TEXT,
+    customer_phone TEXT,
+    travel_date DATE,
+    travellers_count INTEGER DEFAULT 1,
+    sharing_type TEXT,
+    total_amount NUMERIC DEFAULT 0,
+    advance_payment NUMERIC DEFAULT 0,
+    remaining_payment NUMERIC DEFAULT 0,
+    payment_status TEXT DEFAULT 'unpaid',
+    booking_status TEXT DEFAULT 'pending',
+    payment_method TEXT,
+    notes TEXT,
+    created_by UUID,
+    created_at TIMESTAMPTZ DEFAULT now(),
+    updated_at TIMESTAMPTZ DEFAULT now()
+);
+
+
+-- 7. SITE SETTINGS
 CREATE TABLE IF NOT EXISTS public.site_settings (
     id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
     setting_key TEXT UNIQUE NOT NULL,
@@ -127,7 +168,6 @@ CREATE TABLE IF NOT EXISTS public.site_settings (
     updated_at TIMESTAMPTZ DEFAULT now()
 );
 
--- Example Insert for Site Settings
 INSERT INTO public.site_settings (setting_key, setting_value)
 VALUES
 ('hero', '{
@@ -153,21 +193,21 @@ VALUES
   "main_links": [
     {"label": "Uttarakhand", "route": "/destinations/uttarakhand"},
     {"label": "Himachal", "route": "/destinations/himachal"},
-    {"label": "About Us", "route": "/about"}
+    {"label": "About Us", "route": "/about-us"}
   ]
 }'::jsonb),
 ('footer', '{
   "company_description": "Creating extraordinary adventures, from mountain trails to dream destinations, designed for explorers who seek more than just a trip.",
-  "copyright_text": "TripoMist © {year} All Rights Reserved.",
+  "copyright_text": "TripoMist c {year} All Rights Reserved.",
   "columns": [
     {
       "title": "Company",
       "links": [
-        {"label": "About Us", "href": "/about"},
-        {"label": "Cancellation & Refund", "href": "/refund-policy"},
+        {"label": "About Us", "href": "/about-us"},
+        {"label": "Cancellation & Refund", "href": "/cancellation-refund"},
         {"label": "Terms & Conditions", "href": "/terms-conditions"},
         {"label": "Privacy Policy", "href": "/privacy-policy"},
-        {"label": "Contact Us", "href": "/contact"}
+        {"label": "Contact Us", "href": "/contact-us"}
       ]
     }
   ]
@@ -195,6 +235,84 @@ VALUES
 ('static_page_settings', '{}'::jsonb)
 ON CONFLICT (setting_key) DO UPDATE SET setting_value = EXCLUDED.setting_value;
 
+
+-- ==========================================
+-- RLS POLICIES
+-- ==========================================
+
+-- Promotional Banners
+ALTER TABLE public.promotional_banners ENABLE ROW LEVEL SECURITY;
+DROP POLICY IF EXISTS "Public Read - Promotional Banners" ON public.promotional_banners;
+DROP POLICY IF EXISTS "Admin All - Promotional Banners" ON public.promotional_banners;
+CREATE POLICY "Public Read - Promotional Banners" ON public.promotional_banners FOR SELECT USING (true);
+CREATE POLICY "Admin All - Promotional Banners" ON public.promotional_banners FOR ALL USING (public.is_admin());
+
+-- Destinations
+ALTER TABLE public.destinations ENABLE ROW LEVEL SECURITY;
+DROP POLICY IF EXISTS "Public Read - Destinations" ON public.destinations;
+DROP POLICY IF EXISTS "Admin All - Destinations" ON public.destinations;
+CREATE POLICY "Public Read - Destinations" ON public.destinations FOR SELECT USING (true);
+CREATE POLICY "Admin All - Destinations" ON public.destinations FOR ALL USING (public.is_admin());
+
+-- Interest Categories
+ALTER TABLE public.interest_categories ENABLE ROW LEVEL SECURITY;
+DROP POLICY IF EXISTS "Public Read - Interest Categories" ON public.interest_categories;
+DROP POLICY IF EXISTS "Admin All - Interest Categories" ON public.interest_categories;
+CREATE POLICY "Public Read - Interest Categories" ON public.interest_categories FOR SELECT USING (true);
+CREATE POLICY "Admin All - Interest Categories" ON public.interest_categories FOR ALL USING (public.is_admin());
+
+-- Homepage Sections
+ALTER TABLE public.homepage_sections ENABLE ROW LEVEL SECURITY;
+DROP POLICY IF EXISTS "Public Read - Homepage Sections" ON public.homepage_sections;
+DROP POLICY IF EXISTS "Admin All - Homepage Sections" ON public.homepage_sections;
+CREATE POLICY "Public Read - Homepage Sections" ON public.homepage_sections FOR SELECT USING (true);
+CREATE POLICY "Admin All - Homepage Sections" ON public.homepage_sections FOR ALL USING (public.is_admin());
+
+-- Website Pages
+ALTER TABLE public.website_pages ENABLE ROW LEVEL SECURITY;
+DROP POLICY IF EXISTS "Public Read - Website Pages" ON public.website_pages;
+DROP POLICY IF EXISTS "Admin All - Website Pages" ON public.website_pages;
+CREATE POLICY "Public Read - Website Pages" ON public.website_pages FOR SELECT USING (true);
+CREATE POLICY "Admin All - Website Pages" ON public.website_pages FOR ALL USING (public.is_admin());
+
+-- Bookings
+ALTER TABLE public.bookings ENABLE ROW LEVEL SECURITY;
+DROP POLICY IF EXISTS "Customer Read Own Bookings" ON public.bookings;
+DROP POLICY IF EXISTS "Admin All - Bookings" ON public.bookings;
+CREATE POLICY "Customer Read Own Bookings" ON public.bookings FOR SELECT USING (auth.uid() = user_id);
+CREATE POLICY "Admin All - Bookings" ON public.bookings FOR ALL USING (public.is_admin());
+
+-- Site Settings
 ALTER TABLE public.site_settings ENABLE ROW LEVEL SECURITY;
-CREATE POLICY "Allow public read-only access." ON public.site_settings FOR SELECT USING (true);
-CREATE POLICY "Allow authenticated full access." ON public.site_settings FOR ALL USING (auth.role() = 'authenticated');
+DROP POLICY IF EXISTS "Public Read - Site Settings" ON public.site_settings;
+DROP POLICY IF EXISTS "Admin All - Site Settings" ON public.site_settings;
+CREATE POLICY "Public Read - Site Settings" ON public.site_settings FOR SELECT USING (true);
+CREATE POLICY "Admin All - Site Settings" ON public.site_settings FOR ALL USING (public.is_admin());
+
+-- 8. REVIEWS
+CREATE TABLE IF NOT EXISTS public.reviews (
+    id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+    customer_name TEXT NOT NULL,
+    customer_email TEXT,
+    customer_phone TEXT,
+    customer_image_url TEXT,
+    rating INTEGER NOT NULL CHECK (rating >= 1 AND rating <= 5),
+    review_text TEXT NOT NULL CHECK (length(trim(review_text)) > 0),
+    package_id UUID,
+    package_title TEXT,
+    destination TEXT,
+    review_date DATE DEFAULT current_date,
+    is_featured BOOLEAN DEFAULT false,
+    is_approved BOOLEAN DEFAULT true,
+    display_order INTEGER DEFAULT 0,
+    source TEXT DEFAULT 'admin',
+    created_at TIMESTAMPTZ DEFAULT now(),
+    updated_at TIMESTAMPTZ DEFAULT now()
+);
+
+-- Reviews RLS Policies
+ALTER TABLE public.reviews ENABLE ROW LEVEL SECURITY;
+DROP POLICY IF EXISTS "Public Read - Approved Reviews" ON public.reviews;
+DROP POLICY IF EXISTS "Admin All - Reviews" ON public.reviews;
+CREATE POLICY "Public Read - Approved Reviews" ON public.reviews FOR SELECT USING (is_approved = true);
+CREATE POLICY "Admin All - Reviews" ON public.reviews FOR ALL USING (public.is_admin());

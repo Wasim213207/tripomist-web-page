@@ -11,6 +11,7 @@ import Footer from '../components/Footer'
 import PackageCard from '../components/PackageCard'
 import { supabase } from '../supabaseClient'
 import FeaturedTripCard from '../components/FeaturedTripCard'
+import ReviewsSection from '../components/ReviewsSection'
 
 function Home() {
   const [recommended, setRecommended] = useState({ data: [], loading: true, error: null });
@@ -274,6 +275,9 @@ function Home() {
         {renderPackageSection('recommended', 'Recommended Packages', 'Hot Selling', 'local_fire_department', '/trips/recommended', recommended)}
         {renderPackageSection('best_seller', 'Best Seller', 'Top Choice', 'award_star', '/trips/best-seller', bestSellers, true)}
         {renderPackageSection('upcoming', 'Upcoming Trips', 'Plan Ahead', 'event_upcoming', '/trips/upcoming-trips', upcomingTrips)}
+
+        {/* Dynamic Reviews Section */}
+        <ReviewsSection featuredOnly={true} />
 
         {/* Promo Autoplay Banner Slider (Autoplay every 4 seconds) */}
         {banners.length > 0 && (

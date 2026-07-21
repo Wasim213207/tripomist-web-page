@@ -4,6 +4,7 @@ import BookingModal from '../components/BookingModal'
 import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
 import DownloadItineraryModal from '../components/DownloadItineraryModal'
+import ReviewsSection from '../components/ReviewsSection'
 import { supabase } from '../utils/supabaseClient'
 
 export default function PackageDetail() {
@@ -67,6 +68,7 @@ export default function PackageDetail() {
       } else {
         // Map data to match the UI fields
         setTrip({
+          id: data.id,
           title: data.title,
           badge: "Most Popular", // Default or you can add logic
           state: data.state,
@@ -447,6 +449,11 @@ export default function PackageDetail() {
             </div>
           </div>
         </div>
+
+        {/* Reviews Section */}
+        {trip.id && (
+          <ReviewsSection packageId={trip.id} />
+        )}
       </main>
 
       <DownloadItineraryModal 

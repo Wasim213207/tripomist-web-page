@@ -24,11 +24,7 @@ import ItineraryKedarnath from './pages/ItineraryKedarnath'
 import ItineraryMadhyameshwar from './pages/ItineraryMadhyameshwar'
 import ItineraryUdaipurKumbhalgarh from './pages/ItineraryUdaipurKumbhalgarh'
 import Search from './pages/Search'
-import PrivacyPolicy from './pages/PrivacyPolicy'
-import RefundPolicy from './pages/RefundPolicy'
 import ShippingPolicy from './pages/ShippingPolicy'
-import TermsConditions from './pages/TermsConditions'
-import ContactUs from './pages/ContactUs'
 import Login from './pages/Login'
 import ForgotPassword from './pages/ForgotPassword'
 import ResetPassword from './pages/ResetPassword'
@@ -38,7 +34,7 @@ import MyAccount from './pages/MyAccount'
 import MyTrips from './pages/MyTrips'
 import BookingDetail from './pages/BookingDetail'
 // Removed legacy hardcoded destination imports
-import AboutUs from './pages/AboutUs'
+import DynamicPage from './pages/DynamicPage'
 import AllDepartures from './pages/AllDepartures'
 import UpcomingDepartures from './pages/UpcomingDepartures'
 import BottomDock from './components/BottomDock'
@@ -57,6 +53,9 @@ const AdminBanners = React.lazy(() => import('./pages/admin/AdminBanners'));
 const AdminDestinations = React.lazy(() => import('./pages/admin/AdminDestinations'));
 const AdminInterests = React.lazy(() => import('./pages/admin/AdminInterests'));
 const AdminHomepageSections = React.lazy(() => import('./pages/admin/AdminHomepageSections'));
+const AdminManualBookings = React.lazy(() => import('./pages/admin/AdminManualBookings'));
+const AdminWebsitePages = React.lazy(() => import('./pages/admin/AdminWebsitePages'));
+const AdminReviews = React.lazy(() => import('./pages/admin/AdminReviews'));
 const DestinationPackages = React.lazy(() => import('./pages/DestinationPackages'));
 const CustomerLayout = React.lazy(() => import('./components/customer/CustomerLayout'));
 const CustomerRoute = React.lazy(() => import('./components/customer/CustomerRoute'));
@@ -115,6 +114,9 @@ function App() {
               <Route path="dashboard" element={<AdminDashboard />} />
               <Route path="packages" element={<AdminPackages />} />
               <Route path="bookings" element={<AdminBookings />} />
+              <Route path="manual-bookings" element={
+                <React.Suspense fallback={<div>Loading...</div>}><AdminManualBookings /></React.Suspense>
+              } />
               <Route path="checkout-leads" element={<AdminCheckoutLeads />} />
               <Route path="users" element={<AdminUsers />} />
               <Route path="settings" element={
@@ -132,6 +134,12 @@ function App() {
               } />
               <Route path="sections" element={
                 <React.Suspense fallback={<div>Loading...</div>}><AdminHomepageSections /></React.Suspense>
+              } />
+              <Route path="website-pages/:pageKey" element={
+                <React.Suspense fallback={<div>Loading...</div>}><AdminWebsitePages /></React.Suspense>
+              } />
+              <Route path="reviews" element={
+                <React.Suspense fallback={<div>Loading...</div>}><AdminReviews /></React.Suspense>
               } />
             </Route>
           </Route>
@@ -208,7 +216,7 @@ function App() {
           <Route path="/spiti" element={<Navigate to="/destinations/spiti-valley" replace />} />
           <Route path="/kerala" element={<Navigate to="/destinations/kerala" replace />} />
           <Route path="/goa" element={<Navigate to="/destinations/goa" replace />} />
-          <Route path="/about" element={<AboutUs />} />
+          <Route path="/about" element={<DynamicPage pageKey="about-us" />} />
           <Route path="/search" element={<Search />} />
           <Route path="/featured-group-trips" element={<FeaturedGroupTrip />} />
           <Route path="/most-popular-packages" element={<MostPopularPackages />} />
@@ -231,11 +239,11 @@ function App() {
           <Route path="/my-account" element={<MyAccount />} />
           <Route path="/my-trips" element={<MyTrips />} />
           <Route path="/my-trip/:slug" element={<BookingDetail />} />
-          <Route path="/privacy-policy" element={<PrivacyPolicy />} />
-          <Route path="/refund-policy" element={<RefundPolicy />} />
+          <Route path="/privacy-policy" element={<DynamicPage pageKey="privacy-policy" />} />
+          <Route path="/refund-policy" element={<DynamicPage pageKey="cancellation-refund" />} />
           <Route path="/shipping-policy" element={<ShippingPolicy />} />
-          <Route path="/terms-conditions" element={<TermsConditions />} />
-          <Route path="/contact" element={<ContactUs />} />
+          <Route path="/terms-conditions" element={<DynamicPage pageKey="terms-conditions" />} />
+          <Route path="/contact" element={<DynamicPage pageKey="contact-us" />} />
           <Route path="*" element={<Home />} />
         </Routes>
       </div>
