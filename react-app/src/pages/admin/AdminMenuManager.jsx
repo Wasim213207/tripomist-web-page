@@ -143,7 +143,13 @@ const AdminMenuManager = () => {
   };
 
   const handleDelete = async (id) => {
-    if (!window.confirm('Are you sure you want to delete this menu item? Any child items will have their parent reset.')) return;
+    const hasChildren = items.some(item => item.parent_id === id);
+    if (hasChildren) {
+      const proceed = window.confirm('Warning: This menu item has child items. If you delete it, those child items will also be deleted or detached. Do you want to proceed?');
+      if (!proceed) return;
+    } else {
+      if (!window.confirm('Are you sure you want to delete this menu item?')) return;
+    }
     try {
       const { error: deleteErr } = await supabase.from('navigation_items').delete().eq('id', id);
       if (deleteErr) throw deleteErr;

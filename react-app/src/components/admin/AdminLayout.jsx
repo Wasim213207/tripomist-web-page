@@ -37,7 +37,6 @@ const AdminLayout = () => {
     if (location.pathname.startsWith('/admin/manual-bookings') || 
         location.pathname.startsWith('/admin/bookings') || 
         location.pathname.startsWith('/admin/checkout-leads') ||
-        location.pathname.startsWith('/admin/room-allocation') ||
         location.pathname.startsWith('/admin/booking-activity-logs')) {
       setIsBookingsOpen(true);
     }
@@ -130,9 +129,7 @@ const AdminLayout = () => {
                 <Link to="/admin/checkout-leads" className={`block px-3 py-1.5 rounded-md transition-colors ${location.pathname.startsWith('/admin/checkout-leads') ? 'bg-slate-100 text-slate-900 font-medium' : 'text-gray-600 hover:bg-gray-50'}`} onClick={() => setSidebarOpen(false)}>
                   Checkout Leads
                 </Link>
-                <Link to="/admin/room-allocation" className={`block px-3 py-1.5 rounded-md transition-colors ${location.pathname.startsWith('/admin/room-allocation') ? 'bg-slate-100 text-slate-900 font-medium' : 'text-gray-600 hover:bg-gray-50'}`} onClick={() => setSidebarOpen(false)}>
-                  Room Allocation
-                </Link>
+
                 <Link to="/admin/booking-activity-logs" className={`block px-3 py-1.5 rounded-md transition-colors ${location.pathname.startsWith('/admin/booking-activity-logs') ? 'bg-slate-100 text-slate-900 font-medium' : 'text-gray-600 hover:bg-gray-50'}`} onClick={() => setSidebarOpen(false)}>
                   Activity Logs
                 </Link>
