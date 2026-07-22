@@ -101,3 +101,27 @@ DROP POLICY IF EXISTS "Admin All - Booking Rooms" ON public.booking_rooms;
 CREATE POLICY "Customer Read Own Rooms" ON public.booking_rooms 
   FOR SELECT USING (booking_id IN (SELECT id FROM public.bookings WHERE user_id = auth.uid()));
 CREATE POLICY "Admin All - Booking Rooms" ON public.booking_rooms FOR ALL USING (public.is_admin()) WITH CHECK (public.is_admin());
+
+-- 6. Package RLS Policies
+ALTER TABLE public."Pakage" ENABLE ROW LEVEL SECURITY;
+
+DROP POLICY IF EXISTS "Public SELECT active packages" ON public."Pakage";
+CREATE POLICY "Public SELECT active packages" ON public."Pakage" 
+FOR SELECT USING (status = 'active');
+
+DROP POLICY IF EXISTS "Admin SELECT all packages" ON public."Pakage";
+CREATE POLICY "Admin SELECT all packages" ON public."Pakage" 
+FOR SELECT USING (public.is_admin());
+
+DROP POLICY IF EXISTS "Admin INSERT packages" ON public."Pakage";
+CREATE POLICY "Admin INSERT packages" ON public."Pakage" 
+FOR INSERT WITH CHECK (public.is_admin());
+
+DROP POLICY IF EXISTS "Admin UPDATE packages" ON public."Pakage";
+CREATE POLICY "Admin UPDATE packages" ON public."Pakage" 
+FOR UPDATE USING (public.is_admin()) WITH CHECK (public.is_admin());
+
+DROP POLICY IF EXISTS "Admin DELETE packages" ON public."Pakage";
+CREATE POLICY "Admin DELETE packages" ON public."Pakage" 
+FOR DELETE USING (public.is_admin());
+

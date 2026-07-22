@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { supabase } from '../../supabaseClient';
+import { formatSlugToTitle } from '../../utils/formatters';
 import PackageForm from '../../components/admin/PackageForm';
 import {
   Plus,
@@ -85,10 +86,14 @@ const AdminPackages = () => {
         setSuccessMsg(`"${pkg.title}" updated successfully.`);
       } else {
         // INSERT
-        const { error: insertErr } = await supabase
+        console.log('Sending insert payload:', pkg);
+        const { data, error: insertErr } = await supabase
           .from('Pakage')
-          .insert([pkg]);
+          .insert([pkg])
+          .select();
+        console.log('Insert response data:', data, 'error:', insertErr);
         if (insertErr) throw insertErr;
+        if (!data || data.length === 0) throw new Error("Insert succeeded but database returned no rows (possible RLS read policy issue).");
         setSuccessMsg(`"${pkg.title}" created successfully.`);
       }
       setShowForm(false);
@@ -137,10 +142,8 @@ const AdminPackages = () => {
         .update({ [field]: newValue })
         .eq('id', pkg.id);
       if (toggleErr) throw toggleErr;
-      // Optimistic UI update
-      setPackages(prev =>
-        prev.map(p => p.id === pkg.id ? { ...p, [field]: newValue } : p)
-      );
+      
+      await fetchPackages();
     } catch (err) {
       console.error('Toggle error:', err);
       setError(err.message || `Failed to toggle ${field}.`);
@@ -153,9 +156,9 @@ const AdminPackages = () => {
     const q = searchQuery.toLowerCase();
     return (
       (p.title && p.title.toLowerCase().includes(q)) ||
-      (p.destination && p.destination.toLowerCase().includes(q)) ||
-      (p.state && p.state.toLowerCase().includes(q)) ||
-      (p.category && p.category.toLowerCase().includes(q)) ||
+      (p.destination && formatSlugToTitle(p.destination).toLowerCase().includes(q)) ||
+      (p.state && formatSlugToTitle(p.state).toLowerCase().includes(q)) ||
+      (p.category && formatSlugToTitle(p.category).toLowerCase().includes(q)) ||
       (p.slug && p.slug.toLowerCase().includes(q))
     );
   });
@@ -315,8 +318,8 @@ const AdminPackages = () => {
                           </div>
                         </div>
                       </td>
-                      <td className="px-4 py-3.5 text-gray-600 whitespace-nowrap">{pkg.destination || '—'}</td>
-                      <td className="px-4 py-3.5 text-gray-600 whitespace-nowrap">{pkg.state || '—'}</td>
+                      <td className="px-4 py-3.5 text-gray-600 whitespace-nowrap">{formatSlugToTitle(pkg.destination) || '—'}</td>
+                      <td className="px-4 py-3.5 text-gray-600 whitespace-nowrap">{formatSlugToTitle(pkg.state) || '—'}</td>
                       <td className="px-4 py-3.5 text-gray-600 whitespace-nowrap">{pkg.duration || '—'}</td>
                       <td className="px-4 py-3.5 text-gray-900 font-medium whitespace-nowrap">
                         {pkg.price != null ? `₹${Number(pkg.price).toLocaleString('en-IN')}` : '—'}

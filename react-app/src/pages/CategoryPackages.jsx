@@ -30,11 +30,17 @@ const CategoryPackages = () => {
       setLoading(true);
       setError(null);
       try {
-        const { data, error: fetchErr } = await supabase
-          .from('Pakage')
-          .select('*')
-          .eq('status', 'active')
-          .contains('listing_categories', [categorySlug]);
+        let query = supabase.from('Pakage').select('*').eq('status', 'active');
+        
+        if (categorySlug === 'featured' || categorySlug === 'recommended') {
+          query = query.eq('featured', true);
+        } else if (categorySlug === 'best-seller') {
+          query = query.eq('best_seller', true);
+        } else {
+          query = query.contains('listing_categories', [categorySlug]);
+        }
+
+        const { data, error: fetchErr } = await query;
 
         if (fetchErr) throw fetchErr;
         setPackages(data || []);

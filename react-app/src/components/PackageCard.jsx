@@ -1,6 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import WishlistButton from './WishlistButton'
+import { formatSlugToTitle } from '../utils/formatters'
 
 const PackageCard = ({ 
   tripTitle, 
@@ -37,7 +38,7 @@ const PackageCard = ({
           {/* Label (e.g., MOUNTAINS or other category) */}
           <div className="bg-black/50 backdrop-blur-md text-white font-bold text-[10px] px-3 py-1.5 rounded-full uppercase tracking-wider flex items-center gap-1 shadow-sm">
             <span className="material-symbols-outlined text-[12px]">location_on</span>
-            {label && label.toLowerCase() !== 'international' ? label : 'DESTINATION'}
+            {label && label.toLowerCase() !== 'international' ? formatSlugToTitle(label) : 'DESTINATION'}
           </div>
 
           {/* Badges/Discount in Lime Green */}

@@ -6,6 +6,7 @@ import Footer from '../components/Footer'
 import DownloadItineraryModal from '../components/DownloadItineraryModal'
 import ReviewsSection from '../components/ReviewsSection'
 import { supabase } from '../utils/supabaseClient'
+import { formatSlugToTitle } from '../utils/formatters'
 
 export default function PackageDetail() {
   const { slug } = useParams()
@@ -469,7 +470,7 @@ export default function PackageDetail() {
         travellers={travellers}
         navigate={navigate}
         packageId={slug}
-        destination={trip.destination || trip.title}
+        destination={formatSlugToTitle(trip.destination) || trip.title}
         costings={trip.costings}
       />
 

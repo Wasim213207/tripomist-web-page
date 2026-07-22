@@ -63,11 +63,17 @@ function Home() {
 
     async function fetchPackageSection(category, setState) {
       try {
-        const { data, error } = await supabase
-          .from('Pakage')
-          .select('*')
-          .eq('status', 'active')
-          .contains('listing_categories', [category]);
+        let query = supabase.from('Pakage').select('*').eq('status', 'active');
+        
+        if (category === 'recommended' || category === 'featured') {
+          query = query.eq('featured', true);
+        } else if (category === 'best-seller') {
+          query = query.eq('best_seller', true);
+        } else {
+          query = query.contains('listing_categories', [category]);
+        }
+
+        const { data, error } = await query;
           
         if (error) throw error;
         setState({ data: data || [], loading: false, error: null });

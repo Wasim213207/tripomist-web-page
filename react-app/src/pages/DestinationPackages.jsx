@@ -25,7 +25,9 @@ const DestinationPackages = () => {
           .from('Pakage')
           .select('*')
           .eq('status', 'active')
-          .or(`state.ilike.%${formattedSearchTerm}%,destination.ilike.%${formattedSearchTerm}%`);
+          .or(`state.eq.${destinationSlug},destination.eq.${destinationSlug}`);
+
+        console.log('Destination fetch response:', { data, error: fetchErr });
 
         if (fetchErr) throw fetchErr;
         setPackages(data || []);
