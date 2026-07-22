@@ -21,27 +21,49 @@ const DestinationPackages = () => {
       const formattedSearchTerm = destinationSlug.replace(/-/g, ' ');
       
       try {
+        let destId = null;
+        let titleStr = '';
+
         const { data: destData } = await supabase
           .from('destinations')
-          .select('name')
+          .select('id, name')
           .eq('slug', destinationSlug)
           .single();
           
-        if (destData && destData.name) {
-          document.title = `${destData.name} Packages - TripoMist`;
+        if (destData) {
+          destId = destData.id;
+          titleStr = destData.name;
+          document.title = `${titleStr} Packages - TripoMist`;
+        }
+
+        if (!destId) {
+          setPackages([]);
+          return;
         }
 
         const { data, error: fetchErr } = await supabase
           .from('package_placements')
           .select('*, Pakage!inner(*)')
-          .eq('placement_slug', destinationSlug)
+          .eq('placement_id', destId)
           .eq('placement_type', 'destination')
           .eq('Pakage.status', 'active');
 
         console.log('Destination fetch response:', { data, error: fetchErr });
 
         if (fetchErr) throw fetchErr;
-        setPackages(data ? data.map(d => d.Pakage) : []);
+        
+        const uniquePkgs = [];
+        const seen = new Set();
+        if (data) {
+          data.forEach(d => {
+            if (!seen.has(d.Pakage.id)) {
+              seen.add(d.Pakage.id);
+              uniquePkgs.push(d.Pakage);
+            }
+          });
+        }
+        
+        setPackages(uniquePkgs);
       } catch (err) {
         console.error('Error fetching destination packages:', err);
         setError('Failed to load packages. Please try again later.');

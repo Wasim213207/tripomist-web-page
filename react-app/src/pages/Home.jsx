@@ -39,13 +39,12 @@ function Home() {
         if (iData) setInterests(iData);
 
         // Fetch Sections
+        const { data: sData } = await supabase.from('homepage_sections').select('*').eq('is_active', true).order('display_order');
         if (sData) {
-          const secMap = {};
-          sData.forEach(s => secMap[s.section_key] = s);
-          setSections(secMap);
-
-          const pkgSections = sData.filter(s => s.section_key !== 'destinations' && s.section_key !== 'interests');
-          const fetchPromises = pkgSections.map(async (sec) => {
+          const fetchPromises = sData.map(async (sec) => {
+            if (sec.section_key === 'destinations' || sec.section_key === 'interests') {
+              return { ...sec, isSpecialLayout: true };
+            }
             try {
               const { data, error } = await supabase
                 .from('package_placements')
@@ -55,10 +54,22 @@ function Home() {
                 .eq('Pakage.status', 'active');
               
               if (error) throw error;
-              const pkgs = data ? data.map(d => d.Pakage) : [];
-              return { ...sec, packagesData: pkgs, fetchError: null };
+              
+              // Filter out duplicates in case the unique constraint failed or data has dupes
+              const uniquePkgs = [];
+              const seen = new Set();
+              if (data) {
+                data.forEach(d => {
+                  if (!seen.has(d.Pakage.id)) {
+                    seen.add(d.Pakage.id);
+                    uniquePkgs.push(d.Pakage);
+                  }
+                });
+              }
+              
+              return { ...sec, packagesData: uniquePkgs, fetchError: null };
             } catch (err) {
-              console.error(`Error fetching ${sec.section_key}:`, err);
+              console.error(`Error fetching packages for section ${sec.id}:`, err);
               return { ...sec, packagesData: [], fetchError: 'Failed to load packages.' };
             }
           });
@@ -83,7 +94,65 @@ function Home() {
   }, []);
 
   const navigate = useNavigate()
+  
+  const renderSpecialSection = (sec) => {
+    if (sec.section_key === 'destinations') {
+      return (
+        <section key={sec.id} className="w-full py-6 px-4 md:px-12 lg:px-20 bg-surface-container-lowest">
+          <div className="flex flex-col md:flex-row md:items-center justify-between mb-8 gap-4">
+            <h2 className="font-headline-md text-headline-md text-on-surface font-bold">
+              {sec.title || 'Destinations'}
+            </h2>
+          </div>
+          
+          <div className="flex gap-8 overflow-x-auto hide-scrollbar py-4 px-2 -mx-2">
+            {destinations.slice(0, sec.max_cards || 20).map((dest) => (
+              <Link key={dest.id} to={`/destinations/${dest.slug}`} className="flex flex-col items-center gap-3 cursor-pointer group min-w-[100px] destination-circle no-underline">
+                <div className="w-32 h-14 rounded-full overflow-hidden border-2 border-transparent group-hover:border-primary transition-all duration-300 shadow-sm group-hover:shadow-md group-hover:-translate-y-1">
+                  <img className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105" alt={dest.name} src={dest.image_url} />
+                </div>
+                <span className="font-button text-button text-on-surface group-hover:text-primary text-center transition-colors">
+                  {dest.name}
+                </span>
+              </Link>
+            ))}
+          </div>
+        </section>
+      );
+    }
+    
+    if (sec.section_key === 'interests') {
+      return (
+        <section key={sec.id} className="w-full py-6 px-4 md:px-12 lg:px-20 bg-surface-container-lowest">
+          <div className="flex flex-col md:flex-row md:items-center justify-between mb-8 gap-4">
+            <h2 className="font-headline-md text-headline-md text-on-surface font-bold">
+              {sec.title || 'Destination According To Interest'}
+            </h2>
+          </div>
+          
+          <div className="flex gap-8 overflow-x-auto hide-scrollbar py-4 px-2 -mx-2">
+            {interests.slice(0, sec.max_cards || 20).map((interest) => (
+              <Link key={interest.id} to={interest.route} className="flex flex-col items-center gap-3 cursor-pointer group min-w-[100px] destination-circle no-underline">
+                <div className="w-32 h-14 rounded-full overflow-hidden border-2 border-transparent group-hover:border-primary transition-all duration-300 shadow-sm group-hover:shadow-md group-hover:-translate-y-1">
+                  <img className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105" alt={interest.name} src={interest.image_url} />
+                </div>
+                <span className="font-button text-button text-on-surface group-hover:text-primary text-center whitespace-nowrap transition-colors">
+                  {interest.name}
+                </span>
+              </Link>
+            ))}
+          </div>
+        </section>
+      );
+    }
+    return null;
+  };
+
   const renderPackageSection = (sec) => {
+    if (sec.isSpecialLayout) {
+      return renderSpecialSection(sec);
+    }
+
     const isInternational = sec.section_key === 'international';
     const isBestSellerFlag = sec.section_key === 'best_seller';
 
@@ -203,59 +272,11 @@ function Home() {
         </section>
         )}
 
-        {/* Explore Destinations - Circles */}
-        {(!pageLoading && (!sections.destinations || sections.destinations.is_active)) && (
-          <section className="w-full py-6 px-4 md:px-12 lg:px-20 bg-surface-container-lowest">
-            <div className="flex flex-col md:flex-row md:items-center justify-between mb-8 gap-4">
-              <h2 className="font-headline-md text-headline-md text-on-surface font-bold">
-                {sections.destinations?.title || 'Destinations'}
-              </h2>
-            </div>
-            
-            <div className="flex gap-8 overflow-x-auto hide-scrollbar py-4 px-2 -mx-2">
-              {destinations.slice(0, sections.destinations?.max_cards || 20).map((dest) => (
-                <Link key={dest.id} to={`/destinations/${dest.slug}`} className="flex flex-col items-center gap-3 cursor-pointer group min-w-[100px] destination-circle no-underline">
-                  <div className="w-32 h-14 rounded-full overflow-hidden border-2 border-transparent group-hover:border-primary transition-all duration-300 shadow-sm group-hover:shadow-md group-hover:-translate-y-1">
-                    <img className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105" alt={dest.name} src={dest.image_url} />
-                  </div>
-                  <span className="font-button text-button text-on-surface group-hover:text-primary text-center transition-colors">
-                    {dest.name}
-                  </span>
-                </Link>
-              ))}
-            </div>
-          </section>
-        )}
-
-        {/* Destination According To Interest */}
-        {(!pageLoading && (!sections.interests || sections.interests.is_active)) && (
-          <section className="w-full py-6 px-4 md:px-12 lg:px-20 bg-surface-container-lowest">
-            <div className="flex flex-col md:flex-row md:items-center justify-between mb-8 gap-4">
-              <h2 className="font-headline-md text-headline-md text-on-surface font-bold">
-                {sections.interests?.title || 'Destination According To Interest'}
-              </h2>
-            </div>
-            
-            <div className="flex gap-8 overflow-x-auto hide-scrollbar py-4 px-2 -mx-2">
-              {interests.slice(0, sections.interests?.max_cards || 20).map((interest) => (
-                <Link key={interest.id} to={interest.route} className="flex flex-col items-center gap-3 cursor-pointer group min-w-[100px] destination-circle no-underline">
-                  <div className="w-32 h-14 rounded-full overflow-hidden border-2 border-transparent group-hover:border-primary transition-all duration-300 shadow-sm group-hover:shadow-md group-hover:-translate-y-1">
-                    <img className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105" alt={interest.name} src={interest.image_url} />
-                  </div>
-                  <span className="font-button text-button text-on-surface group-hover:text-primary text-center whitespace-nowrap transition-colors">
-                    {interest.name}
-                  </span>
-                </Link>
-              ))}
-            </div>
-          </section>
-        )}
-
-        {/* Dynamic Package Sections (Before Reviews) */}
+        {/* Dynamic Sections (Before Reviews) */}
         {pageLoading ? (
           <div className="flex justify-center items-center py-20 text-gray-400">
             <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#136b8a] mb-3"></div>
-            <span className="text-sm font-medium ml-3">Loading packages...</span>
+            <span className="text-sm font-medium ml-3">Loading sections...</span>
           </div>
         ) : (
           dynamicPackageSections.filter(sec => sec.display_order <= 5).map(sec => renderPackageSection(sec))

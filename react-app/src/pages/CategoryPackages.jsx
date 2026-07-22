@@ -20,25 +20,58 @@ const CategoryPackages = () => {
       setLoading(true);
       setError(null);
       try {
-        // Fetch section or interest title
-        let titleData = null;
-        const { data: sData } = await supabase.from('homepage_sections').select('title').eq('section_key', categorySlug).single();
+        let categoryId = null;
+        let pType = null;
+        let titleStr = '';
+
+        // Check if it's a homepage section
+        const { data: sData } = await supabase.from('homepage_sections').select('id, title').eq('section_key', categorySlug).single();
         if (sData) {
-          titleData = sData;
+          categoryId = sData.id;
+          pType = 'homepage_section';
+          titleStr = sData.title;
         } else {
-          const { data: iData } = await supabase.from('interest_categories').select('name').eq('slug', categorySlug).single();
-          if (iData) titleData = { title: iData.name };
+          // Check if it's an interest category
+          const { data: iData } = await supabase.from('interest_categories').select('id, name').eq('slug', categorySlug).single();
+          if (iData) {
+            categoryId = iData.id;
+            pType = 'interest';
+            titleStr = iData.name;
+          }
         }
-        if (titleData) setSectionData(titleData);
+
+        if (titleStr) {
+          setSectionData({ title: titleStr });
+        }
+
+        if (!categoryId) {
+          // If no matching category found, set empty packages and exit
+          setPackages([]);
+          return;
+        }
 
         const { data, error: fetchErr } = await supabase
           .from('package_placements')
           .select('*, Pakage!inner(*)')
-          .eq('placement_slug', categorySlug)
+          .eq('placement_type', pType)
+          .eq('placement_id', categoryId)
           .eq('Pakage.status', 'active');
 
         if (fetchErr) throw fetchErr;
-        setPackages(data ? data.map(d => d.Pakage) : []);
+        
+        // Filter duplicates
+        const uniquePkgs = [];
+        const seen = new Set();
+        if (data) {
+          data.forEach(d => {
+            if (!seen.has(d.Pakage.id)) {
+              seen.add(d.Pakage.id);
+              uniquePkgs.push(d.Pakage);
+            }
+          });
+        }
+        
+        setPackages(uniquePkgs);
       } catch (err) {
         console.error('Error fetching category packages:', err);
         setError('Failed to load packages. Please try again later.');
