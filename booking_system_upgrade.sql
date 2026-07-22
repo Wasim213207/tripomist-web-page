@@ -125,3 +125,18 @@ DROP POLICY IF EXISTS "Admin DELETE packages" ON public."Pakage";
 CREATE POLICY "Admin DELETE packages" ON public."Pakage" 
 FOR DELETE USING (public.is_admin());
 
+
+-- 7. One-Time Migration: Backfill listing_categories from featured and best_seller
+UPDATE public."Pakage"
+SET listing_categories = (
+  SELECT jsonb_agg(DISTINCT cat)
+  FROM (
+    SELECT jsonb_array_elements_text(COALESCE(listing_categories, '[]'::jsonb)) AS cat
+    UNION
+    SELECT 'recommended' WHERE featured = true
+    UNION
+    SELECT 'best-seller' WHERE best_seller = true
+  ) AS unique_cats
+)
+WHERE featured = true OR best_seller = true;
+

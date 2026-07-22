@@ -14,10 +14,7 @@ import FeaturedTripCard from '../components/FeaturedTripCard'
 import ReviewsSection from '../components/ReviewsSection'
 
 function Home() {
-  const [recommended, setRecommended] = useState({ data: [], loading: true, error: null });
-  const [bestSellers, setBestSellers] = useState({ data: [], loading: true, error: null });
-  const [upcomingTrips, setUpcomingTrips] = useState({ data: [], loading: true, error: null });
-  const [internationalTrips, setInternationalTrips] = useState({ data: [], loading: true, error: null });
+  const [dynamicPackageSections, setDynamicPackageSections] = useState([]);
   
   const [banners, setBanners] = useState([]);
   const [destinations, setDestinations] = useState([]);
@@ -42,11 +39,30 @@ function Home() {
         if (iData) setInterests(iData);
 
         // Fetch Sections
-        const { data: sData } = await supabase.from('homepage_sections').select('*').eq('is_active', true).order('display_order');
         if (sData) {
           const secMap = {};
           sData.forEach(s => secMap[s.section_key] = s);
           setSections(secMap);
+
+          const pkgSections = sData.filter(s => s.section_key !== 'destinations' && s.section_key !== 'interests');
+          const fetchPromises = pkgSections.map(async (sec) => {
+            try {
+              const { data, error } = await supabase
+                .from('Pakage')
+                .select('*')
+                .eq('status', 'active')
+                .contains('listing_categories', [sec.section_key]);
+              
+              if (error) throw error;
+              return { ...sec, packagesData: data || [], fetchError: null };
+            } catch (err) {
+              console.error(`Error fetching ${sec.section_key}:`, err);
+              return { ...sec, packagesData: [], fetchError: 'Failed to load packages.' };
+            }
+          });
+
+          const resolvedSections = await Promise.all(fetchPromises);
+          setDynamicPackageSections(resolvedSections);
         }
 
         // Fetch Hero Settings
@@ -61,83 +77,39 @@ function Home() {
       }
     }
 
-    async function fetchPackageSection(category, setState) {
-      try {
-        let query = supabase.from('Pakage').select('*').eq('status', 'active');
-        
-        if (category === 'recommended' || category === 'featured') {
-          query = query.eq('featured', true);
-        } else if (category === 'best-seller') {
-          query = query.eq('best_seller', true);
-        } else {
-          query = query.contains('listing_categories', [category]);
-        }
-
-        const { data, error } = await query;
-          
-        if (error) throw error;
-        setState({ data: data || [], loading: false, error: null });
-      } catch (err) {
-        console.error(`Error fetching ${category}:`, err);
-        setState({ data: [], loading: false, error: 'Failed to load packages.' });
-      }
-    }
-
     fetchAllData();
-    fetchPackageSection('recommended', setRecommended);
-    fetchPackageSection('best-seller', setBestSellers);
-    fetchPackageSection('upcoming-trips', setUpcomingTrips);
-    fetchPackageSection('international', setInternationalTrips);
   }, []);
 
   const navigate = useNavigate()
-  
-  const renderPackageSection = (sectionKey, defaultTitle, defaultSubtitle, defaultIcon, defaultLink, stateObj, isBestSellerFlag = false, isInternational = false) => {
-    // If section is configured in DB, use its settings
-    const config = sections[sectionKey];
-    // If it's explicitly disabled in DB, don't render
-    if (config === undefined && Object.keys(sections).length > 0 && ['recommended','best_seller','upcoming','international'].includes(sectionKey)) {
-      // Meaning sections are loaded but this one isn't in active sections map
-      // Actually, let's just use config if it exists, otherwise defaults (unless explicitly hidden, but we only fetched active ones).
-      // Wait, if it's missing from `sections` map and `pageLoading` is false, it means it's inactive!
-      if (!pageLoading && !config) return null; 
-    }
-
-    const title = config?.title || defaultTitle;
-    const subtitle = config?.subtitle || defaultSubtitle;
-    const icon = config?.icon || defaultIcon;
-    const linkTo = config?.view_all_route || defaultLink;
-    const viewAllText = config?.view_all_text || 'View All';
-    const maxCards = config?.max_cards || 10;
+  const renderPackageSection = (sec) => {
+    const isInternational = sec.section_key === 'international';
+    const isBestSellerFlag = sec.section_key === 'best_seller';
 
     return (
-      <section className="w-full py-6 px-4 md:px-12 lg:px-20 bg-surface-container-lowest overflow-hidden border-t border-gray-50">
+      <section key={sec.id} className="w-full py-6 px-4 md:px-12 lg:px-20 bg-surface-container-lowest overflow-hidden border-t border-gray-50">
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-8 gap-6">
           <div>
             <div className="inline-flex items-center gap-2 mb-4 text-[#136b8a]">
-              <span className="material-symbols-outlined text-[16px]">{icon}</span>
-              <span className="font-label-caps text-label-caps tracking-widest uppercase font-bold">{subtitle}</span>
+              <span className="material-symbols-outlined text-[16px]">{sec.icon || 'inventory_2'}</span>
+              <span className="font-label-caps text-label-caps tracking-widest uppercase font-bold">{sec.subtitle || 'Category'}</span>
             </div>
             <h2 className="font-headline-lg-mobile md:font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-surface font-bold font-headline-lg">
-              {title}
+              {sec.title}
             </h2>
           </div>
-          <Link className="inline-flex items-center text-[#136b8a] font-button text-button hover:text-[#0f556e] font-bold transition-colors" to={linkTo}>
-            {viewAllText} <span className="material-symbols-outlined ml-2 text-[18px]">arrow_forward</span>
-          </Link>
+          {sec.view_all_route && (
+            <Link className="inline-flex items-center text-[#136b8a] font-button text-button hover:text-[#0f556e] font-bold transition-colors" to={sec.view_all_route}>
+              {sec.view_all_text || 'View All'} <span className="material-symbols-outlined ml-2 text-[18px]">arrow_forward</span>
+            </Link>
+          )}
         </div>
 
-        {stateObj.loading ? (
-          <div className="flex justify-center items-center py-20 text-gray-400">
-            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#136b8a] mb-3"></div>
-            <span className="text-sm font-medium ml-3">Loading {title.toLowerCase()}...</span>
-          </div>
-        ) : stateObj.error ? (
+        {sec.fetchError ? (
           <div className="flex justify-center items-center py-20 text-red-500">
             <span className="material-symbols-outlined text-[40px] mb-3 mr-3">error</span>
-            <p className="text-sm font-medium">{stateObj.error}</p>
+            <p className="text-sm font-medium">{sec.fetchError}</p>
           </div>
-        ) : stateObj.data.length === 0 ? (
+        ) : (!sec.packagesData || sec.packagesData.length === 0) ? (
           <div className="flex flex-col items-center justify-center py-20 text-gray-400">
             <span className="material-symbols-outlined text-[48px] mb-4 text-gray-300">inventory_2</span>
             <h3 className="text-lg font-bold text-gray-700 mb-2">No Packages Found</h3>
@@ -147,7 +119,7 @@ function Home() {
           </div>
         ) : (
           <div className="flex overflow-x-auto gap-4 md:gap-6 hide-scrollbar pb-8 snap-x snap-mandatory -mx-4 px-4 md:mx-0 md:px-0 scroll-smooth">
-            {stateObj.data.slice(0, maxCards).map((pkg) => (
+            {sec.packagesData.slice(0, sec.max_cards || 10).map((pkg) => (
               <PackageCard 
                 key={pkg.id}
                 bestSeller={isBestSellerFlag || pkg.best_seller}
@@ -277,10 +249,15 @@ function Home() {
           </section>
         )}
 
-        {/* Dynamic Package Sections */}
-        {renderPackageSection('recommended', 'Recommended Packages', 'Hot Selling', 'local_fire_department', '/trips/recommended', recommended)}
-        {renderPackageSection('best_seller', 'Best Seller', 'Top Choice', 'award_star', '/trips/best-seller', bestSellers, true)}
-        {renderPackageSection('upcoming', 'Upcoming Trips', 'Plan Ahead', 'event_upcoming', '/trips/upcoming-trips', upcomingTrips)}
+        {/* Dynamic Package Sections (Before Reviews) */}
+        {pageLoading ? (
+          <div className="flex justify-center items-center py-20 text-gray-400">
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#136b8a] mb-3"></div>
+            <span className="text-sm font-medium ml-3">Loading packages...</span>
+          </div>
+        ) : (
+          dynamicPackageSections.filter(sec => sec.display_order <= 5).map(sec => renderPackageSection(sec))
+        )}
 
         {/* Dynamic Reviews Section */}
         <ReviewsSection featuredOnly={true} />
@@ -337,8 +314,8 @@ function Home() {
           </section>
         )}
 
-        {/* International Trips Coming Soon */}
-        {renderPackageSection('international', 'Soon you can plan abroad trips with us', 'International', 'flight_takeoff', '/trips/international', internationalTrips, false, true)}
+        {/* Dynamic Package Sections (After Reviews/Banners) */}
+        {!pageLoading && dynamicPackageSections.filter(sec => sec.display_order > 5).map(sec => renderPackageSection(sec))}
 
       </main>
 

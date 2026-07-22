@@ -6,18 +6,6 @@ import PackageCard from '../components/PackageCard';
 import { supabase } from '../supabaseClient';
 import { PackageIcon, RefreshCw, AlertCircle } from 'lucide-react';
 
-const categoryTitles = {
-  'trek': 'Trek',
-  'group-departures': 'Group Departures',
-  'weekend-departures': 'Weekend Departures',
-  'family-trips': 'Family Trips',
-  'honeymoon-trips': 'Honeymoon Trips',
-  'recommended': 'Recommended Packages',
-  'best-seller': 'Best Seller',
-  'upcoming-trips': 'Upcoming Trips',
-  'domestic': 'Domestic Trips',
-  'international': 'International Trips'
-};
 
 const CategoryPackages = () => {
   const { categorySlug } = useParams();
@@ -25,22 +13,27 @@ const CategoryPackages = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
+  const [sectionData, setSectionData] = useState(null);
+
   useEffect(() => {
     const fetchPackages = async () => {
       setLoading(true);
       setError(null);
       try {
-        let query = supabase.from('Pakage').select('*').eq('status', 'active');
+        // Fetch section title
+        const { data: sData } = await supabase
+          .from('homepage_sections')
+          .select('title')
+          .eq('section_key', categorySlug)
+          .single();
         
-        if (categorySlug === 'featured' || categorySlug === 'recommended') {
-          query = query.eq('featured', true);
-        } else if (categorySlug === 'best-seller') {
-          query = query.eq('best_seller', true);
-        } else {
-          query = query.contains('listing_categories', [categorySlug]);
-        }
+        if (sData) setSectionData(sData);
 
-        const { data, error: fetchErr } = await query;
+        const { data, error: fetchErr } = await supabase
+          .from('Pakage')
+          .select('*')
+          .eq('status', 'active')
+          .contains('listing_categories', [categorySlug]);
 
         if (fetchErr) throw fetchErr;
         setPackages(data || []);
@@ -57,7 +50,7 @@ const CategoryPackages = () => {
     }
   }, [categorySlug]);
 
-  const pageTitle = categoryTitles[categorySlug] || categorySlug?.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ') || 'Packages';
+  const pageTitle = sectionData?.title || categorySlug?.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ') || 'Packages';
 
   return (
     <div className="flex flex-col min-h-screen">

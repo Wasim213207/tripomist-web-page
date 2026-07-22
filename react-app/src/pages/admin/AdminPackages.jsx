@@ -8,8 +8,6 @@ import {
   Trash2,
   Search,
   RefreshCw,
-  Star,
-  Award,
   Eye,
   EyeOff,
   ChevronLeft,
@@ -294,8 +292,7 @@ const AdminPackages = () => {
                     <th className="text-left px-4 py-3 font-semibold text-gray-600 whitespace-nowrap">Duration</th>
                     <th className="text-left px-4 py-3 font-semibold text-gray-600 whitespace-nowrap">Price (₹)</th>
                     <th className="text-center px-4 py-3 font-semibold text-gray-600 whitespace-nowrap">Status</th>
-                    <th className="text-center px-4 py-3 font-semibold text-gray-600 whitespace-nowrap">Featured</th>
-                    <th className="text-center px-4 py-3 font-semibold text-gray-600 whitespace-nowrap">Best Seller</th>
+                    <th className="text-left px-4 py-3 font-semibold text-gray-600 whitespace-nowrap">Listing Categories</th>
                     <th className="text-right px-4 py-3 font-semibold text-gray-600 whitespace-nowrap">Actions</th>
                   </tr>
                 </thead>
@@ -329,25 +326,17 @@ const AdminPackages = () => {
                           <StatusBadge status={pkg.status} />
                         </button>
                       </td>
-                      <td className="px-4 py-3.5 text-center">
-                        <ToggleButton
-                          active={!!pkg.featured}
-                          onClick={() => toggleField(pkg, 'featured')}
-                          activeIcon={Star}
-                          inactiveIcon={Star}
-                          activeColor="text-yellow-500 bg-yellow-50"
-                          title={pkg.featured ? 'Remove from featured' : 'Mark as featured'}
-                        />
-                      </td>
-                      <td className="px-4 py-3.5 text-center">
-                        <ToggleButton
-                          active={!!pkg.best_seller}
-                          onClick={() => toggleField(pkg, 'best_seller')}
-                          activeIcon={Award}
-                          inactiveIcon={Award}
-                          activeColor="text-orange-500 bg-orange-50"
-                          title={pkg.best_seller ? 'Remove best seller' : 'Mark as best seller'}
-                        />
+                      <td className="px-4 py-3.5">
+                        <div className="flex flex-wrap gap-1 max-w-[200px]">
+                          {(pkg.listing_categories || []).map(cat => (
+                            <span key={cat} className="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-medium bg-blue-50 text-blue-700 border border-blue-100">
+                              {formatSlugToTitle(cat)}
+                            </span>
+                          ))}
+                          {(!pkg.listing_categories || pkg.listing_categories.length === 0) && (
+                            <span className="text-xs text-gray-400">—</span>
+                          )}
+                        </div>
                       </td>
                       <td className="px-4 py-3.5">
                         <div className="flex items-center justify-end gap-1">
