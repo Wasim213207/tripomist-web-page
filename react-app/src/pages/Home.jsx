@@ -194,7 +194,7 @@ function Home() {
                 {heroSettings?.primary_button_text || "Explore All Departures"}
                 <span className="material-symbols-outlined ml-2 text-[18px]">arrow_forward</span>
               </Link>
-              <Link className="inline-flex items-center justify-center border border-white/50 text-white font-button text-button px-8 py-4 rounded-lg hover:border-white hover:text-white hover:bg-white/10 transition-colors bg-black/30 backdrop-blur-sm active:scale-98 whitespace-nowrap" to={heroSettings?.secondary_button_route || "/trips/upcoming-trips"}>
+              <Link className="inline-flex items-center justify-center border border-white/50 text-white font-button text-button px-8 py-4 rounded-lg hover:border-white hover:text-white hover:bg-white/10 transition-colors bg-black/30 backdrop-blur-sm active:scale-98 whitespace-nowrap" to={heroSettings?.secondary_button_route || "/trips/upcoming_trips"}>
                 {heroSettings?.secondary_button_text || "See Upcoming Trips"}
               </Link>
             </div>
