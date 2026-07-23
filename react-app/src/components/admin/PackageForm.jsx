@@ -29,6 +29,7 @@ const PackageForm = ({ onCancel, onSubmit, initialData, saving }) => {
   const [secondaryBadgeText, setSecondaryBadgeText] = useState('');
   const [showPrimaryBadge, setShowPrimaryBadge] = useState(true);
   const [showSecondaryBadge, setShowSecondaryBadge] = useState(true);
+  const [isClickable, setIsClickable] = useState(true);
 
   const [dynamicSections, setDynamicSections] = useState([]);
   const [dynamicInterests, setDynamicInterests] = useState([]);
@@ -88,6 +89,7 @@ const PackageForm = ({ onCancel, onSubmit, initialData, saving }) => {
       setSecondaryBadgeText(initialData.secondary_badge_text || '');
       setShowPrimaryBadge(initialData.show_primary_badge ?? true);
       setShowSecondaryBadge(initialData.show_secondary_badge ?? true);
+      setIsClickable(initialData.is_clickable ?? true);
 
       const fetchExistingPlacements = async () => {
         try {
@@ -168,6 +170,7 @@ const PackageForm = ({ onCancel, onSubmit, initialData, saving }) => {
       secondary_badge_text: secondaryBadgeText.trim() || null,
       show_primary_badge: showPrimaryBadge,
       show_secondary_badge: showSecondaryBadge,
+      is_clickable: isClickable,
     };
     onSubmit(pkg);
   };
@@ -281,7 +284,7 @@ const PackageForm = ({ onCancel, onSubmit, initialData, saving }) => {
             <textarea value={fullDescription} onChange={e => setFullDescription(e.target.value)} className={inputClass} rows={4} placeholder="Detailed description for the package page..." />
           </div>
 
-          {/* Status */}
+          {/* Status and Clickable */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 items-end">
             <div>
               <label className={labelClass}>Status</label>
@@ -289,6 +292,20 @@ const PackageForm = ({ onCancel, onSubmit, initialData, saving }) => {
                 <option value="active">Active</option>
                 <option value="inactive">Inactive</option>
               </select>
+            </div>
+            <div>
+              <label className={labelClass}>Card Clickable</label>
+              <div className="flex items-center h-[38px] px-3 border border-gray-300 rounded-lg bg-gray-50">
+                <input 
+                  type="checkbox" 
+                  checked={isClickable} 
+                  onChange={e => setIsClickable(e.target.checked)} 
+                  className="w-4 h-4 text-blue-600 rounded border-gray-300 focus:ring-blue-500 mr-2" 
+                />
+                <span className="text-sm text-gray-700 font-medium">
+                  {isClickable ? 'ON (Normal Package)' : 'OFF (Card Only, Non-clickable)'}
+                </span>
+              </div>
             </div>
           </div>
 

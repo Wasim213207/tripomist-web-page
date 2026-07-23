@@ -249,6 +249,7 @@ export default function ListingPage() {
                 secondaryBadgeText={pkg.secondary_badge_text}
                 showPrimaryBadge={pkg.show_primary_badge}
                 showSecondaryBadge={pkg.show_secondary_badge}
+                isClickable={pkg.is_clickable ?? true}
                 className="w-full h-[360px]"
               />
             ))}

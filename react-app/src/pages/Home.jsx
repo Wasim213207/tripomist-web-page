@@ -206,6 +206,7 @@ function Home() {
                 secondaryBadgeText={pkg.secondary_badge_text}
                 showPrimaryBadge={pkg.show_primary_badge}
                 showSecondaryBadge={pkg.show_secondary_badge}
+                isClickable={pkg.is_clickable ?? true}
               />
             ))}
           </div>
@@ -310,33 +311,40 @@ function Home() {
               modules={[EffectCoverflow, Autoplay]}
               className="w-full overflow-visible"
             >
-              {banners.map((banner) => (
-                <SwiperSlide key={banner.id} className="overflow-visible">
-                  <Link to={banner.button_link || '#'} className="block relative w-full h-[220px] md:h-[280px] bg-slate-900 rounded-3xl overflow-hidden shadow-lg active:scale-[0.99] transition-transform">
-                    <img 
-                      src={banner.desktop_image} 
-                      alt={banner.title} 
-                      className="absolute inset-0 w-full h-full object-cover opacity-60"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-r from-black/85 via-black/45 to-transparent"></div>
-                    <div className="relative z-10 text-white max-w-xl h-full flex flex-col justify-center px-6 md:px-16">
-                      {banner.label && (
-                        <span className="text-[10px] md:text-xs font-bold uppercase tracking-widest bg-amber-500 text-black px-2.5 py-1 rounded-full mb-3 self-start">
-                          {banner.label}
-                        </span>
-                      )}
-                      <h3 className="text-xl md:text-3xl font-extrabold tracking-tight leading-tight mb-2">
-                        {banner.title} {banner.highlighted_text && <span className="text-yellow-400">{banner.highlighted_text}</span>}
-                      </h3>
-                      {(banner.subtitle || banner.price_text) && (
-                        <p className="text-xs md:text-sm text-gray-300 font-semibold uppercase tracking-wider">
-                          {banner.subtitle} {banner.subtitle && banner.price_text && '•'} {banner.price_text && <span className="text-emerald-400 font-extrabold text-sm md:text-lg">{banner.price_text}</span>}
-                        </p>
-                      )}
-                    </div>
-                  </Link>
-                </SwiperSlide>
-              ))}
+              {banners.map((banner) => {
+                const isBannerClickable = banner.is_clickable ?? true;
+                const bannerLink = banner.slug ? `/banner/${banner.slug}` : (banner.button_link || '#');
+                const BannerWrapper = isBannerClickable ? Link : 'div';
+                const wrapperProps = isBannerClickable ? { to: bannerLink } : {};
+
+                return (
+                  <SwiperSlide key={banner.id} className="overflow-visible">
+                    <BannerWrapper {...wrapperProps} className={`block relative w-full h-[220px] md:h-[280px] bg-slate-900 rounded-3xl overflow-hidden shadow-lg transition-transform ${isBannerClickable ? 'active:scale-[0.99] cursor-pointer' : 'cursor-default opacity-95'}`}>
+                      <img 
+                        src={banner.desktop_image} 
+                        alt={banner.title} 
+                        className="absolute inset-0 w-full h-full object-cover opacity-60"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-r from-black/85 via-black/45 to-transparent"></div>
+                      <div className="relative z-10 text-white max-w-xl h-full flex flex-col justify-center px-6 md:px-16">
+                        {banner.label && (
+                          <span className="text-[10px] md:text-xs font-bold uppercase tracking-widest bg-amber-500 text-black px-2.5 py-1 rounded-full mb-3 self-start">
+                            {banner.label}
+                          </span>
+                        )}
+                        <h3 className="text-xl md:text-3xl font-extrabold tracking-tight leading-tight mb-2">
+                          {banner.title} {banner.highlighted_text && <span className="text-yellow-400">{banner.highlighted_text}</span>}
+                        </h3>
+                        {(banner.subtitle || banner.price_text) && (
+                          <p className="text-xs md:text-sm text-gray-300 font-semibold uppercase tracking-wider">
+                            {banner.subtitle} {banner.subtitle && banner.price_text && '•'} {banner.price_text && <span className="text-emerald-400 font-extrabold text-sm md:text-lg">{banner.price_text}</span>}
+                          </p>
+                        )}
+                      </div>
+                    </BannerWrapper>
+                  </SwiperSlide>
+                );
+              })}
             </Swiper>
           </section>
         )}

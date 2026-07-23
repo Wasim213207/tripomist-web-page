@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Link, useParams, useNavigate } from 'react-router-dom'
+import { Link, useParams, useNavigate, useLocation } from 'react-router-dom'
 import BookingModal from '../components/BookingModal'
 import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
@@ -20,6 +20,7 @@ const cleanHeroTitle = (title) => {
 export default function PackageDetail() {
   const { slug } = useParams()
   const navigate = useNavigate()
+  const location = useLocation()
   
   const [trip, setTrip] = useState(null)
   const [loading, setLoading] = useState(true)
@@ -36,8 +37,11 @@ export default function PackageDetail() {
 
   useEffect(() => {
     async function fetchPackage() {
+      const isBannerRoute = location.pathname.startsWith('/banner/');
+      const table = isBannerRoute ? 'promotional_banners' : 'Pakage';
+      
       const { data, error } = await supabase
-        .from('Pakage')
+        .from(table)
         .select('*')
         .eq('slug', slug)
         .single()
@@ -77,6 +81,10 @@ export default function PackageDetail() {
         })
       } else {
         // Map data to match the UI fields
+        const isBannerRoute = location.pathname.startsWith('/banner/');
+        const priceNum = isBannerRoute ? (data.price || 0) : data.price;
+        const originalPriceNum = isBannerRoute ? (data.original_price || 0) : data.original_price;
+
         setTrip({
           id: data.id,
           title: data.title,
@@ -84,13 +92,13 @@ export default function PackageDetail() {
           state: data.state,
           durationText: data.duration,
           duration: data.duration,
-          numericPrice: data.price, // used for cart calculation
-          price: `₹${data.price.toLocaleString('en-IN')}`,
-          originalPrice: `₹${data.original_price.toLocaleString('en-IN')}`,
+          numericPrice: priceNum, // used for cart calculation
+          price: `₹${priceNum.toLocaleString('en-IN')}`,
+          originalPrice: `₹${originalPriceNum.toLocaleString('en-IN')}`,
           discountText: data.discount_text,
-          pickup: data.departure_from,
-          heroImg: data.banner_image || data.image_url,
-          bg: data.banner_image || data.image_url,
+          pickup: isBannerRoute ? data.destination : data.departure_from,
+          heroImg: isBannerRoute ? data.desktop_image : (data.banner_image || data.image_url),
+          bg: isBannerRoute ? data.desktop_image : (data.banner_image || data.image_url),
           overview: data.short_description,
           description: data.full_description,
           inclusions: data.inclusions || [],
@@ -128,7 +136,7 @@ export default function PackageDetail() {
     } else {
         setLoading(false)
     }
-  }, [slug])
+  }, [slug, location.pathname])
 
   useEffect(() => {
     if (!trip) return;

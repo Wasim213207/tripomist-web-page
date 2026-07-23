@@ -239,6 +239,7 @@ function App() {
           <Route path="/itinerary/madhyameshwar" element={<ItineraryMadhyameshwar />} />
           <Route path="/itinerary/udaipur-and-kumbhalgarh" element={<ItineraryUdaipurKumbhalgarh />} />
           <Route path="/itinerary/:slug" element={<PackageDetail />} />
+          <Route path="/banner/:slug" element={<PackageDetail />} />
           <Route path="/checkout" element={<Checkout />} />
           <Route path="/checkout/:packageSlug" element={<PackageCheckout />} />
           <Route path="/cart" element={<Cart />} />

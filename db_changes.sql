@@ -1,0 +1,21 @@
+-- Add is_clickable to Pakage
+ALTER TABLE "Pakage" ADD COLUMN IF NOT EXISTS is_clickable BOOLEAN DEFAULT true;
+
+-- Add new columns to promotional_banners
+ALTER TABLE "promotional_banners" 
+  ADD COLUMN IF NOT EXISTS slug TEXT,
+  ADD COLUMN IF NOT EXISTS mobile_banner TEXT,
+  ADD COLUMN IF NOT EXISTS short_description TEXT,
+  ADD COLUMN IF NOT EXISTS full_description TEXT,
+  ADD COLUMN IF NOT EXISTS duration TEXT,
+  ADD COLUMN IF NOT EXISTS price NUMERIC,
+  ADD COLUMN IF NOT EXISTS original_price NUMERIC,
+  ADD COLUMN IF NOT EXISTS discount_text TEXT,
+  ADD COLUMN IF NOT EXISTS destination TEXT,
+  ADD COLUMN IF NOT EXISTS state TEXT,
+  ADD COLUMN IF NOT EXISTS itinerary JSONB,
+  ADD COLUMN IF NOT EXISTS inclusions JSONB,
+  ADD COLUMN IF NOT EXISTS exclusions JSONB,
+  ADD COLUMN IF NOT EXISTS costings JSONB,
+  ADD COLUMN IF NOT EXISTS status TEXT,
+  ADD COLUMN IF NOT EXISTS is_clickable BOOLEAN DEFAULT true;

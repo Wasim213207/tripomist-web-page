@@ -18,23 +18,27 @@ const PackageCard = ({
   primaryBadgeText,
   secondaryBadgeText,
   showPrimaryBadge,
-  showSecondaryBadge
+  showSecondaryBadge,
+  isClickable = true
 }) => {
   const displayPrice = price ? (typeof price === 'string' && !price.includes('/-') ? `${price}/-` : price) : null;
   const displayOriginalPrice = originalPrice ? (typeof originalPrice === 'string' && !originalPrice.includes('/-') ? `${originalPrice}/-` : originalPrice) : null;
   
-  const isClickable = link && link !== '#';
+  const hasValidLink = link && link !== '#';
+  const shouldBeClickable = isClickable && hasValidLink;
   
   // Manual Badge Logic
   let finalPrimaryBadge = (showPrimaryBadge && primaryBadgeText) ? primaryBadgeText : null;
   let finalSecondaryBadge = (showSecondaryBadge && secondaryBadgeText) ? secondaryBadgeText : null;
 
+  const CardWrapper = shouldBeClickable ? Link : 'div';
+  const wrapperProps = shouldBeClickable ? { to: link || '#' } : {};
+
   return (
-    <Link 
-      to={link || '#'} 
-      onClick={(e) => { if (!isClickable) e.preventDefault() }}
+    <CardWrapper 
+      {...wrapperProps}
       draggable={false}
-      className={`rounded-3xl overflow-hidden group relative flex flex-col shadow-sm hover:shadow-xl transition-all duration-300 select-none block bg-[#cdeae7] border border-gray-100 ${className || 'w-full h-[360px]'}`}
+      className={`rounded-3xl overflow-hidden group relative flex flex-col shadow-sm transition-all duration-300 select-none block bg-[#cdeae7] border border-gray-100 ${shouldBeClickable ? 'hover:shadow-xl' : 'opacity-95'} ${className || 'w-full h-[360px]'}`}
     >
       {/* Top Image Section */}
       <div className="relative w-full h-[55%] overflow-hidden shrink-0">
@@ -95,17 +99,17 @@ const PackageCard = ({
             </div>
           </div>
           
-          {/* Animated View Detail Arrow or Discount % */}
-          <div className={`relative overflow-hidden group/btn bg-gray-50 rounded-full px-3 py-1.5 border border-gray-100 flex items-center transition-all ${isClickable ? 'cursor-pointer' : 'cursor-default'}`}>
-            {isClickable && <div className="absolute inset-0 w-0 bg-[#136b8a] transition-all duration-300 ease-out group-hover/btn:w-full z-0"></div>}
-            <div className={`relative z-10 flex items-center font-bold text-[12px] whitespace-nowrap transition-colors duration-300 ${isClickable ? 'text-gray-900 group-hover/btn:text-white' : 'text-gray-400'}`}>
-              <span className="mr-1">Click</span>
-              <span className="material-symbols-outlined text-[16px]">arrow_outward</span>
+          {/* Animated View Detail Arrow or Coming Soon */}
+          <div className={`relative overflow-hidden group/btn bg-gray-50 rounded-full px-3 py-1.5 border border-gray-100 flex items-center transition-all ${shouldBeClickable ? 'cursor-pointer' : 'cursor-default'}`}>
+            {shouldBeClickable && <div className="absolute inset-0 w-0 bg-[#136b8a] transition-all duration-300 ease-out group-hover/btn:w-full z-0"></div>}
+            <div className={`relative z-10 flex items-center font-bold text-[12px] whitespace-nowrap transition-colors duration-300 ${shouldBeClickable ? 'text-gray-900 group-hover/btn:text-white' : 'text-gray-400'}`}>
+              <span className={shouldBeClickable ? "mr-1" : ""}>{shouldBeClickable ? 'Click' : 'Coming Soon'}</span>
+              {shouldBeClickable && <span className="material-symbols-outlined text-[16px]">arrow_outward</span>}
             </div>
           </div>
         </div>
       </div>
-    </Link>
+    </CardWrapper>
   )
 }
 

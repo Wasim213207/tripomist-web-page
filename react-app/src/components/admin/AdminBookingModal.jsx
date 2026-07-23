@@ -2,6 +2,12 @@ import React, { useState, useEffect } from 'react';
 import { supabase } from '../../supabaseClient';
 import { X, Check, Plus, Trash2, AlertCircle } from 'lucide-react';
 
+const optionalNumber = (value) => {
+  if (value === '' || value === null || value === undefined) return null;
+  const number = Number(value);
+  return Number.isNaN(number) ? null : number;
+};
+
 const AdminBookingModal = ({ isOpen, onClose, onSuccess, bookingId = null }) => {
   const [submitting, setSubmitting] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -43,7 +49,6 @@ const AdminBookingModal = ({ isOpen, onClose, onSuccess, bookingId = null }) => 
     notes: '',
     sharing_type: 'Double',
     room_id: null,
-    bus_seat_number: '',
     pickup_point: '',
     check_in_status: 'pending',
     display_order: 0
@@ -283,7 +288,14 @@ const AdminBookingModal = ({ isOpen, onClose, onSuccess, bookingId = null }) => 
       
       for (let i = 0; i < travellers.length; i++) {
         const t = travellers[i];
-        const payload = { ...t, booking_id: currentBookingId, display_order: i };
+        const payload = { 
+          ...t, 
+          age: optionalNumber(t.age),
+          room_id: optionalNumber(t.room_id),
+          booking_id: currentBookingId, 
+          display_order: i 
+        };
+        delete payload.bus_seat_number;
         
         if (t.id) {
           const { error: updateTravErr } = await supabase.from('booking_travellers').update(payload).eq('id', t.id);
@@ -522,11 +534,8 @@ const AdminBookingModal = ({ isOpen, onClose, onSuccess, bookingId = null }) => 
                         </select>
                       </div>
                       <div>
-                        <label className="block text-xs font-medium text-gray-600 mb-1">Bus Seat / Pickup</label>
-                        <div className="flex gap-2">
-                          <input type="text" placeholder="Seat" value={traveller.bus_seat_number || ''} onChange={e=>handleTravellerChange(idx, 'bus_seat_number', e.target.value)} className="w-1/3 p-2 border rounded-lg outline-none focus:border-[#136b8a] text-sm" />
-                          <input type="text" placeholder="Pickup Point" value={traveller.pickup_point || ''} onChange={e=>handleTravellerChange(idx, 'pickup_point', e.target.value)} className="w-2/3 p-2 border rounded-lg outline-none focus:border-[#136b8a] text-sm" />
-                        </div>
+                        <label className="block text-xs font-medium text-gray-600 mb-1">Pickup Point</label>
+                        <input type="text" placeholder="Pickup Point" value={traveller.pickup_point || ''} onChange={e=>handleTravellerChange(idx, 'pickup_point', e.target.value)} className="w-full p-2 border rounded-lg outline-none focus:border-[#136b8a] text-sm" />
                       </div>
                       <div className="md:col-span-2">
                         <label className="block text-xs font-medium text-gray-600 mb-1">Emergency Contact (Name & Phone)</label>
