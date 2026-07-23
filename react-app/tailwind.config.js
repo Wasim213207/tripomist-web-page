@@ -100,6 +100,15 @@ export default {
         "display-lg-mobile": ["48px", { "lineHeight": "1.1", "letterSpacing": "-0.04em", "fontWeight": "800" }],
         "label-caps": ["12px", { "lineHeight": "1.0", "letterSpacing": "0.1em", "fontWeight": "500" }],
         "button": ["14px", { "lineHeight": "1.0", "letterSpacing": "0.02em", "fontWeight": "700" }]
+      },
+      keyframes: {
+        shine: {
+          '0%': { transform: 'translateX(-200%) skewX(-12deg)' },
+          '100%': { transform: 'translateX(200%) skewX(-12deg)' },
+        }
+      },
+      animation: {
+        shine: 'shine infinite linear'
       }
     },
   },

@@ -58,6 +58,7 @@ const AdminManualBookings = React.lazy(() => import('./pages/admin/AdminManualBo
 const AdminWebsitePages = React.lazy(() => import('./pages/admin/AdminWebsitePages'));
 const AdminMenuManager = React.lazy(() => import('./pages/admin/AdminMenuManager'));
 const AdminExploreDepartments = React.lazy(() => import('./pages/admin/AdminExploreDepartments'));
+const AdminPromoStrip = React.lazy(() => import('./pages/admin/AdminPromoStrip'));
 const AdminReviews = React.lazy(() => import('./pages/admin/AdminReviews'));
 const DestinationPackages = React.lazy(() => import('./pages/DestinationPackages'));
 const CustomerLayout = React.lazy(() => import('./components/customer/CustomerLayout'));
@@ -148,10 +149,18 @@ function App() {
               <Route path="website-pages/menu-manager" element={
                 <React.Suspense fallback={<div>Loading...</div>}><AdminMenuManager /></React.Suspense>
               } />
-              <Route path="explore-departments" element={
+              <Route 
+                path="explore-departments" 
+                element={
                 <React.Suspense fallback={<div>Loading...</div>}><AdminExploreDepartments /></React.Suspense>
-              } />
-              <Route path="reviews" element={
+                } 
+              />
+              <Route 
+                path="promo-strip" 
+                element={
+                <React.Suspense fallback={<div>Loading...</div>}><AdminPromoStrip /></React.Suspense>
+                } 
+              /><Route path="reviews" element={
                 <React.Suspense fallback={<div>Loading...</div>}><AdminReviews /></React.Suspense>
               } />
             </Route>
