@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react'
 import { Link, useNavigate, useLocation } from 'react-router-dom'
 import { supabase } from '../utils/supabaseClient'
 import { motion, AnimatePresence } from 'framer-motion'
+import ExploreNavbar from './ExploreNavbar'
 
 function Navbar() {
   const [isOpen, setIsOpen] = useState(false)
@@ -479,6 +480,8 @@ function Navbar() {
           />
         )}
       </AnimatePresence>
+
+      <ExploreNavbar />
     </>
   )
 }

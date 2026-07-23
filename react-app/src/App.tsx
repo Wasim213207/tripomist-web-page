@@ -33,8 +33,8 @@ import Profile from './pages/Profile'
 import MyAccount from './pages/MyAccount'
 import MyTrips from './pages/MyTrips'
 import BookingDetail from './pages/BookingDetail'
-// Removed legacy hardcoded destination imports
 import DynamicPage from './pages/DynamicPage'
+const ExploreDepartment = React.lazy(() => import('./pages/ExploreDepartment'));
 const ListingPage = React.lazy(() => import('./pages/ListingPage'));
 import BottomDock from './components/BottomDock'
 import Chatbot from './components/Chatbot'
@@ -57,6 +57,7 @@ const AdminHomepageSections = React.lazy(() => import('./pages/admin/AdminHomepa
 const AdminManualBookings = React.lazy(() => import('./pages/admin/AdminManualBookings'));
 const AdminWebsitePages = React.lazy(() => import('./pages/admin/AdminWebsitePages'));
 const AdminMenuManager = React.lazy(() => import('./pages/admin/AdminMenuManager'));
+const AdminExploreDepartments = React.lazy(() => import('./pages/admin/AdminExploreDepartments'));
 const AdminReviews = React.lazy(() => import('./pages/admin/AdminReviews'));
 const DestinationPackages = React.lazy(() => import('./pages/DestinationPackages'));
 const CustomerLayout = React.lazy(() => import('./components/customer/CustomerLayout'));
@@ -146,6 +147,9 @@ function App() {
               } />
               <Route path="website-pages/menu-manager" element={
                 <React.Suspense fallback={<div>Loading...</div>}><AdminMenuManager /></React.Suspense>
+              } />
+              <Route path="explore-departments" element={
+                <React.Suspense fallback={<div>Loading...</div>}><AdminExploreDepartments /></React.Suspense>
               } />
               <Route path="reviews" element={
                 <React.Suspense fallback={<div>Loading...</div>}><AdminReviews /></React.Suspense>
@@ -238,6 +242,7 @@ function App() {
           <Route path="/itinerary/kedarnath" element={<ItineraryKedarnath />} />
           <Route path="/itinerary/madhyameshwar" element={<ItineraryMadhyameshwar />} />
           <Route path="/itinerary/udaipur-and-kumbhalgarh" element={<ItineraryUdaipurKumbhalgarh />} />
+          <Route path="/explore/:slug" element={<React.Suspense fallback={<div className="flex items-center justify-center h-screen"><div className="w-8 h-8 border-4 border-[#136b8a] border-t-transparent rounded-full animate-spin"></div></div>}><ExploreDepartment /></React.Suspense>} />
           <Route path="/itinerary/:slug" element={<PackageDetail />} />
           <Route path="/banner/:slug" element={<PackageDetail />} />
           <Route path="/checkout" element={<Checkout />} />

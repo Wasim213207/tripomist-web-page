@@ -34,20 +34,23 @@ const PackageForm = ({ onCancel, onSubmit, initialData, saving }) => {
   const [dynamicSections, setDynamicSections] = useState([]);
   const [dynamicInterests, setDynamicInterests] = useState([]);
   const [dynamicDestinations, setDynamicDestinations] = useState([]);
+  const [exploreDepartments, setExploreDepartments] = useState([]);
 
   // Fetch all placement options
   useEffect(() => {
     const fetchPlacements = async () => {
       try {
-        const [secRes, intRes, destRes] = await Promise.all([
+        const [secRes, intRes, destRes, exploreRes] = await Promise.all([
           supabase.from('homepage_sections').select('id, section_key, title').eq('is_active', true).not('section_key', 'in', '("destinations","interests")').order('display_order'),
           supabase.from('interest_categories').select('id, slug, name').eq('is_active', true).order('display_order'),
-          supabase.from('destinations').select('id, slug, name').eq('is_active', true).order('display_order')
+          supabase.from('destinations').select('id, slug, name').eq('is_active', true).order('display_order'),
+          supabase.from('explore_departments').select('id, slug, title').eq('is_active', true).eq('allow_package_placement', true).order('display_order')
         ]);
         
         if (secRes.data) setDynamicSections(secRes.data);
         if (intRes.data) setDynamicInterests(intRes.data);
         if (destRes.data) setDynamicDestinations(destRes.data);
+        if (exploreRes.data) setExploreDepartments(exploreRes.data);
       } catch (err) {
         console.error('Error fetching placements:', err);
       }
@@ -390,6 +393,26 @@ const PackageForm = ({ onCancel, onSubmit, initialData, saving }) => {
                         {isChecked && <svg className="w-3.5 h-3.5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}><path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" /></svg>}
                       </div>
                       <span className="text-sm text-gray-700 select-none">{dest.name}</span>
+                    </label>
+                  )
+                })}
+              </div>
+            </div>
+
+            {/* Explore Departments */}
+            <div>
+              <h4 className="text-sm font-medium text-gray-700 mb-3">Explore Departments</h4>
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+                {exploreDepartments.length === 0 && <div className="text-sm text-gray-500">No active explore departments.</div>}
+                {exploreDepartments.map(dept => {
+                  const isChecked = selectedPlacements.some(p => p.type === 'explore_department' && p.id === dept.id);
+                  return (
+                    <label key={dept.id} className="flex items-center gap-3 cursor-pointer group relative">
+                      <input type="checkbox" className="absolute opacity-0 w-0 h-0" checked={isChecked} onChange={() => togglePlacement('explore_department', dept.id, dept.slug)} />
+                      <div className={`w-5 h-5 rounded border flex items-center justify-center transition-colors ${isChecked ? 'bg-blue-600 border-blue-600' : 'border-gray-300 group-hover:border-blue-500'}`}>
+                        {isChecked && <svg className="w-3.5 h-3.5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}><path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" /></svg>}
+                      </div>
+                      <span className="text-sm text-gray-700 select-none">{dept.title}</span>
                     </label>
                   )
                 })}

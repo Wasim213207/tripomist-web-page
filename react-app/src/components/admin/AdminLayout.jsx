@@ -40,7 +40,7 @@ const AdminLayout = () => {
         location.pathname.startsWith('/admin/booking-activity-logs')) {
       setIsBookingsOpen(true);
     }
-    if (location.pathname.startsWith('/admin/banners') || location.pathname.startsWith('/admin/destinations') || location.pathname.startsWith('/admin/interests') || location.pathname.startsWith('/admin/sections') || location.pathname.startsWith('/admin/site-settings')) {
+    if (location.pathname.startsWith('/admin/banners') || location.pathname.startsWith('/admin/destinations') || location.pathname.startsWith('/admin/interests') || location.pathname.startsWith('/admin/sections') || location.pathname.startsWith('/admin/explore-departments') || location.pathname.startsWith('/admin/site-settings')) {
       setIsWebsiteMgmtOpen(true);
     }
     if (location.pathname.startsWith('/admin/website-pages')) {
@@ -175,6 +175,9 @@ const AdminLayout = () => {
                 </Link>
                 <Link to="/admin/sections" className={`block px-3 py-1.5 rounded-md transition-colors ${location.pathname.startsWith('/admin/sections') ? 'bg-slate-100 text-slate-900 font-medium' : 'text-gray-600 hover:bg-gray-50'}`} onClick={() => setSidebarOpen(false)}>
                   Homepage Sections
+                </Link>
+                <Link to="/admin/explore-departments" className={`block px-3 py-1.5 rounded-md transition-colors ${location.pathname.startsWith('/admin/explore-departments') ? 'bg-slate-100 text-slate-900 font-medium' : 'text-gray-600 hover:bg-gray-50'}`} onClick={() => setSidebarOpen(false)}>
+                  Explore Navigation
                 </Link>
                 <Link to="/admin/reviews" className={`block px-3 py-1.5 rounded-md transition-colors ${location.pathname.startsWith('/admin/reviews') ? 'bg-slate-100 text-slate-900 font-medium' : 'text-gray-600 hover:bg-gray-50'}`} onClick={() => setSidebarOpen(false)}>
                   Reviews
