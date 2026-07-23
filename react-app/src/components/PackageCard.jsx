@@ -14,49 +14,20 @@ const PackageCard = ({
   label, 
   bestSeller,
   badge,
-  packagePlacements,
-  className 
+  className,
+  primaryBadgeText,
+  secondaryBadgeText,
+  showPrimaryBadge,
+  showSecondaryBadge
 }) => {
   const displayPrice = price ? (typeof price === 'string' && !price.includes('/-') ? `${price}/-` : price) : null;
   const displayOriginalPrice = originalPrice ? (typeof originalPrice === 'string' && !originalPrice.includes('/-') ? `${originalPrice}/-` : originalPrice) : null;
   
   const isClickable = link && link !== '#';
   
-  // Dynamic Badge Logic
-  let finalPrimaryBadge = null;
-  let finalSecondaryBadge = null;
-
-  if (packagePlacements && Array.isArray(packagePlacements) && packagePlacements.length > 0) {
-    const formatted = packagePlacements.map(p => ({
-      ...p,
-      title: p.placement_slug.split(/[-_]/).map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ')
-    }));
-    
-    const homepage = formatted.filter(p => p.placement_type === 'homepage_section');
-    const interests = formatted.filter(p => p.placement_type === 'interest');
-    const destinations = formatted.filter(p => p.placement_type === 'destination');
-    
-    const sorted = [...homepage, ...interests, ...destinations];
-    const uniqueTitles = Array.from(new Set(sorted.map(p => p.title)));
-    
-    if (uniqueTitles.length > 0) {
-      finalPrimaryBadge = uniqueTitles[0];
-    }
-    if (uniqueTitles.length > 1) {
-      finalSecondaryBadge = uniqueTitles[1];
-    }
-  }
-
-  // Fallback to label (destination name) if no dynamic primary badge was generated
-  // If packagePlacements is entirely missing (e.g., hardcoded sections), fallback to label/DESTINATION
-  if (!finalPrimaryBadge && (!packagePlacements || packagePlacements.length === 0)) {
-    finalPrimaryBadge = label || 'DESTINATION';
-  }
-  
-  // If no dynamic secondary badge, fallback to bestSeller ONLY if placements are empty (hardcoded sections)
-  if (!finalSecondaryBadge && (!packagePlacements || packagePlacements.length === 0)) {
-    finalSecondaryBadge = bestSeller ? 'Best Seller' : badge;
-  }
+  // Manual Badge Logic
+  let finalPrimaryBadge = (showPrimaryBadge && primaryBadgeText) ? primaryBadgeText : null;
+  let finalSecondaryBadge = (showSecondaryBadge && secondaryBadgeText) ? secondaryBadgeText : null;
 
   return (
     <Link 

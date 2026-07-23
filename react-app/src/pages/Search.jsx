@@ -92,7 +92,10 @@ function Search() {
                 bg={pkg.image_url || pkg.banner_image || "https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1"}
                 link={`/itinerary/${pkg.slug}`}
                 bestSeller={pkg.best_seller}
-                packagePlacements={pkg.package_placements}
+                primaryBadgeText={pkg.primary_badge_text}
+                secondaryBadgeText={pkg.secondary_badge_text}
+                showPrimaryBadge={pkg.show_primary_badge}
+                showSecondaryBadge={pkg.show_secondary_badge}
               />
             ))}
           </div>
@@ -105,3 +108,4 @@ function Search() {
 }
 
 export default Search
+

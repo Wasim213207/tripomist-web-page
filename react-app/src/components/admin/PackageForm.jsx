@@ -25,6 +25,10 @@ const PackageForm = ({ onCancel, onSubmit, initialData, saving }) => {
   const [exclusions, setExclusions] = useState('');
   const [costings, setCostings] = useState('');
   const [jsonError, setJsonError] = useState('');
+  const [primaryBadgeText, setPrimaryBadgeText] = useState('');
+  const [secondaryBadgeText, setSecondaryBadgeText] = useState('');
+  const [showPrimaryBadge, setShowPrimaryBadge] = useState(true);
+  const [showSecondaryBadge, setShowSecondaryBadge] = useState(true);
 
   const [dynamicSections, setDynamicSections] = useState([]);
   const [dynamicInterests, setDynamicInterests] = useState([]);
@@ -80,6 +84,10 @@ const PackageForm = ({ onCancel, onSubmit, initialData, saving }) => {
       setExclusions(initialData.exclusions ? JSON.stringify(initialData.exclusions, null, 2) : '');
       setCostings(initialData.costings ? JSON.stringify(initialData.costings, null, 2) : '');
       setListingCategories(initialData.listing_categories || []);
+      setPrimaryBadgeText(initialData.primary_badge_text || '');
+      setSecondaryBadgeText(initialData.secondary_badge_text || '');
+      setShowPrimaryBadge(initialData.show_primary_badge ?? true);
+      setShowSecondaryBadge(initialData.show_secondary_badge ?? true);
 
       const fetchExistingPlacements = async () => {
         try {
@@ -156,6 +164,10 @@ const PackageForm = ({ onCancel, onSubmit, initialData, saving }) => {
       exclusions: parsedExclusions,
       costings: parsedCostings,
       package_placements: selectedPlacements,
+      primary_badge_text: primaryBadgeText.trim() || null,
+      secondary_badge_text: secondaryBadgeText.trim() || null,
+      show_primary_badge: showPrimaryBadge,
+      show_secondary_badge: showSecondaryBadge,
     };
     onSubmit(pkg);
   };
@@ -277,6 +289,29 @@ const PackageForm = ({ onCancel, onSubmit, initialData, saving }) => {
                 <option value="active">Active</option>
                 <option value="inactive">Inactive</option>
               </select>
+            </div>
+          </div>
+
+          {/* Badges */}
+          <div className="border-t border-gray-200 pt-5 space-y-4">
+            <h3 className="text-sm font-semibold text-gray-500 uppercase tracking-wider">Manual Badges</h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label className={labelClass}>Primary Badge Text</label>
+                <input type="text" value={primaryBadgeText} onChange={e => setPrimaryBadgeText(e.target.value)} className={inputClass} placeholder="e.g. Destination, Recommended, Limited Seats" />
+                <div className="flex items-center mt-2">
+                  <input type="checkbox" checked={showPrimaryBadge} onChange={e => setShowPrimaryBadge(e.target.checked)} className="w-4 h-4 mr-2" />
+                  <label className="text-sm font-medium text-gray-700">Show Primary Badge</label>
+                </div>
+              </div>
+              <div>
+                <label className={labelClass}>Secondary Badge Text</label>
+                <input type="text" value={secondaryBadgeText} onChange={e => setSecondaryBadgeText(e.target.value)} className={inputClass} placeholder="e.g. Trek, Weekend Special, Group Departure" />
+                <div className="flex items-center mt-2">
+                  <input type="checkbox" checked={showSecondaryBadge} onChange={e => setShowSecondaryBadge(e.target.checked)} className="w-4 h-4 mr-2" />
+                  <label className="text-sm font-medium text-gray-700">Show Secondary Badge</label>
+                </div>
+              </div>
             </div>
           </div>
 

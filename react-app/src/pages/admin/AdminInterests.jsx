@@ -15,11 +15,16 @@ const AdminInterests = () => {
   const [error, setError] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
   const [currentItem, setCurrentItem] = useState(null);
+  const [uploading, setUploading] = useState(false);
+  const [uploadError, setUploadError] = useState(null);
   
   const initialFormState = {
     name: '',
     slug: '',
     image_url: '',
+    description: '',
+    hero_banner_url: '',
+    hero_media_type: 'image',
     route: '',
     display_order: 0,
     is_active: true
@@ -58,6 +63,7 @@ const AdminInterests = () => {
     setCurrentItem(item);
     setFormData(item);
     setIsEditing(true);
+    setUploadError(null);
   };
 
   const handleCancel = () => {
@@ -115,6 +121,47 @@ const AdminInterests = () => {
     }
   };
 
+  const handleFileUpload = async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    if (file.size > 20 * 1024 * 1024) {
+      setUploadError('File size exceeds the 20MB limit.');
+      return;
+    }
+
+    const fileExt = file.name.split('.').pop();
+    const fileName = `${Math.random().toString(36).substring(2, 15)}_${Date.now()}.${fileExt}`;
+    
+    setUploading(true);
+    setUploadError(null);
+
+    try {
+      const { error: uploadErr } = await supabase.storage
+        .from('website-assets')
+        .upload(fileName, file, {
+          cacheControl: '3600',
+          upsert: false
+        });
+
+      if (uploadErr) throw uploadErr;
+
+      const { data } = supabase.storage.from('website-assets').getPublicUrl(fileName);
+      if (data && data.publicUrl) {
+        setFormData({
+          ...formData,
+          hero_banner_url: data.publicUrl,
+          hero_media_type: file.type.startsWith('video/') ? 'video' : 'image'
+        });
+      }
+    } catch (err) {
+      console.error('Upload failed:', err);
+      setUploadError(err.message || 'Upload failed. Please try again.');
+    } finally {
+      setUploading(false);
+    }
+  };
+
   return (
     <div className="space-y-6 animate-fade-in pb-12">
       <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 flex justify-between items-center">
@@ -158,8 +205,47 @@ const AdminInterests = () => {
               <input type="text" name="route" value={formData.route || ''} onChange={handleInputChange} className="w-full p-2 border rounded" required placeholder="e.g. /trips/trek" />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Image URL</label>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Circle/Front Image URL</label>
               <input type="url" name="image_url" value={formData.image_url || ''} onChange={handleInputChange} className="w-full p-2 border rounded" required />
+            </div>
+            <div className="md:col-span-2">
+              <label className="block text-sm font-medium text-gray-700 mb-1">Hero Banner</label>
+              
+              {formData.hero_banner_url ? (
+                <div className="border rounded-xl p-4 bg-gray-50 flex flex-col items-center">
+                  {formData.hero_media_type === 'video' || formData.hero_banner_url.toLowerCase().endsWith('.mp4') ? (
+                    <video src={formData.hero_banner_url} autoPlay loop muted className="w-full max-h-48 object-cover rounded-lg mb-4 bg-black" />
+                  ) : (
+                    <img src={formData.hero_banner_url} alt="Hero preview" className="w-full max-h-48 object-cover rounded-lg mb-4" />
+                  )}
+                  <div className="flex gap-4">
+                    <label className="cursor-pointer bg-blue-50 text-blue-600 px-4 py-2 rounded-lg text-sm font-medium hover:bg-blue-100">
+                      {uploading ? 'Uploading...' : 'Replace Hero'}
+                      <input type="file" accept="image/*,video/*" className="hidden" onChange={handleFileUpload} disabled={uploading} />
+                    </label>
+                    <button 
+                      type="button" 
+                      onClick={() => setFormData({...formData, hero_banner_url: '', hero_media_type: 'image'})}
+                      className="bg-red-50 text-red-600 px-4 py-2 rounded-lg text-sm font-medium hover:bg-red-100"
+                    >
+                      Remove Hero
+                    </button>
+                  </div>
+                </div>
+              ) : (
+                <div className="border-2 border-dashed border-gray-300 rounded-xl p-8 flex flex-col items-center justify-center text-center hover:bg-gray-50">
+                  <p className="text-sm text-gray-500 mb-4">No hero banner selected. Upload an image or video.</p>
+                  <label className="cursor-pointer bg-[#136b8a] text-white px-6 py-2 rounded-lg text-sm font-medium hover:bg-[#0f556e]">
+                    {uploading ? 'Uploading...' : 'Upload Hero'}
+                    <input type="file" accept="image/*,video/*" className="hidden" onChange={handleFileUpload} disabled={uploading} />
+                  </label>
+                </div>
+              )}
+              {uploadError && <p className="text-red-500 text-sm mt-2">{uploadError}</p>}
+            </div>
+            <div className="md:col-span-2">
+              <label className="block text-sm font-medium text-gray-700 mb-1">Description (About Section)</label>
+              <textarea name="description" value={formData.description || ''} onChange={handleInputChange} className="w-full p-2 border rounded h-24" placeholder="Enter description for the about section..." />
             </div>
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">Display Order</label>

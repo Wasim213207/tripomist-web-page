@@ -202,7 +202,10 @@ function Home() {
                 bg={pkg.image_url || pkg.banner_image || "https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?w=800&q=80"}
                 link={isInternational && !pkg.price ? '#' : `/itinerary/${pkg.slug}`} 
                 badge={isInternational && !pkg.price ? 'Coming Soon' : ''}
-                packagePlacements={pkg.package_placements}
+                primaryBadgeText={pkg.primary_badge_text}
+                secondaryBadgeText={pkg.secondary_badge_text}
+                showPrimaryBadge={pkg.show_primary_badge}
+                showSecondaryBadge={pkg.show_secondary_badge}
               />
             ))}
           </div>
@@ -349,3 +352,4 @@ function Home() {
 }
 
 export default Home
+

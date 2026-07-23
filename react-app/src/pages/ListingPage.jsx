@@ -15,6 +15,7 @@ export default function ListingPage() {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
   const [isMuted, setIsMuted] = useState(true)
+  const [isAboutExpanded, setIsAboutExpanded] = useState(false)
 
   useEffect(() => {
     async function fetchData() {
@@ -43,7 +44,9 @@ export default function ListingPage() {
             foundPage = {
               title: intData.name,
               subtitle: "",
-              hero: intData.image_url || "https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?w=800&q=80",
+              hero: intData.hero_banner_url || intData.image_url || "https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?w=800&q=80",
+              mediaType: intData.hero_media_type || 'image',
+              description: intData.description || '',
               type: 'interest',
               id: intData.id
             };
@@ -64,7 +67,9 @@ export default function ListingPage() {
               foundPage = {
                 title: destData.name,
                 subtitle: destData.region || "",
-                hero: destData.image_url || "https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?w=800&q=80",
+                hero: destData.hero_banner_url || destData.image_url || "https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?w=800&q=80",
+                mediaType: destData.hero_media_type || 'image',
+                description: destData.description || '',
                 type: 'destination',
                 id: destData.id
               };
@@ -130,7 +135,7 @@ export default function ListingPage() {
     fetchData();
   }, [path]);
 
-  const isVideo = pageData?.hero?.toLowerCase().endsWith('.mp4');
+  const isVideo = pageData?.mediaType === 'video' || pageData?.hero?.toLowerCase().endsWith('.mp4');
 
   return (
     <div className="flex flex-col min-h-screen bg-surface-container-lowest">
@@ -177,12 +182,34 @@ export default function ListingPage() {
         )}
       </section>
 
-      {/* Content Heading */}
-      {pageData?.subtitle && (
-        <section className="w-full max-w-7xl mx-auto px-4 pt-12 text-center">
-          <h2 className="text-2xl md:text-3xl text-gray-800 font-bold">
-            {pageData.subtitle}
-          </h2>
+      {/* Content Heading & About Section */}
+      {pageData && (pageData.subtitle || pageData.description) && (
+        <section className="w-full max-w-7xl mx-auto px-4 pt-12">
+          {pageData.subtitle && (
+            <h2 className="text-2xl md:text-3xl text-gray-800 font-bold text-center mb-6">
+              {pageData.subtitle}
+            </h2>
+          )}
+          
+          {pageData.description && (
+            <div className="bg-white rounded-2xl p-6 md:p-8 shadow-sm border border-gray-100 text-left mb-8">
+              <h2 className="text-2xl font-bold text-gray-900 mb-4 font-sans tracking-tight">About {pageData.title}</h2>
+              <div 
+                className={`text-gray-700 text-base md:text-lg leading-relaxed whitespace-pre-wrap transition-[max-height] duration-500 ease-in-out overflow-hidden relative ${isAboutExpanded ? 'max-h-[3000px]' : 'max-h-[5.5rem] md:max-h-[6.5rem]'}`}
+              >
+                {pageData.description}
+                {!isAboutExpanded && (
+                  <div className="absolute bottom-0 left-0 right-0 h-10 bg-gradient-to-t from-white to-transparent pointer-events-none" />
+                )}
+              </div>
+              <button 
+                onClick={() => setIsAboutExpanded(!isAboutExpanded)} 
+                className="mt-4 text-[#136b8a] font-bold hover:underline text-sm md:text-base cursor-pointer"
+              >
+                {isAboutExpanded ? 'Read Less' : 'Read More'}
+              </button>
+            </div>
+          )}
         </section>
       )}
 
@@ -218,7 +245,10 @@ export default function ListingPage() {
                 bg={pkg.image_url || pkg.banner_image || "https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?w=800&q=80"}
                 link={`/itinerary/${pkg.slug}`}
                 bestSeller={pkg.best_seller}
-                packagePlacements={pkg.package_placements}
+                primaryBadgeText={pkg.primary_badge_text}
+                secondaryBadgeText={pkg.secondary_badge_text}
+                showPrimaryBadge={pkg.show_primary_badge}
+                showSecondaryBadge={pkg.show_secondary_badge}
                 className="w-full h-[360px]"
               />
             ))}
@@ -230,3 +260,4 @@ export default function ListingPage() {
     </div>
   )
 }
+
