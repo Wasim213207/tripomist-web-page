@@ -8,6 +8,15 @@ import ReviewsSection from '../components/ReviewsSection'
 import { supabase } from '../utils/supabaseClient'
 import { formatSlugToTitle } from '../utils/formatters'
 
+const cleanHeroTitle = (title) => {
+  if (!title) return '';
+  return title
+    .replace(/\b\d+\s*(Nights?|N)\s*\/?\s*\d+\s*(Days?|D)\b/ig, '')
+    .replace(/\b\d+\s*(Days?|D)\s*\/?\s*\d+\s*(Nights?|N)\b/ig, '')
+    .replace(/\s{2,}/g, ' ')
+    .trim();
+};
+
 export default function PackageDetail() {
   const { slug } = useParams()
   const navigate = useNavigate()
@@ -87,11 +96,18 @@ export default function PackageDetail() {
           inclusions: data.inclusions || [],
           exclusions: data.exclusions || [],
           highlights: data.itinerary ? data.itinerary.map(item => item.title) : [],
-          days: data.itinerary ? data.itinerary.map((item, idx) => ({
-            num: idx,
-            title: item.title,
-            desc: item.description
-          })) : [],
+          days: data.itinerary ? data.itinerary.map((item, idx) => {
+            const rawVal = item.day || item.day_number || item.dayNumber || item.title || item.heading || item.description || item.details || '';
+            let parsedLabel = String(rawVal).trim();
+            if (/^[0-9]+$/.test(parsedLabel)) {
+              parsedLabel = `Day ${parsedLabel}`;
+            }
+            return {
+              num: parsedLabel,
+              title: item.title,
+              desc: item.description
+            };
+          }) : [],
           costings: data.costings || []
         })
       }
@@ -199,7 +215,7 @@ export default function PackageDetail() {
           <div className="absolute inset-0 bg-cover bg-center w-full h-full" style={{ backgroundImage: `url('${trip.bg}')` }}></div>
           <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-black/20 flex flex-col items-start justify-end px-4 md:px-12 lg:px-20 pb-16">
             <h1 className="text-white text-3xl md:text-5xl font-extrabold tracking-tight drop-shadow-xl text-left max-w-4xl">
-              {trip.title} {trip.duration ? trip.duration.split(',')[0] : ''}
+              {cleanHeroTitle(trip.title)}
             </h1>
           </div>
         </div>
@@ -278,7 +294,7 @@ export default function PackageDetail() {
                       >
                         <div className="flex flex-col sm:flex-row sm:items-center gap-3 md:gap-5 flex-grow pr-4">
                           <div className="flex-shrink-0 bg-white border border-[#136b8a] text-gray-900 font-bold px-4 py-1.5 rounded-full text-sm uppercase tracking-wide w-fit">
-                            Day {day.num}
+                            {day.num}
                           </div>
                           <h3 className="font-bold text-gray-900 text-base md:text-lg uppercase tracking-tight">{day.title}</h3>
                         </div>

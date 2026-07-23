@@ -48,7 +48,7 @@ function Home() {
             try {
               const { data, error } = await supabase
                 .from('package_placements')
-                .select('*, Pakage!inner(*)')
+                .select('*, Pakage!inner(*, package_placements(placement_type, placement_slug))')
                 .eq('placement_type', 'homepage_section')
                 .eq('placement_id', sec.id)
                 .eq('Pakage.status', 'active');
@@ -202,6 +202,7 @@ function Home() {
                 bg={pkg.image_url || pkg.banner_image || "https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?w=800&q=80"}
                 link={isInternational && !pkg.price ? '#' : `/itinerary/${pkg.slug}`} 
                 badge={isInternational && !pkg.price ? 'Coming Soon' : ''}
+                packagePlacements={pkg.package_placements}
               />
             ))}
           </div>

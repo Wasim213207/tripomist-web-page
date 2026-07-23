@@ -204,3 +204,10 @@ BEGIN
     END LOOP;
 END ;
 
+
+-- 9. Add Badge Fields to Pakage
+ALTER TABLE public."Pakage" ADD COLUMN IF NOT EXISTS primary_badge_text TEXT;
+ALTER TABLE public."Pakage" ADD COLUMN IF NOT EXISTS secondary_badge_text TEXT;
+ALTER TABLE public."Pakage" ADD COLUMN IF NOT EXISTS show_primary_badge BOOLEAN DEFAULT true;
+ALTER TABLE public."Pakage" ADD COLUMN IF NOT EXISTS show_secondary_badge BOOLEAN DEFAULT false;
+

@@ -14,13 +14,49 @@ const PackageCard = ({
   label, 
   bestSeller,
   badge,
+  packagePlacements,
   className 
 }) => {
   const displayPrice = price ? (typeof price === 'string' && !price.includes('/-') ? `${price}/-` : price) : null;
   const displayOriginalPrice = originalPrice ? (typeof originalPrice === 'string' && !originalPrice.includes('/-') ? `${originalPrice}/-` : originalPrice) : null;
   
   const isClickable = link && link !== '#';
-  const showBadge = bestSeller ? 'Best Seller' : badge;
+  
+  // Dynamic Badge Logic
+  let finalPrimaryBadge = null;
+  let finalSecondaryBadge = null;
+
+  if (packagePlacements && Array.isArray(packagePlacements) && packagePlacements.length > 0) {
+    const formatted = packagePlacements.map(p => ({
+      ...p,
+      title: p.placement_slug.split(/[-_]/).map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ')
+    }));
+    
+    const homepage = formatted.filter(p => p.placement_type === 'homepage_section');
+    const interests = formatted.filter(p => p.placement_type === 'interest');
+    const destinations = formatted.filter(p => p.placement_type === 'destination');
+    
+    const sorted = [...homepage, ...interests, ...destinations];
+    const uniqueTitles = Array.from(new Set(sorted.map(p => p.title)));
+    
+    if (uniqueTitles.length > 0) {
+      finalPrimaryBadge = uniqueTitles[0];
+    }
+    if (uniqueTitles.length > 1) {
+      finalSecondaryBadge = uniqueTitles[1];
+    }
+  }
+
+  // Fallback to label (destination name) if no dynamic primary badge was generated
+  // If packagePlacements is entirely missing (e.g., hardcoded sections), fallback to label/DESTINATION
+  if (!finalPrimaryBadge && (!packagePlacements || packagePlacements.length === 0)) {
+    finalPrimaryBadge = label || 'DESTINATION';
+  }
+  
+  // If no dynamic secondary badge, fallback to bestSeller ONLY if placements are empty (hardcoded sections)
+  if (!finalSecondaryBadge && (!packagePlacements || packagePlacements.length === 0)) {
+    finalSecondaryBadge = bestSeller ? 'Best Seller' : badge;
+  }
 
   return (
     <Link 
@@ -35,24 +71,28 @@ const PackageCard = ({
         <div className="absolute inset-0 bg-black/10"></div>
         
         <div className="absolute top-4 left-4 right-4 flex justify-between items-start gap-2 z-10 pointer-events-none">
-          {/* Label (e.g., MOUNTAINS or other category) */}
-          <div className="bg-black/50 backdrop-blur-md text-white font-bold text-[10px] px-3 py-1.5 rounded-full uppercase tracking-wider flex items-center gap-1 shadow-sm">
-            <span className="material-symbols-outlined text-[12px]">location_on</span>
-            {label && label.toLowerCase() !== 'international' ? formatSlugToTitle(label) : 'DESTINATION'}
-          </div>
+          {/* Primary Badge */}
+          {finalPrimaryBadge ? (
+            <div className="bg-black/50 backdrop-blur-md text-white font-bold text-[10px] px-3 py-1.5 rounded-full uppercase tracking-wider flex items-center gap-1 shadow-sm">
+              <span className="material-symbols-outlined text-[12px]">location_on</span>
+              {finalPrimaryBadge.toLowerCase() !== 'international' ? formatSlugToTitle(finalPrimaryBadge) : finalPrimaryBadge}
+            </div>
+          ) : (
+            <div></div> // Empty div to keep flex alignment if needed
+          )}
 
-          {/* Badges/Discount in Lime Green */}
+          {/* Secondary Badges/Discount in Lime Green */}
           <div className="flex flex-col items-end gap-2">
-            {showBadge && (
+            {finalSecondaryBadge && (
               <div className={
-                showBadge.toLowerCase() === 'coming soon' 
+                finalSecondaryBadge.toLowerCase() === 'coming soon' 
                   ? "bg-white/30 backdrop-blur-md text-black font-extrabold text-[10px] px-3 py-1.5 rounded-full uppercase tracking-wider shadow-sm border border-white/50" 
                   : "bg-white/30 backdrop-blur-md text-[#136b8a] font-extrabold text-[10px] px-3 py-1.5 rounded-full uppercase tracking-wider shadow-sm border border-[#136b8a]/30"
               }>
-                {showBadge}
+                {finalSecondaryBadge}
               </div>
             )}
-            {discountText && !showBadge && (
+            {discountText && !finalSecondaryBadge && (
               <div className="bg-white/30 backdrop-blur-md text-[#136b8a] font-extrabold text-[10px] px-3 py-1.5 rounded-full uppercase tracking-wider shadow-sm border border-[#136b8a]/30">
                 {discountText}
               </div>

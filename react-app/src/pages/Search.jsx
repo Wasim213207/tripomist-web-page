@@ -29,7 +29,7 @@ function Search() {
       try {
         const { data, error: fetchErr } = await supabase
           .from('Pakage')
-          .select('*')
+          .select('*, package_placements(placement_type, placement_slug)')
           .eq('status', 'active')
           .or(`title.ilike.%${query}%,destination.ilike.%${query}%,state.ilike.%${query}%,short_description.ilike.%${query}%`)
         
@@ -92,6 +92,7 @@ function Search() {
                 bg={pkg.image_url || pkg.banner_image || "https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1"}
                 link={`/itinerary/${pkg.slug}`}
                 bestSeller={pkg.best_seller}
+                packagePlacements={pkg.package_placements}
               />
             ))}
           </div>

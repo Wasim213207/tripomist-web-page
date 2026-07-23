@@ -35,8 +35,7 @@ import MyTrips from './pages/MyTrips'
 import BookingDetail from './pages/BookingDetail'
 // Removed legacy hardcoded destination imports
 import DynamicPage from './pages/DynamicPage'
-import AllDepartures from './pages/AllDepartures'
-import UpcomingDepartures from './pages/UpcomingDepartures'
+const ListingPage = React.lazy(() => import('./pages/ListingPage'));
 import BottomDock from './components/BottomDock'
 import Chatbot from './components/Chatbot'
 const AdminLayout = React.lazy(() => import('./components/admin/AdminLayout'));
@@ -200,20 +199,23 @@ function App() {
 
           {/* Public Routes */}
           <Route path="/" element={<Home />} />
-          <Route path="/trips/:categorySlug" element={<CategoryPackages />} />
-          <Route path="/group-trips" element={<GroupTrips />} />
-          <Route path="/weekend-trips" element={<WeekendTrips />} />
-          <Route path="/treks" element={<Treks />} />
-          <Route path="/family-tours" element={<FamilyTours />} />
-          <Route path="/honeymoon-trips" element={<HoneymoonTrips />} />
-          <Route path="/all-departures" element={<AllDepartures />} />
-          <Route path="/upcoming-departures" element={<UpcomingDepartures />} />
-          <Route path="/international" element={<International />} />
+          <Route path="/trips/:categorySlug" element={<React.Suspense fallback={<div className="flex items-center justify-center h-screen"><div className="w-8 h-8 border-4 border-[#136b8a] border-t-transparent rounded-full animate-spin"></div></div>}><ListingPage /></React.Suspense>} />
+          <Route path="/group-trips" element={<React.Suspense fallback={<div className="flex items-center justify-center h-screen"><div className="w-8 h-8 border-4 border-[#136b8a] border-t-transparent rounded-full animate-spin"></div></div>}><ListingPage /></React.Suspense>} />
+          <Route path="/weekend-trips" element={<React.Suspense fallback={<div className="flex items-center justify-center h-screen"><div className="w-8 h-8 border-4 border-[#136b8a] border-t-transparent rounded-full animate-spin"></div></div>}><ListingPage /></React.Suspense>} />
+          <Route path="/treks" element={<React.Suspense fallback={<div className="flex items-center justify-center h-screen"><div className="w-8 h-8 border-4 border-[#136b8a] border-t-transparent rounded-full animate-spin"></div></div>}><ListingPage /></React.Suspense>} />
+          <Route path="/family-tours" element={<React.Suspense fallback={<div className="flex items-center justify-center h-screen"><div className="w-8 h-8 border-4 border-[#136b8a] border-t-transparent rounded-full animate-spin"></div></div>}><ListingPage /></React.Suspense>} />
+          <Route path="/honeymoon-trips" element={<React.Suspense fallback={<div className="flex items-center justify-center h-screen"><div className="w-8 h-8 border-4 border-[#136b8a] border-t-transparent rounded-full animate-spin"></div></div>}><ListingPage /></React.Suspense>} />
+          <Route path="/all-departures" element={<React.Suspense fallback={<div className="flex items-center justify-center h-screen"><div className="w-8 h-8 border-4 border-[#136b8a] border-t-transparent rounded-full animate-spin"></div></div>}><ListingPage /></React.Suspense>} />
+          <Route path="/upcoming-departures" element={<React.Suspense fallback={<div className="flex items-center justify-center h-screen"><div className="w-8 h-8 border-4 border-[#136b8a] border-t-transparent rounded-full animate-spin"></div></div>}><ListingPage /></React.Suspense>} />
+          <Route path="/trips/upcoming-trips" element={<React.Suspense fallback={<div className="flex items-center justify-center h-screen"><div className="w-8 h-8 border-4 border-[#136b8a] border-t-transparent rounded-full animate-spin"></div></div>}><ListingPage /></React.Suspense>} />
+          <Route path="/trips/recommended" element={<React.Suspense fallback={<div className="flex items-center justify-center h-screen"><div className="w-8 h-8 border-4 border-[#136b8a] border-t-transparent rounded-full animate-spin"></div></div>}><ListingPage /></React.Suspense>} />
+          <Route path="/trips/best-seller" element={<React.Suspense fallback={<div className="flex items-center justify-center h-screen"><div className="w-8 h-8 border-4 border-[#136b8a] border-t-transparent rounded-full animate-spin"></div></div>}><ListingPage /></React.Suspense>} />
+          <Route path="/international" element={<React.Suspense fallback={<div className="flex items-center justify-center h-screen"><div className="w-8 h-8 border-4 border-[#136b8a] border-t-transparent rounded-full animate-spin"></div></div>}><ListingPage /></React.Suspense>} />
           <Route path="/review" element={<Review />} />
-          <Route path="/domestic" element={<Domestic />} />
+          <Route path="/domestic" element={<React.Suspense fallback={<div className="flex items-center justify-center h-screen"><div className="w-8 h-8 border-4 border-[#136b8a] border-t-transparent rounded-full animate-spin"></div></div>}><ListingPage /></React.Suspense>} />
           <Route path="/destinations/:destinationSlug" element={
             <React.Suspense fallback={<div className="flex items-center justify-center h-screen"><div className="w-8 h-8 border-4 border-[#136b8a] border-t-transparent rounded-full animate-spin"></div></div>}>
-              <DestinationPackages />
+              <ListingPage />
             </React.Suspense>
           } />
           {/* Legacy Redirects */}
