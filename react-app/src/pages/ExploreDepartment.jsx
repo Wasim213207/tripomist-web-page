@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { supabase } from '../utils/supabaseClient';
 import PackageCard from '../components/PackageCard';
+import Navbar from '../components/Navbar';
+import Footer from '../components/Footer';
 
 function ExploreDepartment() {
   const { slug } = useParams();
@@ -86,8 +88,10 @@ function ExploreDepartment() {
   }
 
   return (
-    <div className="bg-gray-50 min-h-screen pb-20">
-      {/* Hero Section */}
+    <div className="bg-gray-50 min-h-screen flex flex-col">
+      <Navbar />
+      <div className="flex-grow pb-20">
+        {/* Hero Section */}
       {department.hero_banner_url && (
         <div className="relative w-full h-[40vh] md:h-[50vh] lg:h-[60vh] overflow-hidden">
           {department.hero_media_type === 'video' ? (
@@ -155,6 +159,8 @@ function ExploreDepartment() {
           </div>
         )}
       </div>
+      </div>
+      <Footer />
     </div>
   );
 }

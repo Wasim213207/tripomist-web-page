@@ -300,8 +300,8 @@ function Navbar() {
   }
 
   return (
-    <>
-      <nav className="bg-white sticky top-0 z-50 transition-all duration-300 relative border-b border-gray-100">
+    <header className="sticky top-0 z-[100] w-full flex flex-col bg-white">
+      <nav className="relative border-b border-gray-100">
         <div className="flex justify-between items-center w-full px-4 md:px-12 lg:px-20 py-4 bg-white relative z-50">
           <div className="flex items-center gap-6">
             <Link className="font-headline-md text-headline-md font-bold tracking-tight text-black flex items-center gap-2 hover:scale-95 duration-150 transition-transform" to="/">
@@ -390,10 +390,11 @@ function Navbar() {
           
           <div className="flex items-center gap-2">
             <button 
-              className={`font-semibold px-5 py-2 rounded-full transition-all text-sm hover:opacity-90 min-w-[80px] border lg:hidden ${isOpen ? 'bg-white text-black border-gray-200 shadow-sm' : 'bg-primary text-white border-transparent'}`}
+              className={`font-semibold px-4 py-2 rounded-full transition-all text-sm hover:opacity-90 border flex items-center gap-2 ${isOpen ? 'bg-gray-100 text-black border-gray-200 shadow-sm' : 'bg-white text-black border-gray-200 shadow-sm'}`}
               onClick={() => setIsOpen(!isOpen)}
             >
-              {isOpen ? 'Close' : (settings?.menu_button_text || 'Menu')}
+              <span className="material-symbols-outlined text-[20px]">{isOpen ? 'close' : 'menu'}</span>
+              <span className="hidden sm:inline">{isOpen ? 'Close' : (settings?.menu_button_text || 'Menu')}</span>
             </button>
             
             {user ? (
@@ -421,7 +422,7 @@ function Navbar() {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -20 }}
               transition={{ duration: 0.2 }}
-              className="absolute inset-x-0 top-[100%] z-[40] px-4 md:px-8 max-w-7xl mx-auto -mt-2 lg:hidden"
+              className="absolute inset-x-0 top-[100%] z-[40] px-4 md:px-8 max-w-7xl mx-auto -mt-2"
             >
               <div className="bg-white rounded-[24px] shadow-2xl p-6 md:p-10 w-full border border-gray-100 max-h-[80vh] overflow-y-auto">
                 <div className="flex flex-col gap-2">
@@ -477,14 +478,14 @@ function Navbar() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={() => setIsOpen(false)}
-            className="fixed inset-0 bg-black/20 backdrop-blur-sm z-[30] lg:hidden"
+            className="fixed inset-0 bg-black/20 backdrop-blur-sm z-[30]"
           />
         )}
       </AnimatePresence>
 
       <ExploreNavbar />
       <PromoStrip />
-    </>
+    </header>
   )
 }
 

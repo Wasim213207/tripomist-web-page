@@ -108,7 +108,7 @@ export default {
         }
       },
       animation: {
-        shine: 'shine infinite linear'
+        shine: 'shine 2s infinite linear'
       }
     },
   },

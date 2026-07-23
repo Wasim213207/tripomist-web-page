@@ -31,8 +31,8 @@ function ExploreNavbar() {
   };
 
   return (
-    <div className="bg-[#f8f9fa] border-b border-gray-100 overflow-x-auto whitespace-nowrap scrollbar-hide py-2 px-4 md:px-12 lg:px-20">
-      <div className="flex items-center gap-6 md:gap-8 min-w-max">
+    <div className="bg-[#f8f9fa] border-b border-gray-100 overflow-x-auto scrollbar-hide py-2">
+      <div className="flex items-center md:justify-center gap-6 md:gap-8 lg:gap-12 px-4 md:px-12 lg:px-20 min-w-max w-full">
         {topLevel.map(dept => {
           const children = departments.filter(d => d.parent_id === dept.id);
           const hasChildren = children.length > 0;
