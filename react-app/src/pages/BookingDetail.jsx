@@ -162,29 +162,41 @@ export default function BookingDetail() {
             <span className="material-symbols-outlined text-[#136b8a]">route</span>
             Booking Status Timeline
           </h3>
-          <div className="grid grid-cols-1 sm:grid-cols-4 gap-6 relative">
-            {[
-              { label: 'Booking Created', desc: 'Trip payload registered', active: isCreated, done: isCreated },
-              { label: 'Payment Completed', desc: 'Securely processed via Razorpay', active: isPaid, done: isPaid },
-              { label: 'Booking Confirmed', desc: 'Confirmed by TripoMist operator', active: isConfirmed, done: isConfirmed },
-              { label: 'Trip Completed', desc: 'Completed successfully', active: isTripCompleted, done: isTripCompleted }
-            ].map((step, idx) => (
-              <div key={idx} className="flex gap-3 sm:flex-col items-start sm:items-center text-left sm:text-center group">
-                <div className={`w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm z-10 transition-all ${
-                  step.done 
-                    ? 'bg-emerald-500 text-white shadow-sm shadow-emerald-200' 
-                    : step.active 
-                    ? 'bg-[#136b8a] text-white' 
-                    : 'bg-gray-100 text-gray-400'
-                }`}>
-                  {step.done ? '✓' : idx + 1}
+          <div className="relative pt-8 pb-4">
+            {/* Connecting Line (Horizontal) */}
+            <div className="absolute top-[2rem] left-0 w-full h-[2px] bg-gray-100 hidden sm:block -z-0"></div>
+            
+            <div className="grid grid-cols-1 sm:grid-cols-5 gap-6 relative z-10">
+              {[
+                { label: 'Booking Placed', desc: 'Trip payload registered', active: isCreated, done: isCreated },
+                { label: 'Booking Confirmed', desc: 'Confirmed by operator', active: isConfirmed, done: isConfirmed },
+                { label: 'Payment Received', desc: 'Securely processed', active: isPaid, done: isPaid },
+                { label: 'Trip Scheduled', desc: 'Dates locked in', active: isConfirmed && isPaid, done: isConfirmed && isPaid },
+                { label: 'Trip Completed', desc: 'Completed successfully', active: isTripCompleted, done: isTripCompleted }
+              ].map((step, idx) => (
+                <div key={idx} className="flex gap-4 sm:flex-col items-start sm:items-center text-left sm:text-center group relative">
+                  
+                  {/* Connecting line on Mobile (Vertical) */}
+                  {idx !== 4 && (
+                    <div className="absolute top-8 left-4 w-[2px] h-[calc(100%+1.5rem)] bg-gray-100 sm:hidden -z-10"></div>
+                  )}
+
+                  <div className={`w-10 h-10 rounded-full flex items-center justify-center font-bold text-sm transition-all shadow-sm flex-shrink-0 ${
+                    step.done 
+                      ? 'bg-emerald-500 text-white shadow-emerald-200' 
+                      : step.active 
+                      ? 'bg-[#136b8a] text-white shadow-blue-200' 
+                      : 'bg-white text-gray-400 border-2 border-gray-100'
+                  }`}>
+                    {step.done ? <span className="material-symbols-outlined text-[18px]">check</span> : idx + 1}
+                  </div>
+                  <div className="pt-2 sm:pt-0">
+                    <p className={`font-bold text-sm ${step.active ? 'text-gray-900' : 'text-gray-400'}`}>{step.label}</p>
+                    <p className="text-xs text-gray-400 mt-1">{step.desc}</p>
+                  </div>
                 </div>
-                <div>
-                  <p className={`font-bold text-sm ${step.active ? 'text-gray-900' : 'text-gray-400'}`}>{step.label}</p>
-                  <p className="text-xs text-gray-400 mt-0.5">{step.desc}</p>
-                </div>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
         </div>
 

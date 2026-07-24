@@ -188,6 +188,9 @@ const AdminLayout = () => {
                 <Link to="/admin/site-settings" className={`block px-3 py-1.5 rounded-md transition-colors ${location.pathname.startsWith('/admin/site-settings') ? 'bg-slate-100 text-slate-900 font-medium' : 'text-gray-600 hover:bg-gray-50'}`} onClick={() => setSidebarOpen(false)}>
                   Site Settings
                 </Link>
+                <Link to="/admin/login-slider" className={`block px-3 py-1.5 rounded-md transition-colors ${location.pathname.startsWith('/admin/login-slider') ? 'bg-slate-100 text-slate-900 font-medium' : 'text-gray-600 hover:bg-gray-50'}`} onClick={() => setSidebarOpen(false)}>
+                  Login Slider
+                </Link>
               </div>
             )}
           </div>

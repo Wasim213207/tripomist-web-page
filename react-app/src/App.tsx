@@ -60,6 +60,7 @@ const AdminMenuManager = React.lazy(() => import('./pages/admin/AdminMenuManager
 const AdminExploreDepartments = React.lazy(() => import('./pages/admin/AdminExploreDepartments'));
 const AdminPromoStrip = React.lazy(() => import('./pages/admin/AdminPromoStrip'));
 const AdminReviews = React.lazy(() => import('./pages/admin/AdminReviews'));
+const AdminLoginSlider = React.lazy(() => import('./pages/admin/AdminLoginSlider'));
 const DestinationPackages = React.lazy(() => import('./pages/DestinationPackages'));
 const CustomerLayout = React.lazy(() => import('./components/customer/CustomerLayout'));
 const CustomerRoute = React.lazy(() => import('./components/customer/CustomerRoute'));
@@ -160,8 +161,12 @@ function App() {
                 element={
                 <React.Suspense fallback={<div>Loading...</div>}><AdminPromoStrip /></React.Suspense>
                 } 
-              /><Route path="reviews" element={
+              />
+              <Route path="reviews" element={
                 <React.Suspense fallback={<div>Loading...</div>}><AdminReviews /></React.Suspense>
+              } />
+              <Route path="login-slider" element={
+                <React.Suspense fallback={<div>Loading...</div>}><AdminLoginSlider /></React.Suspense>
               } />
             </Route>
           </Route>

@@ -8,6 +8,7 @@ export default function Profile() {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [bookings, setBookings] = useState([]);
+  const [activeTab, setActiveTab] = useState('My Profile');
   
   // Edit States
   const [editName, setEditName] = useState('');
@@ -42,7 +43,7 @@ export default function Profile() {
       setEditCity(currentUser.user_metadata?.city || currentUser.user_metadata?.address || '');
       setEditPhoto(currentUser.user_metadata?.avatar_url || '');
 
-      // Fetch bookings for the user to display on the profile page
+      // Fetch bookings
       const { data: bookingsData } = await supabase
         .from('bookings')
         .select('*')
@@ -72,10 +73,8 @@ export default function Profile() {
             image_url: pkg?.image_url || null
           };
         });
-
         setBookings(bookingsWithImages);
       }
-
       setLoading(false);
     }
     loadProfile();
@@ -85,13 +84,10 @@ export default function Profile() {
     const file = e.target.files?.[0];
     if (!file) return;
 
-    // Validate size (5MB max)
     if (file.size > 5 * 1024 * 1024) {
       setUploadError('Image size exceeds the 5MB limit.');
       return;
     }
-
-    // Validate file type
     const allowedTypes = ['image/jpeg', 'image/png', 'image/webp'];
     if (!allowedTypes.includes(file.type)) {
       setUploadError('Only JPG, PNG, and WEBP formats are allowed.');
@@ -105,38 +101,25 @@ export default function Profile() {
       const fileExt = file.name.split('.').pop();
       const fileName = `${user.id}/profile-${Date.now()}.${fileExt}`;
 
-      // Upload file to Supabase Storage bucket 'avatars'
       const { error: uploadErr } = await supabase.storage
         .from('avatars')
-        .upload(fileName, file, {
-          cacheControl: '3600',
-          upsert: true
-        });
+        .upload(fileName, file, { cacheControl: '3600', upsert: true });
 
       if (uploadErr) throw uploadErr;
 
-      // Get public URL
-      const { data: { publicUrl } } = supabase.storage
-        .from('avatars')
-        .getPublicUrl(fileName);
-
-      // Set the photo state immediately (show preview)
+      const { data: { publicUrl } } = supabase.storage.from('avatars').getPublicUrl(fileName);
       setEditPhoto(publicUrl);
 
-      // Update Auth user metadata immediately so navbar updates
       const { error: updateErr } = await supabase.auth.updateUser({
         data: { avatar_url: publicUrl }
       });
       if (updateErr) throw updateErr;
 
-      // Upsert into profiles table immediately
-      await supabase
-        .from('profiles')
-        .upsert({
-          id: user.id,
-          avatar_url: publicUrl,
-          updated_at: new Date().toISOString()
-        });
+      await supabase.from('profiles').upsert({
+        id: user.id,
+        avatar_url: publicUrl,
+        updated_at: new Date().toISOString()
+      });
 
       setMessage({ text: 'Profile photo uploaded successfully!', type: 'success' });
       setTimeout(() => setMessage({ text: '', type: '' }), 3000);
@@ -149,7 +132,7 @@ export default function Profile() {
   };
 
   const handleUpdateProfile = async (e) => {
-    e.preventDefault();
+    if (e) e.preventDefault();
     setSaving(true);
     setMessage({ text: '', type: '' });
 
@@ -164,25 +147,19 @@ export default function Profile() {
           avatar_url: editPhoto
         }
       });
-
       if (error) throw error;
       
       setUser(data.user);
 
-      // Upsert into profiles table
       try {
-        await supabase
-          .from('profiles')
-          .upsert({
-            id: data.user.id,
-            full_name: editName,
-            phone: editPhone,
-            avatar_url: editPhoto,
-            updated_at: new Date().toISOString()
-          });
-      } catch (upsertErr) {
-        console.warn('Profiles table upsert failed (continuing with Auth update):', upsertErr);
-      }
+        await supabase.from('profiles').upsert({
+          id: data.user.id,
+          full_name: editName,
+          phone: editPhone,
+          avatar_url: editPhoto,
+          updated_at: new Date().toISOString()
+        });
+      } catch (upsertErr) {}
 
       setMessage({ text: 'Profile updated successfully!', type: 'success' });
       setTimeout(() => setMessage({ text: '', type: '' }), 3000);
@@ -194,33 +171,28 @@ export default function Profile() {
     }
   };
 
+  const handleLogout = async () => {
+    await supabase.auth.signOut();
+    navigate('/login');
+  };
+
+  const tabs = [
+    { id: 'My Profile', icon: 'person' },
+    { id: 'Personal Information', icon: 'badge' },
+    { id: 'Contact Information', icon: 'contact_mail' },
+    { id: 'Security', icon: 'security' },
+    { id: 'My Trips', icon: 'luggage' },
+    { id: 'Notifications', icon: 'notifications' },
+    { id: 'Logout', icon: 'logout', action: handleLogout, textClass: 'text-red-500' }
+  ];
+
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-50 flex flex-col font-sans animate-pulse">
+      <div className="min-h-screen bg-slate-50 flex flex-col font-sans">
         <Navbar />
-        <section className="bg-[#136b8a] pt-28 pb-32 relative">
-          <div className="max-w-4xl mx-auto px-4">
-            <div className="h-4 bg-teal-800/50 rounded w-24 mb-4"></div>
-            <div className="h-8 bg-teal-800/50 rounded w-48 mb-2"></div>
-            <div className="h-4 bg-teal-800/50 rounded w-64"></div>
-          </div>
-        </section>
-        <main className="flex-1 w-full max-w-3xl mx-auto px-4 -mt-20 pb-20 relative z-20">
-          <div className="bg-white rounded-3xl p-8 md:p-10 space-y-6 border border-gray-100 shadow-sm">
-            <div className="flex gap-6 items-center border-b border-gray-50 pb-6">
-              <div className="w-20 h-20 bg-gray-100 rounded-full"></div>
-              <div className="flex-1 h-10 bg-gray-100 rounded-xl max-w-md"></div>
-            </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {[1, 2, 3, 4].map(n => (
-                <div key={n} className="space-y-2">
-                  <div className="h-3 bg-gray-100 rounded w-1/4"></div>
-                  <div className="h-10 bg-gray-100 rounded-xl"></div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </main>
+        <div className="flex-1 flex justify-center items-center py-20">
+          <div className="w-8 h-8 border-4 border-[#136b8a] border-t-transparent rounded-full animate-spin"></div>
+        </div>
         <Footer />
       </div>
     );
@@ -229,222 +201,211 @@ export default function Profile() {
   if (!user) return null;
 
   return (
-    <div className="min-h-screen bg-gray-50 flex flex-col font-sans">
+    <div className="min-h-screen bg-slate-50 flex flex-col font-sans">
       <Navbar />
 
-      <section className="bg-[#136b8a] pt-20 pb-32 relative overflow-hidden">
-        <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1503220317375-aaad61436b1b?w=1400&q=80')] bg-cover bg-center opacity-10"></div>
-        <div className="max-w-4xl mx-auto px-4 relative z-10 flex items-center gap-2 text-teal-100">
-          <Link to="/my-account" className="hover:text-white flex items-center gap-1 transition-colors font-semibold text-sm">
-            <span className="material-symbols-outlined text-[18px]">arrow_back</span>
-            Back to Dashboard
-          </Link>
-        </div>
-        <div className="max-w-4xl mx-auto px-4 mt-6 relative z-10">
-          <h1 className="text-3xl md:text-4xl font-bold text-white tracking-tight">Edit Profile</h1>
-          <p className="text-teal-100 mt-2">Manage your personal details and preferences.</p>
-        </div>
-      </section>
-
-      <main className="flex-1 w-full max-w-3xl mx-auto px-4 -mt-20 pb-20 relative z-20">
-        <div className="bg-white rounded-3xl shadow-xl border border-gray-100 overflow-hidden">
-          <form onSubmit={handleUpdateProfile} className="p-6 md:p-10 pt-8">
-            
-            {message.text && (
-              <div className={`p-4 mb-6 rounded-xl flex items-start gap-3 ${message.type === 'error' ? 'bg-red-50 text-red-700 border border-red-200' : 'bg-emerald-50 text-emerald-700 border border-emerald-200'}`}>
-                <span className="material-symbols-outlined text-[20px]">
-                  {message.type === 'error' ? 'error' : 'check_circle'}
-                </span>
-                <p className="text-sm font-semibold mt-0.5">{message.text}</p>
-              </div>
-            )}
-
-            {/* Profile Photo Upload Circle */}
-            <div className="flex flex-col md:flex-row gap-8 items-center mb-8 pb-8 border-b border-gray-100">
-              <div className="relative group cursor-pointer">
-                <label htmlFor="avatar-upload" className="cursor-pointer block relative">
-                  <div className="w-24 h-24 bg-blue-50 text-blue-500 rounded-full flex items-center justify-center border-2 border-dashed border-blue-200 overflow-hidden group-hover:border-primary transition-all relative">
-                    {editPhoto ? (
-                      <img src={editPhoto} alt="Avatar" className="w-full h-full object-cover" />
-                    ) : (
-                      <div className="flex flex-col items-center justify-center text-gray-400">
-                        <span className="material-symbols-outlined text-3xl">add_a_photo</span>
-                      </div>
-                    )}
-                    
-                    {/* Hover Overlay */}
-                    <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center text-white text-xs font-bold flex-col gap-1">
-                      <span className="material-symbols-outlined text-[20px]">photo_camera</span>
-                      <span>Change</span>
-                    </div>
-
-                    {/* Uploading Progress */}
-                    {uploading && (
-                      <div className="absolute inset-0 bg-black/60 flex flex-col items-center justify-center text-white text-[10px] font-semibold gap-1">
-                        <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
-                        <span>Uploading...</span>
-                      </div>
-                    )}
-                  </div>
-                </label>
-                <input 
-                  type="file" 
-                  id="avatar-upload" 
-                  accept="image/jpeg,image/png,image/webp" 
-                  onChange={handleImageUpload} 
-                  disabled={uploading}
-                  className="hidden" 
-                />
-              </div>
-
-              <div className="flex-1 text-center md:text-left">
-                <h3 className="font-bold text-gray-900 text-lg mb-1">Profile Photo</h3>
-                <p className="text-gray-500 text-sm">Click the circle to upload a profile image. JPG, PNG, or WEBP. Max size 5MB.</p>
-                {uploadError && (
-                  <p className="text-red-600 text-xs font-bold mt-2 flex items-center justify-center md:justify-start gap-1">
-                    <span className="material-symbols-outlined text-[14px]">error</span>
-                    {uploadError}
-                  </p>
-                )}
-              </div>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-              <div>
-                <label className="block text-sm font-bold text-gray-700 mb-1">Full Name</label>
-                <input 
-                  type="text" 
-                  value={editName}
-                  onChange={(e) => setEditName(e.target.value)}
-                  className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-[#136b8a]/50 focus:border-[#136b8a] transition-all"
-                  required
-                />
-              </div>
-
-              <div>
-                <label className="block text-sm font-bold text-gray-700 mb-1 flex items-center justify-between">
-                  Email Address 
-                  <span className="text-[10px] bg-gray-100 text-gray-500 px-2 py-0.5 rounded-full uppercase tracking-wider font-bold">Read Only</span>
-                </label>
-                <input 
-                  type="email" 
-                  value={user.email} 
-                  readOnly 
-                  className="w-full px-4 py-3 rounded-xl border border-gray-200 bg-gray-50 text-gray-500 cursor-not-allowed focus:outline-none"
-                />
-              </div>
-
-              <div>
-                <label className="block text-sm font-bold text-gray-700 mb-1">Phone Number</label>
-                <input 
-                  type="tel" 
-                  value={editPhone}
-                  onChange={(e) => setEditPhone(e.target.value)}
-                  className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-[#136b8a]/50 focus:border-[#136b8a] transition-all"
-                />
-              </div>
-
-              <div>
-                <label className="block text-sm font-bold text-gray-700 mb-1">City</label>
-                <input 
-                  type="text" 
-                  value={editCity}
-                  onChange={(e) => setEditCity(e.target.value)}
-                  placeholder="e.g. Mumbai"
-                  className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-[#136b8a]/50 focus:border-[#136b8a] transition-all"
-                />
-              </div>
-
-              <div>
-                <label className="block text-sm font-bold text-gray-700 mb-1">Date of Birth</label>
-                <input 
-                  type="date" 
-                  value={editDob}
-                  onChange={(e) => setEditDob(e.target.value)}
-                  className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-[#136b8a]/50 focus:border-[#136b8a] transition-all"
-                />
-              </div>
-
-              <div>
-                <label className="block text-sm font-bold text-gray-700 mb-1">Gender</label>
-                <select 
-                  value={editGender}
-                  onChange={(e) => setEditGender(e.target.value)}
-                  className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-[#136b8a]/50 focus:border-[#136b8a] transition-all bg-white"
+      <main className="flex-1 max-w-6xl mx-auto w-full px-4 py-8 md:py-12">
+        <h1 className="text-3xl font-bold text-gray-900 mb-8 tracking-tight">Account Settings</h1>
+        
+        <div className="flex flex-col md:flex-row gap-8">
+          
+          {/* Sidebar */}
+          <aside className="w-full md:w-64 flex-shrink-0">
+            <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-4 space-y-1">
+              {tabs.map((tab) => (
+                <button
+                  key={tab.id}
+                  onClick={() => tab.action ? tab.action() : setActiveTab(tab.id)}
+                  className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-colors font-medium text-sm text-left ${
+                    activeTab === tab.id 
+                      ? 'bg-blue-50 text-[#136b8a]' 
+                      : `text-gray-600 hover:bg-gray-50 ${tab.textClass || ''}`
+                  }`}
                 >
-                  <option value="">Select Gender</option>
-                  <option value="Male">Male</option>
-                  <option value="Female">Female</option>
-                  <option value="Other">Other</option>
-                </select>
-              </div>
+                  <span className={`material-symbols-outlined text-[20px] ${activeTab === tab.id ? 'text-[#136b8a]' : 'text-gray-400'}`}>
+                    {tab.icon}
+                  </span>
+                  {tab.id}
+                </button>
+              ))}
             </div>
+          </aside>
 
-            <div className="flex gap-4">
-              <Link 
-                to="/my-account" 
-                className="flex-1 py-4 border border-gray-200 text-gray-750 font-bold rounded-xl text-center hover:bg-gray-50 transition-colors"
-              >
-                Cancel
-              </Link>
-              <button 
-                type="submit" 
-                disabled={saving || uploading}
-                className="flex-1 py-4 bg-[#136b8a] hover:bg-[#0f556e] disabled:bg-gray-400 text-white font-bold rounded-xl transition-all shadow-md active:scale-98 cursor-pointer flex items-center justify-center gap-2"
-              >
-                {saving ? 'Saving...' : 'Save Profile'}
-              </button>
-            </div>
-          </form>
-        </div>
+          {/* Content Area */}
+          <div className="flex-1">
+            <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 md:p-10">
+              
+              {message.text && (
+                <div className={`p-4 mb-6 rounded-xl flex items-start gap-3 ${message.type === 'error' ? 'bg-red-50 text-red-700 border border-red-200' : 'bg-emerald-50 text-emerald-700 border border-emerald-200'}`}>
+                  <span className="material-symbols-outlined text-[20px]">
+                    {message.type === 'error' ? 'error' : 'check_circle'}
+                  </span>
+                  <p className="text-sm font-semibold mt-0.5">{message.text}</p>
+                </div>
+              )}
 
-        {/* Booked Trips Section */}
-        {bookings.length > 0 && (
-          <div className="mt-8 bg-white rounded-3xl p-6 md:p-8 shadow-xl border border-gray-100">
-            <h3 className="text-xl font-bold text-gray-900 mb-6 flex items-center gap-2">
-              <span className="material-symbols-outlined text-[#136b8a]">luggage</span>
-              My Booked Trips
-            </h3>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              {bookings.map((booking) => {
-                const tripImg = booking.banner_image || booking.image_url;
-                return (
-                  <div key={booking.id} className="border border-gray-100 rounded-2xl overflow-hidden shadow-sm flex flex-col hover:shadow-md transition-all">
-                    {/* Package Image */}
-                    <div className="h-32 w-full relative bg-gray-100">
-                      {tripImg ? (
-                        <img src={tripImg} alt={booking.package_title} className="w-full h-full object-cover" />
-                      ) : (
-                        <div className="w-full h-full bg-gradient-to-br from-[#136b8a] to-teal-600 flex items-center justify-center">
-                          <span className="material-symbols-outlined text-4xl text-white/80">luggage</span>
-                        </div>
-                      )}
-                      <div className="absolute top-3 right-3 bg-white/95 backdrop-blur-sm border border-gray-100 px-2 py-0.5 rounded-full text-[10px] font-bold text-gray-700 capitalize shadow-sm">
-                        {booking.booking_status}
+              {/* My Profile Tab */}
+              {activeTab === 'My Profile' && (
+                <div>
+                  <div className="flex justify-between items-center mb-6">
+                    <h2 className="text-xl font-bold text-gray-900">My Profile</h2>
+                    <button onClick={handleUpdateProfile} disabled={saving} className="text-sm font-bold text-[#136b8a] hover:underline flex items-center gap-1">
+                      {saving ? 'Saving...' : <><span className="material-symbols-outlined text-[16px]">edit</span> Edit</>}
+                    </button>
+                  </div>
+                  
+                  <div className="flex items-center gap-6 mb-8">
+                    <div className="relative group">
+                      <div className="w-24 h-24 bg-gray-100 rounded-full overflow-hidden border border-gray-200">
+                        {editPhoto ? (
+                          <img src={editPhoto} alt="Avatar" className="w-full h-full object-cover" />
+                        ) : (
+                          <div className="w-full h-full flex justify-center items-center text-gray-400 font-bold text-2xl">
+                            {editName.charAt(0).toUpperCase()}
+                          </div>
+                        )}
                       </div>
+                      <label className="absolute bottom-0 right-0 bg-[#136b8a] text-white p-1.5 rounded-full shadow-md cursor-pointer hover:bg-[#0f556e] transition-colors">
+                        <span className="material-symbols-outlined text-[14px]">edit</span>
+                        <input type="file" accept="image/jpeg,image/png,image/webp" onChange={handleImageUpload} className="hidden" disabled={uploading} />
+                      </label>
                     </div>
-                    {/* Package Details */}
-                    <div className="p-4 flex-1 flex flex-col justify-between">
-                      <div>
-                        <h4 className="font-bold text-gray-950 text-sm leading-snug line-clamp-1 mb-1">{booking.package_title}</h4>
-                        <p className="text-xs text-gray-400 font-mono mb-2">Booking ID: {booking.booking_id || '—'}</p>
-                      </div>
-                      <div className="flex justify-between items-center text-xs border-t border-gray-50 pt-2.5 mt-2">
-                        <span className="text-gray-500 font-semibold flex items-center gap-1">
-                          <span className="material-symbols-outlined text-[14px]">calendar_today</span>
-                          {booking.travel_date ? new Date(booking.travel_date).toLocaleDateString('en-IN', { day: 'numeric', month: 'short' }) : '—'}
-                        </span>
-                        <Link to={`/my-trip/${booking.id}`} className="text-[#136b8a] font-bold hover:underline">
-                          View details
-                        </Link>
-                      </div>
+                    <div>
+                      <h3 className="font-bold text-lg text-gray-900">{editName || 'Traveler'}</h3>
+                      <p className="text-sm text-gray-500">{editCity || 'Location not set'}</p>
                     </div>
                   </div>
-                );
-              })}
+
+                  <div className="space-y-4">
+                    <div>
+                      <label className="text-xs text-gray-400 font-bold uppercase tracking-wider block mb-1">Full Name</label>
+                      <input type="text" value={editName} onChange={(e) => setEditName(e.target.value)} className="w-full border-b border-gray-200 py-2 focus:outline-none focus:border-[#136b8a] text-gray-800 font-medium bg-transparent" />
+                    </div>
+                    <div>
+                      <label className="text-xs text-gray-400 font-bold uppercase tracking-wider block mb-1">Bio / City</label>
+                      <input type="text" value={editCity} onChange={(e) => setEditCity(e.target.value)} className="w-full border-b border-gray-200 py-2 focus:outline-none focus:border-[#136b8a] text-gray-800 font-medium bg-transparent" />
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* Personal Information Tab */}
+              {activeTab === 'Personal Information' && (
+                <div>
+                  <div className="flex justify-between items-center mb-6">
+                    <h2 className="text-xl font-bold text-gray-900">Personal Information</h2>
+                    <button onClick={handleUpdateProfile} disabled={saving} className="text-sm font-bold text-[#136b8a] hover:underline flex items-center gap-1">
+                      {saving ? 'Saving...' : <><span className="material-symbols-outlined text-[16px]">edit</span> Edit</>}
+                    </button>
+                  </div>
+                  
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                      <label className="text-xs text-gray-400 font-bold uppercase tracking-wider block mb-1">First Name</label>
+                      <input type="text" value={editName.split(' ')[0]} onChange={(e) => setEditName(e.target.value + ' ' + (editName.split(' ')[1] || ''))} className="w-full border-b border-gray-200 py-2 focus:outline-none focus:border-[#136b8a] text-gray-800 font-medium bg-transparent" />
+                    </div>
+                    <div>
+                      <label className="text-xs text-gray-400 font-bold uppercase tracking-wider block mb-1">Last Name</label>
+                      <input type="text" value={editName.split(' ')[1] || ''} onChange={(e) => setEditName(editName.split(' ')[0] + ' ' + e.target.value)} className="w-full border-b border-gray-200 py-2 focus:outline-none focus:border-[#136b8a] text-gray-800 font-medium bg-transparent" />
+                    </div>
+                    <div>
+                      <label className="text-xs text-gray-400 font-bold uppercase tracking-wider block mb-1">Date of Birth</label>
+                      <input type="date" value={editDob} onChange={(e) => setEditDob(e.target.value)} className="w-full border-b border-gray-200 py-2 focus:outline-none focus:border-[#136b8a] text-gray-800 font-medium bg-transparent" />
+                    </div>
+                    <div>
+                      <label className="text-xs text-gray-400 font-bold uppercase tracking-wider block mb-1">Gender</label>
+                      <select value={editGender} onChange={(e) => setEditGender(e.target.value)} className="w-full border-b border-gray-200 py-2 focus:outline-none focus:border-[#136b8a] text-gray-800 font-medium bg-transparent">
+                        <option value="">Select</option>
+                        <option value="Male">Male</option>
+                        <option value="Female">Female</option>
+                        <option value="Other">Other</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* Contact Information Tab */}
+              {activeTab === 'Contact Information' && (
+                <div>
+                  <div className="flex justify-between items-center mb-6">
+                    <h2 className="text-xl font-bold text-gray-900">Contact Information</h2>
+                    <button onClick={handleUpdateProfile} disabled={saving} className="text-sm font-bold text-[#136b8a] hover:underline flex items-center gap-1">
+                      {saving ? 'Saving...' : <><span className="material-symbols-outlined text-[16px]">edit</span> Edit</>}
+                    </button>
+                  </div>
+                  
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                      <label className="text-xs text-gray-400 font-bold uppercase tracking-wider block mb-1">Email Address (Read Only)</label>
+                      <input type="email" value={user.email} readOnly className="w-full border-b border-gray-200 py-2 focus:outline-none text-gray-500 font-medium bg-transparent cursor-not-allowed" />
+                    </div>
+                    <div>
+                      <label className="text-xs text-gray-400 font-bold uppercase tracking-wider block mb-1">Phone Number</label>
+                      <input type="tel" value={editPhone} onChange={(e) => setEditPhone(e.target.value)} className="w-full border-b border-gray-200 py-2 focus:outline-none focus:border-[#136b8a] text-gray-800 font-medium bg-transparent" />
+                    </div>
+                    <div className="md:col-span-2">
+                      <label className="text-xs text-gray-400 font-bold uppercase tracking-wider block mb-1">Address / City</label>
+                      <input type="text" value={editCity} onChange={(e) => setEditCity(e.target.value)} className="w-full border-b border-gray-200 py-2 focus:outline-none focus:border-[#136b8a] text-gray-800 font-medium bg-transparent" />
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* Security Tab */}
+              {activeTab === 'Security' && (
+                <div>
+                  <h2 className="text-xl font-bold text-gray-900 mb-6">Security Settings</h2>
+                  <p className="text-sm text-gray-500 mb-4">You can reset your password by entering your email address below.</p>
+                  <Link to="/forgot-password" className="inline-block px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg font-bold text-sm transition-colors">
+                    Reset Password
+                  </Link>
+                </div>
+              )}
+
+              {/* My Trips Tab */}
+              {activeTab === 'My Trips' && (
+                <div>
+                  <div className="flex justify-between items-center mb-6">
+                    <h2 className="text-xl font-bold text-gray-900">My Trips</h2>
+                    <Link to="/my-trips" className="text-sm font-bold text-[#136b8a] hover:underline">View All</Link>
+                  </div>
+                  
+                  {bookings.length > 0 ? (
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      {bookings.slice(0, 4).map(booking => (
+                        <Link key={booking.id} to={`/my-trip/${booking.id}`} className="flex items-center gap-4 p-3 border border-gray-100 rounded-xl hover:shadow-md transition-all group">
+                          <div className="w-16 h-16 rounded-lg overflow-hidden bg-gray-100 flex-shrink-0">
+                            {(booking.banner_image || booking.image_url) ? (
+                              <img src={booking.banner_image || booking.image_url} alt="Trip" className="w-full h-full object-cover group-hover:scale-110 transition-transform" />
+                            ) : (
+                              <span className="material-symbols-outlined text-gray-400 flex items-center justify-center w-full h-full">luggage</span>
+                            )}
+                          </div>
+                          <div>
+                            <h4 className="font-bold text-gray-900 text-sm line-clamp-1">{booking.package_title}</h4>
+                            <p className="text-xs text-gray-500 font-semibold">{booking.booking_status}</p>
+                          </div>
+                        </Link>
+                      ))}
+                    </div>
+                  ) : (
+                    <p className="text-sm text-gray-500">No trips booked yet.</p>
+                  )}
+                </div>
+              )}
+
+              {/* Notifications Tab */}
+              {activeTab === 'Notifications' && (
+                <div>
+                  <h2 className="text-xl font-bold text-gray-900 mb-6">Notifications</h2>
+                  <p className="text-sm text-gray-500">You currently have no new notifications.</p>
+                </div>
+              )}
+
             </div>
           </div>
-        )}
+        </div>
       </main>
 
       <Footer />

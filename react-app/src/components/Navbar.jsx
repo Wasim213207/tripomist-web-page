@@ -4,9 +4,11 @@ import { supabase } from '../utils/supabaseClient'
 import { motion, AnimatePresence } from 'framer-motion'
 import ExploreNavbar from './ExploreNavbar'
 import PromoStrip from './PromoStrip'
+import LoginSignupModal from './LoginSignupModal'
 
 function Navbar() {
   const [isOpen, setIsOpen] = useState(false)
+  const [showAuthModal, setShowAuthModal] = useState(false)
   const [user, setUser] = useState(null)
   const [userRole, setUserRole] = useState('guest')
   const [searchQuery, setSearchQuery] = useState('')
@@ -408,9 +410,9 @@ function Navbar() {
                 )}
               </Link>
             ) : (
-              <Link to={settings?.login_route || "/login"} className="bg-primary text-white font-semibold px-5 py-2 rounded-full transition-all text-sm hover:bg-primary/90 flex items-center gap-1 shadow-sm">
+              <button onClick={() => setShowAuthModal(true)} className="bg-primary text-white font-semibold px-5 py-2 rounded-full transition-all text-sm hover:bg-primary/90 flex items-center gap-1 shadow-sm cursor-pointer">
                 <span className="material-symbols-outlined text-[16px]">login</span> <span className="hidden sm:inline">{settings?.login_button_text || 'Login'}</span>
-              </Link>
+              </button>
             )}
           </div>
         </div>
@@ -464,6 +466,14 @@ function Navbar() {
                       </button>
                     </>
                   )}
+                  {!user && (
+                    <button 
+                      onClick={() => { setIsOpen(false); setShowAuthModal(true); }}
+                      className="text-xl md:text-2xl py-4 text-left transition-colors hover:pl-2 text-[#136b8a] font-bold w-full"
+                    >
+                      Login / Sign Up
+                    </button>
+                  )}
                 </div>
               </div>
             </motion.div>
@@ -485,6 +495,8 @@ function Navbar() {
 
       <ExploreNavbar />
       <PromoStrip />
+
+      <LoginSignupModal isOpen={showAuthModal} onClose={() => setShowAuthModal(false)} />
     </header>
   )
 }
