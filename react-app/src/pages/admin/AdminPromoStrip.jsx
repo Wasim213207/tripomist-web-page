@@ -21,8 +21,11 @@ export default function AdminPromoStrip() {
 
   // New fields for Promo Page
   const [slug, setSlug] = useState('');
+  const [subtitle, setSubtitle] = useState('');
   const [heroBannerUrl, setHeroBannerUrl] = useState('');
   const [description, setDescription] = useState('');
+  const [bgColor, setBgColor] = useState('#0f172a');
+  const [textColor, setTextColor] = useState('#ffffff');
   const [allowPackagePlacement, setAllowPackagePlacement] = useState(true);
 
   useEffect(() => {
@@ -58,8 +61,11 @@ export default function AdminPromoStrip() {
       setIsActive(strip.is_active);
       setDisplayOrder(strip.display_order || 0);
       setSlug(strip.slug || '');
+      setSubtitle(strip.subtitle || '');
       setHeroBannerUrl(strip.hero_banner_url || '');
       setDescription(strip.description || '');
+      setBgColor(strip.bg_color || '#0f172a');
+      setTextColor(strip.text_color || '#ffffff');
       setAllowPackagePlacement(strip.allow_package_placement ?? true);
     } else {
       setEditingId(null);
@@ -72,8 +78,11 @@ export default function AdminPromoStrip() {
       setIsActive(false);
       setDisplayOrder(0);
       setSlug('');
+      setSubtitle('');
       setHeroBannerUrl('');
       setDescription('');
+      setBgColor('#0f172a');
+      setTextColor('#ffffff');
       setAllowPackagePlacement(true);
     }
     setIsModalOpen(true);
@@ -101,8 +110,11 @@ export default function AdminPromoStrip() {
       is_active: isActive,
       display_order: parseInt(displayOrder, 10),
       slug: slug || null,
+      subtitle: subtitle || null,
       hero_banner_url: heroBannerUrl || null,
       description: description || null,
+      bg_color: bgColor,
+      text_color: textColor,
       allow_package_placement: allowPackagePlacement,
       updated_at: new Date().toISOString()
     };
@@ -223,7 +235,10 @@ export default function AdminPromoStrip() {
             <div className="p-6 bg-gray-50 border-b border-gray-200">
               <h3 className="text-sm font-medium text-gray-700 mb-3 uppercase tracking-wider">Live Preview</h3>
               <div className="border border-gray-300 rounded overflow-hidden relative shadow-sm">
-                <div className={`relative overflow-hidden bg-blue-600 text-white text-sm font-medium py-2 px-4 text-center w-full ${isClickable ? 'cursor-pointer hover:bg-blue-700' : ''}`}>
+                <div 
+                  className={`relative overflow-hidden text-sm font-medium py-2 px-4 text-center w-full ${isClickable ? 'cursor-pointer hover:opacity-90' : ''}`}
+                  style={{ backgroundColor: bgColor, color: textColor }}
+                >
                   <span className="relative z-10">{text || 'Preview text...'}</span>
                   {shineEnabled && (
                     <div 
@@ -261,6 +276,33 @@ export default function AdminPromoStrip() {
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Background Color</label>
+                  <div className="flex gap-3">
+                    <input type="color" value={bgColor} onChange={(e) => setBgColor(e.target.value)} className="w-12 h-10 p-1 bg-white border border-gray-200 rounded cursor-pointer" />
+                    <input type="text" value={bgColor} onChange={(e) => setBgColor(e.target.value)} className="flex-1 px-4 py-2 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-600" />
+                  </div>
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Text Color</label>
+                  <div className="flex gap-3">
+                    <input type="color" value={textColor} onChange={(e) => setTextColor(e.target.value)} className="w-12 h-10 p-1 bg-white border border-gray-200 rounded cursor-pointer" />
+                    <input type="text" value={textColor} onChange={(e) => setTextColor(e.target.value)} className="flex-1 px-4 py-2 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-600" />
+                  </div>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Subtitle (For Promo Page)</label>
+                  <input
+                    type="text"
+                    value={subtitle}
+                    onChange={(e) => setSubtitle(e.target.value)}
+                    className="w-full px-4 py-2 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-600"
+                    placeholder="e.g. Valid until August 31st"
+                  />
+                </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">Is Clickable?</label>
                   <label className="relative inline-flex items-center cursor-pointer">

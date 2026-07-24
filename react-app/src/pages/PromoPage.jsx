@@ -107,20 +107,30 @@ function PromoPage() {
               className="w-full h-full object-cover"
             />
           )}
-          <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white text-center px-4 uppercase tracking-wide">
+          <div className="absolute inset-0 bg-black/40 flex flex-col items-center justify-center p-4">
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white text-center uppercase tracking-wide">
               {promo.text}
             </h1>
+            {promo.subtitle && (
+              <p className="text-white/90 text-lg md:text-xl mt-4 text-center max-w-2xl">
+                {promo.subtitle}
+              </p>
+            )}
           </div>
         </div>
       )}
 
       {/* Title if no Hero */}
       {!promo.hero_banner_url && (
-        <div className="bg-[#136b8a] py-12 md:py-20 text-center">
-          <h1 className="text-3xl md:text-5xl font-bold text-white uppercase tracking-wide px-4">
+        <div className="bg-[#136b8a] py-12 md:py-20 text-center px-4">
+          <h1 className="text-3xl md:text-5xl font-bold text-white uppercase tracking-wide">
             {promo.text}
           </h1>
+          {promo.subtitle && (
+            <p className="text-white/90 text-lg mt-4 max-w-2xl mx-auto">
+              {promo.subtitle}
+            </p>
+          )}
         </div>
       )}
 

@@ -11,6 +11,7 @@ export default function AdminExploreDepartments() {
   
   // Form State
   const [title, setTitle] = useState('');
+  const [subtitle, setSubtitle] = useState('');
   const [slug, setSlug] = useState('');
   const [icon, setIcon] = useState('');
   const [route, setRoute] = useState('');
@@ -46,6 +47,7 @@ export default function AdminExploreDepartments() {
     if (dept) {
       setEditingId(dept.id);
       setTitle(dept.title);
+      setSubtitle(dept.subtitle || '');
       setSlug(dept.slug);
       setIcon(dept.icon || '');
       setRoute(dept.route || '');
@@ -59,6 +61,7 @@ export default function AdminExploreDepartments() {
     } else {
       setEditingId(null);
       setTitle('');
+      setSubtitle('');
       setSlug('');
       setIcon('');
       setRoute('');
@@ -93,6 +96,7 @@ export default function AdminExploreDepartments() {
 
     const payload = {
       title,
+      subtitle: subtitle || null,
       slug,
       icon: icon || null,
       route: route || null,
@@ -269,6 +273,10 @@ export default function AdminExploreDepartments() {
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">Title *</label>
                   <input type="text" value={title} onChange={handleTitleChange} required className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500" placeholder="Sales Offers" />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Subtitle</label>
+                  <input type="text" value={subtitle} onChange={e=>setSubtitle(e.target.value)} className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500" placeholder="Limited Time Only" />
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">Slug *</label>
