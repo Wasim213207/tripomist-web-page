@@ -27,7 +27,7 @@ export default function PromoStrip() {
 
   const content = (
     <div 
-      className={`relative overflow-hidden bg-[#0b1b32] text-white text-xs sm:text-sm font-medium py-2 px-4 text-center w-full ${promo.is_clickable ? 'cursor-pointer hover:bg-[#071324] transition-colors' : ''}`}
+      className={`relative overflow-hidden ${promo.bg_color || 'bg-[#0b1b32]'} ${promo.text_color || 'text-white'} text-xs sm:text-sm font-medium py-2 px-4 text-center w-full ${promo.is_clickable ? 'cursor-pointer hover:bg-opacity-90 transition-colors' : ''}`}
     >
       <span className="relative z-10">{promo.text}</span>
       
@@ -41,16 +41,18 @@ export default function PromoStrip() {
     </div>
   );
 
-  if (promo.is_clickable && promo.link_url) {
-    if (promo.link_url.startsWith('http')) {
+  const destinationUrl = promo.link_url || (promo.slug ? `/promo/${promo.slug}` : null);
+
+  if (promo.is_clickable && destinationUrl) {
+    if (destinationUrl.startsWith('http')) {
       return (
-        <a href={promo.link_url} target={promo.open_in_new_tab ? '_blank' : '_self'} rel="noopener noreferrer" className="block w-full">
+        <a href={destinationUrl} target={promo.open_in_new_tab ? '_blank' : '_self'} rel="noopener noreferrer" className="block w-full">
           {content}
         </a>
       );
     } else {
       return (
-        <Link to={promo.link_url} target={promo.open_in_new_tab ? '_blank' : '_self'} className="block w-full">
+        <Link to={destinationUrl} target={promo.open_in_new_tab ? '_blank' : '_self'} className="block w-full">
           {content}
         </Link>
       );

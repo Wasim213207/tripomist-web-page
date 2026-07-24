@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { supabase } from '../../utils/supabaseClient';
 import { motion, AnimatePresence } from 'framer-motion';
+import MediaUploader from '../../components/admin/MediaUploader';
 
 export default function AdminLoginSlider() {
   const [slides, setSlides] = useState([]);
@@ -193,8 +194,12 @@ export default function AdminLoginSlider() {
               </div>
               <form onSubmit={handleSave} className="p-6 space-y-4">
                 <div>
-                  <label className="block text-xs font-bold text-gray-700 mb-1">Image URL *</label>
-                  <input type="text" required value={imageUrl} onChange={e => setImageUrl(e.target.value)} className="w-full px-3 py-2 border border-gray-200 rounded-lg focus:outline-none focus:border-[#136b8a]" placeholder="https://..." />
+                  <MediaUploader 
+                    url={imageUrl} 
+                    onUrlChange={setImageUrl} 
+                    folder="login_slider" 
+                    label="Image URL *"
+                  />
                 </div>
                 <div>
                   <label className="block text-xs font-bold text-gray-700 mb-1">Title</label>

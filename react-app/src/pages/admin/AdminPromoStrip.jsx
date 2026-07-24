@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { supabase } from '../../supabaseClient';
 import { Plus, Edit2, Trash2, X, Check } from 'lucide-react';
+import MediaUploader from '../../components/admin/MediaUploader';
 
 export default function AdminPromoStrip() {
   const [promoStrips, setPromoStrips] = useState([]);
@@ -17,6 +18,12 @@ export default function AdminPromoStrip() {
   const [animationSpeed, setAnimationSpeed] = useState(3);
   const [isActive, setIsActive] = useState(false);
   const [displayOrder, setDisplayOrder] = useState(0);
+
+  // New fields for Promo Page
+  const [slug, setSlug] = useState('');
+  const [heroBannerUrl, setHeroBannerUrl] = useState('');
+  const [description, setDescription] = useState('');
+  const [allowPackagePlacement, setAllowPackagePlacement] = useState(true);
 
   useEffect(() => {
     fetchPromoStrips();
@@ -50,6 +57,10 @@ export default function AdminPromoStrip() {
       setAnimationSpeed(strip.animation_speed || 3);
       setIsActive(strip.is_active);
       setDisplayOrder(strip.display_order || 0);
+      setSlug(strip.slug || '');
+      setHeroBannerUrl(strip.hero_banner_url || '');
+      setDescription(strip.description || '');
+      setAllowPackagePlacement(strip.allow_package_placement ?? true);
     } else {
       setEditingId(null);
       setText('');
@@ -60,6 +71,10 @@ export default function AdminPromoStrip() {
       setAnimationSpeed(3);
       setIsActive(false);
       setDisplayOrder(0);
+      setSlug('');
+      setHeroBannerUrl('');
+      setDescription('');
+      setAllowPackagePlacement(true);
     }
     setIsModalOpen(true);
   };
@@ -85,6 +100,10 @@ export default function AdminPromoStrip() {
       animation_speed: parseInt(animationSpeed, 10),
       is_active: isActive,
       display_order: parseInt(displayOrder, 10),
+      slug: slug || null,
+      hero_banner_url: heroBannerUrl || null,
+      description: description || null,
+      allow_package_placement: allowPackagePlacement,
       updated_at: new Date().toISOString()
     };
 
@@ -217,16 +236,28 @@ export default function AdminPromoStrip() {
             </div>
 
             <form onSubmit={handleSubmit} className="p-6 space-y-6">
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Promo Text *</label>
-                <input
-                  type="text"
-                  required
-                  value={text}
-                  onChange={(e) => setText(e.target.value)}
-                  className="w-full px-4 py-2 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-600"
-                  placeholder="e.g. Ladakh Spiti Early Bird – Save up to ₹3,000 🎉"
-                />
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Promo Text *</label>
+                  <input
+                    type="text"
+                    required
+                    value={text}
+                    onChange={(e) => setText(e.target.value)}
+                    className="w-full px-4 py-2 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-600"
+                    placeholder="e.g. Ladakh Spiti Early Bird – Save up to ₹3,000 🎉"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Slug (For Promo Page URL)</label>
+                  <input
+                    type="text"
+                    value={slug}
+                    onChange={(e) => setSlug(e.target.value)}
+                    className="w-full px-4 py-2 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-600"
+                    placeholder="e.g. early-bird"
+                  />
+                </div>
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -259,6 +290,25 @@ export default function AdminPromoStrip() {
                     </div>
                   </>
                 )}
+              </div>
+
+              <MediaUploader 
+                url={heroBannerUrl} 
+                onUrlChange={setHeroBannerUrl} 
+                folder="promos" 
+                label="Promo Page Hero Banner"
+                hint="Used if this promo strip has its own page."
+              />
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Promo Page Description</label>
+                <textarea
+                  value={description}
+                  onChange={(e) => setDescription(e.target.value)}
+                  className="w-full px-4 py-2 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-600"
+                  rows={3}
+                  placeholder="Details about the promotion, shown on the promo page."
+                />
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -299,6 +349,14 @@ export default function AdminPromoStrip() {
                 <label className="block text-sm font-medium text-gray-700 mb-2">Is Active?</label>
                 <label className="relative inline-flex items-center cursor-pointer">
                   <input type="checkbox" className="sr-only peer" checked={isActive} onChange={(e) => setIsActive(e.target.checked)} />
+                  <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+                </label>
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Allow Package Placement?</label>
+                <label className="relative inline-flex items-center cursor-pointer">
+                  <input type="checkbox" className="sr-only peer" checked={allowPackagePlacement} onChange={(e) => setAllowPackagePlacement(e.target.checked)} />
                   <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
                 </label>
               </div>

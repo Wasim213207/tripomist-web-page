@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { supabase } from '../../supabaseClient';
-import { Plus, Edit2, Trash2, X, Check, Search, Image as ImageIcon, Video, UploadCloud, ArrowUp, ArrowDown } from 'lucide-react';
+import { Plus, Edit2, Trash2, X, Check, ArrowUp, ArrowDown } from 'lucide-react';
+import MediaUploader from '../../components/admin/MediaUploader';
 
 export default function AdminExploreDepartments() {
   const [departments, setDepartments] = useState([]);
@@ -20,7 +21,6 @@ export default function AdminExploreDepartments() {
   const [isActive, setIsActive] = useState(true);
   const [allowPackagePlacement, setAllowPackagePlacement] = useState(true);
   const [displayOrder, setDisplayOrder] = useState(0);
-  const [uploading, setUploading] = useState(false);
 
   useEffect(() => {
     fetchDepartments();
@@ -82,34 +82,7 @@ export default function AdminExploreDepartments() {
     }
   };
 
-  const handleUpload = async (event) => {
-    try {
-      setUploading(true);
-      const file = event.target.files[0];
-      if (!file) return;
-      const fileExt = file.name.split('.').pop();
-      const fileName = `${Math.random()}.${fileExt}`;
-      const filePath = `departments/${fileName}`;
-      
-      const { error: uploadError, data } = await supabase.storage
-        .from('website-assets')
-        .upload(filePath, file);
-
-      if (uploadError) throw uploadError;
-
-      const { data: { publicUrl } } = supabase.storage
-        .from('website-assets')
-        .getPublicUrl(filePath);
-
-      setHeroBannerUrl(publicUrl);
-      alert('Media uploaded successfully!');
-    } catch (error) {
-      alert('Error uploading media!');
-      console.error(error);
-    } finally {
-      setUploading(false);
-    }
-  };
+  // Upload is handled by MediaUploader
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -326,39 +299,11 @@ export default function AdminExploreDepartments() {
                 </select>
               </div>
 
-              <div className="border border-gray-200 rounded-lg p-4 bg-gray-50">
-                <label className="block text-sm font-medium text-gray-900 mb-3">Hero Banner</label>
-                <div className="grid grid-cols-2 gap-4 mb-4">
-                  <div className="flex gap-4 items-center">
-                    <label className="flex items-center gap-2 cursor-pointer">
-                      <input type="radio" checked={heroMediaType === 'image'} onChange={() => setHeroMediaType('image')} className="text-blue-600 focus:ring-blue-500" />
-                      <span className="text-sm font-medium text-gray-700 flex items-center gap-1"><ImageIcon size={16}/> Image</span>
-                    </label>
-                    <label className="flex items-center gap-2 cursor-pointer">
-                      <input type="radio" checked={heroMediaType === 'video'} onChange={() => setHeroMediaType('video')} className="text-blue-600 focus:ring-blue-500" />
-                      <span className="text-sm font-medium text-gray-700 flex items-center gap-1"><Video size={16}/> Video</span>
-                    </label>
-                  </div>
-                </div>
-
-                <div className="flex gap-3">
-                  <input type="text" value={heroBannerUrl} onChange={e=>setHeroBannerUrl(e.target.value)} placeholder="https://..." className="flex-1 px-3 py-2 border border-gray-300 rounded-lg text-sm" />
-                  <label className="bg-white border border-gray-300 hover:bg-gray-50 px-4 py-2 rounded-lg cursor-pointer flex items-center gap-2 text-sm font-medium transition-colors">
-                    {uploading ? <div className="w-4 h-4 border-2 border-gray-400 border-t-transparent rounded-full animate-spin"></div> : <UploadCloud size={18} />}
-                    Upload
-                    <input type="file" accept={heroMediaType === 'image' ? 'image/*' : 'video/*'} className="hidden" onChange={handleUpload} disabled={uploading} />
-                  </label>
-                </div>
-                {heroBannerUrl && (
-                  <div className="mt-3 aspect-video rounded-lg overflow-hidden border border-gray-200 bg-black/5 relative max-w-sm">
-                    {heroMediaType === 'video' ? (
-                      <video src={heroBannerUrl} className="w-full h-full object-cover" muted autoPlay loop />
-                    ) : (
-                      <img src={heroBannerUrl} className="w-full h-full object-cover" alt="Preview" />
-                    )}
-                  </div>
-                )}
-              </div>
+              <MediaUploader 
+                url={heroBannerUrl} 
+                onUrlChange={setHeroBannerUrl} 
+                folder="departments" 
+              />
 
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">About / Description</label>

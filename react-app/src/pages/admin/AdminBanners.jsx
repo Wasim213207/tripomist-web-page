@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { supabase } from '../../supabaseClient';
 import { Image, Edit3, Trash2, Plus, CheckCircle, XCircle, AlertCircle } from 'lucide-react';
+import MediaUploader from '../../components/admin/MediaUploader';
 
 const AdminBanners = () => {
   const [banners, setBanners] = useState([]);
@@ -163,9 +164,21 @@ const AdminBanners = () => {
           {/* Core Banner Visuals */}
           <div className="space-y-4">
             <h3 className="text-md font-semibold border-b pb-2">1. Visuals & Layout</h3>
+            <div className="grid grid-cols-1 gap-6 mb-4">
+              <MediaUploader 
+                url={formData.desktop_image} 
+                onUrlChange={(url) => setFormData({...formData, desktop_image: url})} 
+                folder="banners" 
+                label="Desktop Image URL *"
+              />
+              <MediaUploader 
+                url={formData.mobile_banner} 
+                onUrlChange={(url) => setFormData({...formData, mobile_banner: url})} 
+                folder="banners" 
+                label="Mobile Image URL (Optional)"
+              />
+            </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div><label className={labelClass}>Desktop Image URL *</label><input type="url" name="desktop_image" value={formData.desktop_image || ''} onChange={handleInputChange} className={inputClass} required /></div>
-              <div><label className={labelClass}>Mobile Image URL (Optional)</label><input type="url" name="mobile_banner" value={formData.mobile_banner || ''} onChange={handleInputChange} className={inputClass} /></div>
               <div><label className={labelClass}>Small Top Label</label><input type="text" name="label" value={formData.label || ''} onChange={handleInputChange} className={inputClass} /></div>
               <div><label className={labelClass}>Title *</label><input type="text" name="title" value={formData.title || ''} onChange={handleInputChange} className={inputClass} required /></div>
               <div><label className={labelClass}>Highlighted Text</label><input type="text" name="highlighted_text" value={formData.highlighted_text || ''} onChange={handleInputChange} className={inputClass} /></div>

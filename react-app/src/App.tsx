@@ -35,6 +35,7 @@ import MyTrips from './pages/MyTrips'
 import BookingDetail from './pages/BookingDetail'
 import DynamicPage from './pages/DynamicPage'
 const ExploreDepartment = React.lazy(() => import('./pages/ExploreDepartment'));
+const PromoPage = React.lazy(() => import('./pages/PromoPage'));
 const ListingPage = React.lazy(() => import('./pages/ListingPage'));
 import BottomDock from './components/BottomDock'
 import Chatbot from './components/Chatbot'
@@ -257,6 +258,7 @@ function App() {
           <Route path="/itinerary/madhyameshwar" element={<ItineraryMadhyameshwar />} />
           <Route path="/itinerary/udaipur-and-kumbhalgarh" element={<ItineraryUdaipurKumbhalgarh />} />
           <Route path="/explore/:slug" element={<React.Suspense fallback={<div className="flex items-center justify-center h-screen"><div className="w-8 h-8 border-4 border-[#136b8a] border-t-transparent rounded-full animate-spin"></div></div>}><ExploreDepartment /></React.Suspense>} />
+          <Route path="/promo/:slug" element={<React.Suspense fallback={<div className="flex items-center justify-center h-screen"><div className="w-8 h-8 border-4 border-[#136b8a] border-t-transparent rounded-full animate-spin"></div></div>}><PromoPage /></React.Suspense>} />
           <Route path="/itinerary/:slug" element={<PackageDetail />} />
           <Route path="/banner/:slug" element={<PackageDetail />} />
           <Route path="/checkout" element={<Checkout />} />

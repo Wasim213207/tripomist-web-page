@@ -42,7 +42,7 @@ const CustomerLayout = () => {
 
   const handleLogout = async () => {
     await supabase.auth.signOut();
-    navigate('/login');
+    navigate('/');
   };
 
   const navItems = [
