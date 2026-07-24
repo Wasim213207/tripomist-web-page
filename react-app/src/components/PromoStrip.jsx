@@ -27,7 +27,8 @@ export default function PromoStrip() {
 
   const content = (
     <div 
-      className={`relative overflow-hidden ${promo.bg_color || 'bg-[#0b1b32]'} ${promo.text_color || 'text-white'} text-xs sm:text-sm font-medium py-2 px-4 text-center w-full ${promo.is_clickable ? 'cursor-pointer hover:bg-opacity-90 transition-colors' : ''}`}
+      className={`relative overflow-hidden text-xs sm:text-sm font-medium py-2 px-4 text-center w-full ${promo.is_clickable ? 'cursor-pointer hover:opacity-90 transition-opacity' : ''}`}
+      style={{ backgroundColor: promo.bg_color || '#0b1b32', color: promo.text_color || '#ffffff' }}
     >
       <span className="relative z-10">{promo.text}</span>
       
