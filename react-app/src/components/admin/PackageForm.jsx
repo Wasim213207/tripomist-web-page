@@ -428,10 +428,10 @@ const PackageForm = ({ onCancel, onSubmit, initialData, saving }) => {
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
                 {promoStrips.length === 0 && <div className="text-sm text-gray-500">No active promo pages.</div>}
                 {promoStrips.map(promo => {
-                  const isChecked = selectedPlacements.some(p => p.type === 'promo_page' && p.id === promo.id);
+                  const isChecked = selectedPlacements.some(p => p.type === 'promo_strip' && p.id === promo.id);
                   return (
                     <label key={promo.id} className="flex items-center gap-3 cursor-pointer group relative">
-                      <input type="checkbox" className="absolute opacity-0 w-0 h-0" checked={isChecked} onChange={() => togglePlacement('promo_page', promo.id, promo.slug)} />
+                      <input type="checkbox" className="absolute opacity-0 w-0 h-0" checked={isChecked} onChange={() => togglePlacement('promo_strip', promo.id, promo.slug)} />
                       <div className={`w-5 h-5 rounded border flex items-center justify-center transition-colors ${isChecked ? 'bg-blue-600 border-blue-600' : 'border-gray-300 group-hover:border-blue-500'}`}>
                         {isChecked && <svg className="w-3.5 h-3.5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}><path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" /></svg>}
                       </div>

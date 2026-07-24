@@ -34,7 +34,7 @@ function PromoPage() {
         const { data: placements, error: placeErr } = await supabase
           .from('package_placements')
           .select('package_id')
-          .eq('placement_type', 'promo_page')
+          .eq('placement_type', 'promo_strip')
           .eq('placement_id', promoData.id);
 
         if (placements && placements.length > 0) {
