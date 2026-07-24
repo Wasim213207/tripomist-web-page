@@ -83,7 +83,7 @@ export default function GroupTrips() {
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {tripsList.map((dest) => (
-              <PackageCard 
+              <PackageCard destination={dest.destination} state={dest.state}  
                 key={dest.id}
                 tripTitle={dest.name} 
                 price={"₹" + Number(dest.price).toLocaleString('en-IN')}

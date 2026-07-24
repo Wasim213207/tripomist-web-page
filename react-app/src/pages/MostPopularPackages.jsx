@@ -182,7 +182,7 @@ function MostPopularPackages() {
         {/* Trips Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {filteredTrips.map(trip => (
-            <PackageCard 
+            <PackageCard destination={trip.destination} state={trip.state}  
               key={trip.id}
               className="w-full h-[340px] md:h-[360px]" 
               tripTitle={trip.name} 

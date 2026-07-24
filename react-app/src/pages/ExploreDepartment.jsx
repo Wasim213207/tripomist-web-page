@@ -159,7 +159,7 @@ function ExploreDepartment() {
             <h2 className="text-2xl font-bold text-gray-900 mb-6">Explore Packages</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
               {packages.map(pkg => (
-                <PackageCard key={pkg.id} pkg={pkg} />
+                <PackageCard destination={pkg.destination} state={pkg.state}  key={pkg.id} pkg={pkg} />
               ))}
             </div>
           </div>

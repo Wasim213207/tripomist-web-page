@@ -87,7 +87,7 @@ export default function Rajasthan() {
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {filteredDestinations.map((dest) => (
-              <PackageCard 
+              <PackageCard destination={dest.destination} state={dest.state}  
                   key={dest.id}
                   tripTitle={dest.title} 
                   price={"₹" + Number(dest.price).toLocaleString('en-IN')}

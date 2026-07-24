@@ -122,7 +122,7 @@ function International() {
         <h2 className="text-3xl font-bold mb-8 text-center text-on-surface">Soon you can plan abroad trips with us</h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {filteredTrips.map(trip => (
-            <PackageCard 
+            <PackageCard destination={trip.destination} state={trip.state}  
               key={trip.id} 
               tripTitle={trip.name} 
               price={trip.price} 

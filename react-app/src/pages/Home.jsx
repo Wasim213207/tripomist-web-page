@@ -191,7 +191,7 @@ function Home() {
         ) : (
           <div className="flex overflow-x-auto gap-4 md:gap-6 hide-scrollbar pb-8 snap-x snap-mandatory -mx-4 px-4 md:mx-0 md:px-0 scroll-smooth">
             {sec.packagesData.slice(0, sec.max_cards || 10).map((pkg) => (
-              <PackageCard 
+              <PackageCard destination={pkg.destination} state={pkg.state}  
                 key={pkg.id}
                 bestSeller={isBestSellerFlag || pkg.best_seller}
                 className="w-[85vw] sm:w-[240px] md:w-[260px] lg:w-[280px] h-[340px] md:h-[360px] snap-center shrink-0" 

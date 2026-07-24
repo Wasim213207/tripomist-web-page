@@ -115,7 +115,7 @@ const DestinationPackages = () => {
           ) : (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
               {packages.map(pkg => (
-                <PackageCard 
+                <PackageCard destination={pkg.destination} state={pkg.state}  
                   key={pkg.id}
                   className="w-full h-[360px]"
                   tripTitle={pkg.title}

@@ -158,7 +158,7 @@ function Domestic() {
       <main className="max-w-6xl mx-auto px-4 pb-36 w-full">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {filteredTrips.map(trip => (
-            <PackageCard 
+            <PackageCard destination={trip.destination} state={trip.state}  
               key={trip.id} 
               tripTitle={trip.name} 
               price={`₹${trip.price.toLocaleString('en-IN')}`} 

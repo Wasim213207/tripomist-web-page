@@ -86,7 +86,7 @@ export default function Andaman() {
         <h2 className="text-2xl font-bold text-on-surface mb-6">Top Destinations</h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {filteredDestinations.map((dest) => (
-            <PackageCard 
+            <PackageCard destination={dest.destination} state={dest.state}  
               key={dest.id}
               tripTitle={dest.name} 
               price={"₹" + dest.price.toLocaleString()}

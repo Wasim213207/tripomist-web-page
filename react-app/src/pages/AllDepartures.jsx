@@ -115,7 +115,7 @@ export default function AllDepartures() {
       <main className="max-w-6xl mx-auto px-4 pb-36 w-full">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {destinations.map((dest, i) => (
-            <PackageCard 
+            <PackageCard destination={dest.destination} state={dest.state}  
               key={i}
               className="w-full h-[340px] md:h-[360px]" 
               tripTitle={dest.tripTitle} 

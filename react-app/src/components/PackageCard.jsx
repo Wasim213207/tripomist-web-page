@@ -19,7 +19,9 @@ const PackageCard = ({
   secondaryBadgeText,
   showPrimaryBadge,
   showSecondaryBadge,
-  isClickable = true
+  isClickable = true,
+  destination,
+  state
 }) => {
   const displayPrice = price ? (typeof price === 'string' && !price.includes('/-') ? `${price}/-` : price) : null;
   const displayOriginalPrice = originalPrice ? (typeof originalPrice === 'string' && !originalPrice.includes('/-') ? `${originalPrice}/-` : originalPrice) : null;
@@ -29,6 +31,17 @@ const PackageCard = ({
   
   // Manual Badge Logic
   let finalPrimaryBadge = (showPrimaryBadge && primaryBadgeText) ? primaryBadgeText : null;
+  
+  // Do not display image/video URLs inside the location badge
+  if (finalPrimaryBadge && (finalPrimaryBadge.match(/^https?:\/\//i) || finalPrimaryBadge.includes('cloudinary'))) {
+    finalPrimaryBadge = null;
+  }
+  
+  // Correct fallback order: destination -> state -> "India"
+  if (!finalPrimaryBadge) {
+    finalPrimaryBadge = destination || state || "India";
+  }
+
   let finalSecondaryBadge = (showSecondaryBadge && secondaryBadgeText) ? secondaryBadgeText : null;
 
   const CardWrapper = shouldBeClickable ? Link : 'div';

@@ -112,7 +112,7 @@ export default function Uttarakhand() {
       <main className="max-w-6xl mx-auto px-4 pb-36 w-full">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {filteredDestinations.map(dest => (
-            <PackageCard 
+            <PackageCard destination={dest.destination} state={dest.state}  
               key={dest.id}
               tripTitle={dest.name} 
               price={"₹" + dest.price.toLocaleString()}

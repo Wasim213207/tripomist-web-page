@@ -83,7 +83,7 @@ function Search() {
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 md:gap-8">
             {packages.map((pkg) => (
-              <PackageCard
+              <PackageCard destination={pkg.destination} state={pkg.state} 
                 key={pkg.id}
                 tripTitle={pkg.title}
                 price={pkg.price != null && pkg.price !== '' ? `₹${Number(pkg.price).toLocaleString('en-IN')}` : 'Price on request'}
