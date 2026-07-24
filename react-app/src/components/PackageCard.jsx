@@ -15,13 +15,9 @@ const PackageCard = ({
   bestSeller,
   badge,
   className,
-  primaryBadgeText,
   secondaryBadgeText,
-  showPrimaryBadge,
   showSecondaryBadge,
-  isClickable = true,
-  destination,
-  state
+  isClickable = true
 }) => {
   const displayPrice = price ? (typeof price === 'string' && !price.includes('/-') ? `${price}/-` : price) : null;
   const displayOriginalPrice = originalPrice ? (typeof originalPrice === 'string' && !originalPrice.includes('/-') ? `${originalPrice}/-` : originalPrice) : null;
@@ -29,19 +25,6 @@ const PackageCard = ({
   const hasValidLink = link && link !== '#';
   const shouldBeClickable = isClickable && hasValidLink;
   
-  // Manual Badge Logic
-  let finalPrimaryBadge = (showPrimaryBadge && primaryBadgeText) ? primaryBadgeText : null;
-  
-  // Do not display image/video URLs inside the location badge
-  if (finalPrimaryBadge && (finalPrimaryBadge.match(/^https?:\/\//i) || finalPrimaryBadge.includes('cloudinary'))) {
-    finalPrimaryBadge = null;
-  }
-  
-  // Correct fallback order: destination -> state -> "India"
-  if (!finalPrimaryBadge) {
-    finalPrimaryBadge = destination || state || "India";
-  }
-
   let finalSecondaryBadge = (showSecondaryBadge && secondaryBadgeText) ? secondaryBadgeText : null;
 
   const CardWrapper = shouldBeClickable ? Link : 'div';
@@ -58,16 +41,7 @@ const PackageCard = ({
         <div className="absolute inset-0 bg-cover bg-center group-hover:scale-105 transition-transform duration-700" style={{ backgroundImage: `url('${bg}')` }}></div>
         <div className="absolute inset-0 bg-black/10"></div>
         
-        <div className="absolute top-4 left-4 right-4 flex justify-between items-start gap-2 z-10 pointer-events-none">
-          {/* Primary Badge */}
-          {finalPrimaryBadge ? (
-            <div className="bg-black/50 backdrop-blur-md text-white font-bold text-[10px] px-3 py-1.5 rounded-full uppercase tracking-wider flex items-center gap-1 shadow-sm">
-              <span className="material-symbols-outlined text-[12px]">location_on</span>
-              {finalPrimaryBadge.toLowerCase() !== 'international' ? formatSlugToTitle(finalPrimaryBadge) : finalPrimaryBadge}
-            </div>
-          ) : (
-            <div></div> // Empty div to keep flex alignment if needed
-          )}
+        <div className="absolute top-4 left-4 right-4 flex justify-end items-start gap-2 z-10 pointer-events-none">
 
           {/* Secondary Badges/Discount in Lime Green */}
           <div className="flex flex-col items-end gap-2">
