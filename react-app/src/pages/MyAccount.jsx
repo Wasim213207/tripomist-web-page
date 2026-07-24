@@ -91,8 +91,10 @@ export default function MyAccount() {
   }, [navigate]);
 
   const handleLogout = async () => {
-    await supabase.auth.signOut();
-    navigate('/login');
+    navigate('/');
+    setTimeout(async () => {
+      await supabase.auth.signOut();
+    }, 50);
   };
 
   if (loading) {

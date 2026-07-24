@@ -5,7 +5,7 @@ import { supabase } from '../../utils/supabaseClient'; // Ensure correct path
 export default function MediaUploader({ 
   url, 
   onUrlChange, 
-  bucket = 'website-assets', 
+  bucket = 'website-assets', // Unused now, forced below
   folder = 'uploads',
   label = 'Hero Banner / Media',
   hint = ''
@@ -29,13 +29,13 @@ export default function MediaUploader({
       const filePath = `${folder}/${fileName}`;
       
       const { error: uploadError, data } = await supabase.storage
-        .from(bucket)
+        .from('website-assets')
         .upload(filePath, file);
 
       if (uploadError) throw uploadError;
 
       const { data: { publicUrl } } = supabase.storage
-        .from(bucket)
+        .from('website-assets')
         .getPublicUrl(filePath);
 
       onUrlChange(publicUrl);

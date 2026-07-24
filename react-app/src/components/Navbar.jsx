@@ -116,9 +116,11 @@ function Navbar() {
   }
 
   const handleLogout = async () => {
-    await supabase.auth.signOut()
     navigate('/')
     setIsOpen(false)
+    setTimeout(async () => {
+      await supabase.auth.signOut()
+    }, 50)
   }
 
   const isActive = (path) => {

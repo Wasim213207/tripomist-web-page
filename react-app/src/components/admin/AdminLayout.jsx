@@ -49,8 +49,10 @@ const AdminLayout = () => {
   }, [location.pathname]);
 
   const handleLogout = async () => {
-    await supabase.auth.signOut();
-    navigate('/admin/login');
+    navigate('/');
+    setTimeout(async () => {
+      await supabase.auth.signOut();
+    }, 50);
   };
 
   return (

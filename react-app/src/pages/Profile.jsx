@@ -172,8 +172,10 @@ export default function Profile() {
   };
 
   const handleLogout = async () => {
-    await supabase.auth.signOut();
     navigate('/');
+    setTimeout(async () => {
+      await supabase.auth.signOut();
+    }, 50);
   };
 
   const tabs = [
